@@ -1,2 +1,2 @@
-- [Demo](#installation)
+- [activitiesCli-by-health]
 
