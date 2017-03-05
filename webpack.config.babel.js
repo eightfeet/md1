@@ -18,7 +18,7 @@ module.exports = {
 
 	output: {
 		path: path.resolve(__dirname, "build"),
-		publicPath: '/',
+		publicPath: '',
 		filename: 'bundle.js'
 	},
 
@@ -181,7 +181,7 @@ module.exports = {
 		port: process.env.PORT || 8080,
 		host: 'localhost',
 		// colors: true, // no longer used
-		publicPath: '/',
+		publicPath: '',
 		contentBase: './src',
 		historyApiFallback: true,
 		open: true,
