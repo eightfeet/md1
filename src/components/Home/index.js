@@ -58,7 +58,9 @@ export default class Home extends Component {
 				<h1  className={`${s.root} al-c`}>首页</h1>
 				<p className={`${sb.root} al-c pd2`}>Home component.</p>
 				<div className="w8 center clearfix">
-					<input type="tel" value={phone} onInput={this.updatePhone} placeholder="phone" /> <br /><br />
+					<input type="tel"
+						className={`${s.root} red`}
+						value={phone} onInput={this.updatePhone} placeholder="phone" /> <br /><br />
 					<input type="text" value={name} onInput={this.updateName} placeholder="name"  /><br /><br />
 					<input type="text" value={english} onInput={this.updateEnglish} placeholder="english"  /><br /><br />
 					<input type="text" value={securityCode} onInput={this.updateSecurityCode} placeholder="securityCode" />
@@ -78,7 +80,7 @@ export default class Home extends Component {
 					时间戳：{timeStamp}<br />
 					转时间<br />
 					{
-                        FTimeStamp(timeStamp, 'yyyy-MM-dd')
+                        FTimeStamp(timeStamp, 'MM-dd')
 					}
 				</div>
 				<div className="pdt1">
