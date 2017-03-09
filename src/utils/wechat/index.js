@@ -22,6 +22,16 @@ function loaded() {
 	});
 }
 
+function arrConcat(arr1, arr2) {
+	//不要直接使用var arr = arr1，这样arr只是arr1的一个引用，两者的修改会互相影响
+	let arr = arr1.concat();
+	//或者使用slice()复制，var arr = arr1.slice(0)
+	for (let i = 0; i < arr2.length; i++){
+		arr.indexOf(arr2[i]) === -1 ? arr.push(arr2[i]) : 0;
+	}
+	return arr;
+}
+
 function configs(config) {
 	return new Promise((resolve, reject) => {
 		if (window.wxConfig) {
@@ -38,7 +48,21 @@ function configs(config) {
 		getConfig.timestamp = config.timestamp || '';
 		getConfig.nonceStr = config.nonceStr || '';
 		getConfig.signature = config.signature || '';
-		getConfig.jsApiList = config.jsApiList || '';
+		getConfig.jsApiList = config.jsApiList || [];
+
+		const shareArr = [
+			'onMenuShareTimeline',
+			'onMenuShareAppMessage',
+			'onMenuShareQQ',
+			'onMenuShareWeibo',
+			'onMenuShareQZone'];
+
+		getConfig.jsApiList = arrConcat(shareArr, getConfig.jsApiList);
+
+
+		console.log('getConfig.jsApiList');
+		console.log(getConfig.jsApiList);
+
 		const {
 			debug,
 			appId,

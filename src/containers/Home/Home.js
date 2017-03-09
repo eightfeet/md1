@@ -21,7 +21,9 @@ export default class Home extends Component {
 			timestamp:'1489029986',
 			nonceStr:'a360855d-eb0e-44ee-9ea6-456d672badb8',
 			signature:'ce8715c4d5980383d3628f59f5222be8b0b3b369',
-			jsApiList:['showMenuItems', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'scanQRCode', 'showAllNonBaseMenuItem']
+			jsApiList:[
+				'uploadImage'
+			]
 		}).then(() => {
 			console.log(window.wx);
 			share('分享页面');
