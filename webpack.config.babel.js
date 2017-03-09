@@ -4,9 +4,9 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ReplacePlugin from 'replace-bundle-webpack-plugin';
-import OfflinePlugin from 'offline-plugin';
+// import OfflinePlugin from 'offline-plugin';
 import path from 'path';
-import V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
+// import V8LazyParseWebpackPlugin from 'v8-lazy-parse-webpack-plugin';
 import ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
 const ENV = process.env.NODE_ENV || 'development';
 
@@ -14,7 +14,7 @@ const CSS_MAPS = ENV!=='production';
 
 module.exports = {
 	context: path.resolve(__dirname, "src"),
-	entry: './index.js',
+	entry: ['./core/polyfill.js','./index.js'],
 
 	output: {
 		path: path.resolve(__dirname, "build"),
@@ -30,8 +30,10 @@ module.exports = {
 			'node_modules'
 		],
 		alias: {
-			components: path.resolve(__dirname, "src/components"),    // used for tests
+			components: path.resolve(__dirname, "src/components"),
 			styles: path.resolve(__dirname, "src/styles"),
+			core: path.resolve(__dirname, "src/core"),
+			'~': path.resolve(__dirname, "src"), // root
 			'react': 'preact-compat',
 			'react-dom': 'preact-compat'
 		}
@@ -67,7 +69,18 @@ module.exports = {
 				exclude: path.resolve(__dirname, 'src/styles'),
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
-					use: ['css-loader?modules&localIdentName=[name][hash:base64:8]', 'sass-loader']
+					use: ['css-loader?modules&localIdentName=[name][hash:base64:8]',
+						'postcss-loader',
+						{
+							loader:'sass-loader',
+							options: {
+								data: '@import "variables.scss";',
+								includePaths: [
+									path.resolve(__dirname, "src/styles")
+								]
+							}
+						}
+					]
 				})
 			},
 			{
@@ -75,7 +88,7 @@ module.exports = {
 				include: path.resolve(__dirname, 'src/styles'),
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
-					use: ['css-loader', 'sass-loader']
+					use: ['css-loader', 'postcss-loader', 'sass-loader']
 				})
 			},
 			{
@@ -128,7 +141,7 @@ module.exports = {
 			{ from: './favicon.ico', to: './' }
 		])
 	]).concat(ENV==='production' ? [
-		new V8LazyParseWebpackPlugin(),
+		// new V8LazyParseWebpackPlugin(),
 		new webpack.optimize.UglifyJsPlugin({
 			output: {
 				comments: false
@@ -152,16 +165,16 @@ module.exports = {
 			// this is actually the property name https://github.com/kimhou/replace-bundle-webpack-plugin/issues/1
 			partten: /throw\s+(new\s+)?[a-zA-Z]+Error\s*\(/g,
 			replacement: () => 'return;('
-		}]),
+		}])
 
-		new OfflinePlugin({
-			relativePaths: false,
-			AppCache: false,
-			ServiceWorker: {
-				events: true
-			},
-			publicPath: '/'
-		})
+		// ,new OfflinePlugin({
+		// 	relativePaths: false,
+		// 	AppCache: false,
+		// 	ServiceWorker: {
+		// 		events: true
+		// 	},
+		// 	publicPath: '/'
+		// })
 	] : []),
 
 	stats: { colors: true },
@@ -185,12 +198,12 @@ module.exports = {
 		contentBase: './src',
 		historyApiFallback: true,
 		open: true,
+
 		proxy: {
-			// OPTIONAL: proxy configuration:
-			// '/optional-prefix/**': { // path pattern to rewrite
-			//   target: 'http://target-host.com',
-			//   pathRewrite: path => path.replace(/^\/[^\/]+\//, '')   // strip first path segment
-			// }
+			'/firstactivity/activity': {
+				target: 'http://funs.4000916916.com',
+				changeOrigin: true
+			}
 		}
 	}
 };

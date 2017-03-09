@@ -7,20 +7,38 @@ const menudata = [
 	},
 	{
 		id: 2,
-		name: 'me',
-		url: '/profile',
-		icon: 'icon-user-a'
+		name: '扫防伪码',
+		url: '/securitycode',
+		icon: 'icon-user-b'
 	},
 	{
 		id: 3,
 		name: 'john',
-		url: '/profile/john',
+		url: '/getphoto',
 		icon: 'icon-user-b'
 	},
 	{
 		id: 4,
-		name: 'about',
-		url: '/about',
+		name: 'voice',
+		url: '/voice',
+		icon: 'icon-notebook-f'
+	},
+	{
+		id: 5,
+		name: 'infomation',
+		url: '/infomation',
+		icon: 'icon-notebook-f'
+	},
+	{
+		id: 6,
+		name: 'preview',
+		url: '/preview',
+		icon: 'icon-notebook-f'
+	},
+	{
+		id: 7,
+		name: 'view',
+		url: '/view',
 		icon: 'icon-notebook-f'
 	}
 ];
