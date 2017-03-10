@@ -38,7 +38,7 @@ function configs(config) {
 			resolve();
 			return;
 		}
-		if (!config) {
+		if (!config || typeof config !== 'object') {
 			reject('缺少微信config参数');
 			return;
 		}
