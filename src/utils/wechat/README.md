@@ -10,7 +10,7 @@
 			wechat({
 				// 微信config
 				debug: false,
-				appId:'wx2f995336548675b4',
+				appId:'wx2f99533...',
 				timestamp:'1489029986',
 				nonceStr:'a360855d-eb0e-44ee-9ea6-456d672badb8',
 				signature:'ce8715c4d5980383d3628f59f5222be8b0b3b369',
