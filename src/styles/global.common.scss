@@ -399,7 +399,11 @@ noShadow
 .txt_cut{text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
 /*换行*/
 .ba{word-break:break-all}
-
+body {
+		max-width: 640px;
+    margin: 0 auto;
+		position: relative;
+}
 #app {
     max-width: 640px;
     margin: 0 auto;

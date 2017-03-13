@@ -13,8 +13,19 @@ import Preview from '~/containers/Preview';
 import SView from '~/containers/View';
 
 export default class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+			user: {name: 'xiehuiming'}
+		};
+	}
+	getChildContext() {
+		return {
+			user: this.state.user
+		};
+	}
 	render() {
-		console.log(history);
+		console.log(this.context);
 		return (
 			<div id="app"  >
 				<HeaderBar />
