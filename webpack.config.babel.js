@@ -136,10 +136,10 @@ module.exports = {
 		}),
 		new ScriptExtHtmlWebpackPlugin({
 			defaultAttribute: "async"
-		}),
-		new CopyWebpackPlugin([
-			{ from: './favicon.ico', to: './' }
-		])
+		})
+		// new CopyWebpackPlugin([
+		// 	{ from: './favicon.ico', to: './' }
+		// ])
 	]).concat(ENV==='production' ? [
 		// new V8LazyParseWebpackPlugin(),
 		new webpack.optimize.UglifyJsPlugin({
@@ -188,7 +188,8 @@ module.exports = {
 		setImmediate: false
 	},
 
-	devtool: ENV==='production' ? 'source-map' : 'cheap-module-eval-source-map',
+	// devtool: ENV==='production' ? 'source-map' : 'cheap-module-eval-source-map',
+	devtool: ENV==='production' ? '' : 'cheap-module-eval-source-map',
 
 	devServer: {
 		port: process.env.PORT || 8080,
