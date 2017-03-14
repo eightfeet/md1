@@ -163,7 +163,6 @@ button:focus {
 
 .formBox{
   input[type="text"], input[type="tel"], input[type="number"] {
-    border:1px solid #46b650;
     border-radius: .3rem;
     display: block;
     width: 100%;
@@ -171,4 +170,9 @@ button:focus {
     padding: 0 1rem;
     box-sizing: border-box;
   }
+	select {
+		height: 2.5rem;
+		background-color: transparent;
+		border: none;
+	}
 }

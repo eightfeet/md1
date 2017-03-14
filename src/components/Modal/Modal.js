@@ -34,13 +34,13 @@ const style = {
 export default class Modal extends Component {
 
 	render() {
-		const { onRequestClose, children, ...rest } = this.props;
+		const { onRequestClose, children } = this.props;
 
 		return (
 		<ReactModal
 			shouldCloseOnOverlayClick={false}
 			style={style}
-			{ ...rest }
+			{ ...this.props }
 		>
 			{onRequestClose ? <button className={s.close} onClick={onRequestClose}>关闭</button> : null}
 			{children}

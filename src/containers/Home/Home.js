@@ -1,5 +1,4 @@
 import { h, Component } from 'preact';
-import validate, { VPhone, VName, VSecurityCode, VEnglish } from '~/utils/validate';
 import { FStringPrivacy, FTimeStamp } from '~/utils/fliter';
 import wechat, {share} from '~/utils/wechat';
 import history from '~/core/history';
@@ -50,9 +49,9 @@ export default class Home extends Component {
 
 	handelLoading = () => {
 		Loading.show();
-		setTimeout(() => {
-			Loading.hide();
-		}, 2000);
+		// setTimeout(() => {
+		// 	Loading.hide();
+		// }, 4000);
 	}
 
 	render() {
