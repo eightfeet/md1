@@ -49,9 +49,9 @@ export default class Home extends Component {
 
 	handelLoading = () => {
 		Loading.show();
-		// setTimeout(() => {
-		// 	Loading.hide();
-		// }, 4000);
+		setTimeout(() => {
+			Loading.hide();
+		}, 4000);
 	}
 
 	render() {

@@ -14,8 +14,9 @@ class MaskSpin extends Component {
 		// const icon = this.props.icon === undefined ? <img src={Loading} /> : this.props.icon;
 		return (
       <div className={eleClass}>
-        <div className={s.mask}></div>
-		<Spin style={{backgroundColor: 'rgba(200, 0, 0, 0.5)'}} spinColor="red" />
+        <div className={s.mask}>
+		</div>
+		<Spin spinBgColor="rgba(0, 0, 0, 0.6)" spinColor="white" spinHeight="0.6rem" spinWidth="0.2rem" />
       </div>
 		);
 	}

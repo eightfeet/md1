@@ -48,7 +48,12 @@ export default class SecurityCode extends Component {
 				errorMsg: eMsg,
 				showModal: true
 			});
+			return;
 		}
+		this.setState({
+			errorMsg: '验证通过！',
+			showModal: true
+		});
 	}
 
 	handleOpenModal = () => {
@@ -70,6 +75,7 @@ export default class SecurityCode extends Component {
 							<input
 								type="text"
 								className="pd1 ww radius-small bg-gray-lighter"
+								maxLength="10"
 								placeholder="VName"
 								value={vname}
 								onChange={this.onChangeName}
@@ -85,6 +91,7 @@ export default class SecurityCode extends Component {
 							<input
 								type="text"
 								className="pd1 ww radius-small bg-gray-lighter"
+								maxLength="11"
 								placeholder="VPhone"
 								value={vphone}
 								onChange={this.onChangePhone}
