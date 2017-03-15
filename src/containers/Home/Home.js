@@ -27,7 +27,15 @@ export default class Home extends Component {
 			jsApiList:['showMenuItems', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'scanQRCode', 'showAllNonBaseMenuItem']
 		}).then(() => {
 			console.log(window.wx);
-			share('分享页面');
+			share(
+				{
+					title: '标题',
+					link: '分享链接',
+					imgUrl: '图片',
+					desc: '描述'
+				},
+				()=>{console.log('success');}
+			);
 		});
 	}
 

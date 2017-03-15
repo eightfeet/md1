@@ -107,13 +107,22 @@ module.exports = {
 				use: 'raw-loader'
 			},
 			{
-				test: /\.(svg|woff2?|ttf|eot|jpe?g|png|gif)(\?.*)?$/i,
+				test: /\.(svg|woff2?|ttf|eot)(\?.*)?$/i,
 				use: ENV==='production' ?
 				{
 					loader: 'file-loader',
 					options: {
 						name: '[path][name]_[hash:base64:5].[ext]'
 					}
+				} : {
+					loader: 'url-loader'
+				}
+			},
+			{
+				test: /\.(jpe?g|png|gif)$/,
+				use: ENV==='production' ?
+				{
+					loader: 'url-loader?limit=10000'
 				} : {
 					loader: 'url-loader'
 				}
