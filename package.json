@@ -4,11 +4,7 @@
   "description": "Ready-to-go Preact starter project powered by webpack.",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --progress",
-    "start": "serve build -s -c 1",
-    "prestart": "npm run build",
     "build": "cross-env NODE_ENV=production webpack -p --progress",
-    "build:stats": "cross-env NODE_ENV=production webpack --profile --json > stats.json",
-    "prebuild": "mkdirp build && ncp src/assets build/assets",
     "test": "npm run -s lint && npm run -s test:karma",
     "test:karma": "karma start test/karma.conf.js --single-run",
     "lint": "eslint {src,test}"
@@ -84,6 +80,7 @@
     "promise-polyfill": "^6.0.2",
     "proptypes": "^0.14.3",
     "react-modal": "^1.7.2",
-    "serve": "^3.1.0"
+    "serve": "^3.1.0",
+    "whatwg-fetch": "^2.0.3"
   }
 }
