@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import Spin from '~/components/Loading/Spin';
 import classNames from 'classnames';
-import s from './maskspin.scss';
+import s from './MaskSpin.scss';
 // import Loading from './loading.gif';
 
 class MaskSpin extends Component {
@@ -16,7 +16,7 @@ class MaskSpin extends Component {
       <div className={eleClass}>
         <div className={s.mask}>
 		</div>
-		<Spin spinBgColor="rgba(0, 0, 0, 0.6)" spinColor="white" spinHeight="0.6rem" spinWidth="0.2rem" />
+		<Spin spinBgColor="rgba(0, 0, 0, 0)" spinColor="orange" spinHeight="0.2rem" spinWidth="0.2rem" />
       </div>
 		);
 	}
