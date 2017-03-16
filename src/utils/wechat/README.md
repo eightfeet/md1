@@ -17,7 +17,8 @@
 				jsApiList:['showMenuItems', 'hideMenuItems', 'onMenuShareTimeline'...]
 			}).then(() => {
 				share(
-					data, //分享信息 data = {title, link, imgUrl, desc}; type object 								success, // type function
+					data, //分享信息 data = {title, link, imgUrl, desc}; type object       
+					success, // type function
 					cancel, // type function
 				);
 
