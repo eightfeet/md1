@@ -31,5 +31,5 @@
 ### wechat Method
 - wechat(config)    
 微信设置，config: 微信config信息，
-- share(data, success, cancel);
+- share(data, success, cancel);        
 微信分享，data 为必要参数 
