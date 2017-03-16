@@ -17,10 +17,8 @@
 				jsApiList:['showMenuItems', 'hideMenuItems', 'onMenuShareTimeline'...]
 			}).then(() => {
 				share(
-					title, //分享标题
-					link, //分享链接
-					imgUrl, //分享图标
-					desc //分享描述
+					data, //分享信息 data = {title, link, imgUrl, desc}; typeof data === 'object'								success,
+					cancel
 				);
 
 			});
