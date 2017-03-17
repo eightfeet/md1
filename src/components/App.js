@@ -12,6 +12,12 @@ import Infomation from '~/containers/Infomation';
 import Preview from '~/containers/Preview';
 import SView from '~/containers/View';
 
+import {wechatInfo} from '~/config';
+import wechat, {share} from '~/utils/wechat';
+import Request from '~/core/request';
+
+const url = window.location.href.split('#');
+
 export default class App extends Component {
 	constructor() {
 		super();
@@ -19,6 +25,43 @@ export default class App extends Component {
 			user: {name: 'xiehuiming'}
 		};
 	}
+
+	componentDidMount() {
+		const {appId, title, link, imgUrl, desc} = wechatInfo;
+		Request.post(
+			'common/auth/JsSdkAuth.do',
+			// 'http://wx-test.by-health.com/common/auth/JsSdkAuth.do',
+			{
+				appId: 'wxb425b33623e260d4',
+				url: url[0]
+			}).then((res) => {
+				console.log(res);
+				const {appId, timestamp, nonceStr, signature} = res;
+				wechat({
+					debug: false,
+					appId,
+					timestamp,
+					nonceStr,
+					signature,
+					jsApiList:['startRecord', 'stopRecord', 'playVoice', 'translateVoice', 'scanQRCode', 'showAllNonBaseMenuItem']
+				}).then(() => {
+					console.log(window.wx);
+					share(
+						{
+							title,
+							link,
+							imgUrl,
+							desc
+						},
+						()=>{console.log('success');}
+					);
+				});
+			}).catch((error) => {
+				throw new Error(JSON.stringify(error));
+			});
+	}
+
+
 	getChildContext() {
 		return {
 			user: this.state.user

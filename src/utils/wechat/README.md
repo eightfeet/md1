@@ -2,7 +2,7 @@
 
 ```jsx
     ...
-    import wechat, { share } from 'yourpath/utils/wechat';
+    import wechat, { share } from './../../utils/wechat';
     ...
     export class example extends React.Component {
         ...
@@ -17,9 +17,10 @@
 				jsApiList:['showMenuItems', 'hideMenuItems', 'onMenuShareTimeline'...]
 			}).then(() => {
 				share(
-					data, //分享信息 data = {title, link, imgUrl, desc}; type object       
-					success, // type function
-					cancel // type function
+					title, //分享标题
+					link, //分享链接
+					imgUrl, //分享图标
+					desc //分享描述
 				);
 
 			});
@@ -31,5 +32,9 @@
 ### wechat Method
 - wechat(config)    
 微信设置，config: 微信config信息，
-- share(data, success, cancel);        
-微信分享，data 为必要参数 
+- share(title, link, imgUrl, desc)  
+微信分享，     
+title: 分享标题     
+link: 分享链接      
+imgUrl: 分享图标	  	
+desc: 分享描述     

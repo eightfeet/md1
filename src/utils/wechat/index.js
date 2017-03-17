@@ -34,6 +34,11 @@ function arrConcat(arr1, arr2) {
 
 function configs(config) {
 	return new Promise((resolve, reject) => {
+		if (!window.wx) {
+			console.error('请引入微信JSSDK');
+			return;
+		}
+		wx = window.wx;
 		if (window.wxConfig) {
 			resolve();
 			return;
@@ -80,25 +85,15 @@ function configs(config) {
 			signature, // 必填，签名，见附录1
 			jsApiList
 		});
-		resolve();
-	});
-}
 
-function ready(){
-	return new Promise((resolve, reject) => {
-		wx.error((error) => {
-			window.wxConfig = false;
-			return;
-		});
-
-		wx.ready(() => {
-			window.wxConfig = true;
-			resolve();
-		});
+		wx.error(() => reject());
+		wx.ready(() => resolve());
+		// resolve();
 	});
 }
 
 export function share(data, success, cancel){
+	window.alert(1);
 	//  = arguments[0]
 	let Info = {};
 	let successCB;
@@ -118,8 +113,6 @@ export function share(data, success, cancel){
 	const {title, link, imgUrl, desc} = Info;
 
 	console.log(title, link, imgUrl, desc);
-
-	successCB ? successCB() : null;
 
 	wx.onMenuShareTimeline({
 		title, // 分享标题
@@ -185,9 +178,12 @@ export function share(data, success, cancel){
 }
 
 export default function wechat(config) {
-	return loaded().then((res) => {
-		configs(config);
-	}).then((res) => {
-		ready();
-	});
+	return Promise.resolve()
+		.then(() => loaded())
+		.then((res) => configs(config)
+			.then(() => res)
+		);
+	// return configs(config).then((res) => {
+	// 	return ready();
+	// });
 }

@@ -1,8 +1,6 @@
 import { h, Component } from 'preact';
 import { FStringPrivacy, FTimeStamp } from '~/utils/fliter';
-import wechat, {share} from '~/utils/wechat';
 import history from '~/core/history';
-import Request from '~/core/request';
 import Modal from '~/components/Modal';
 import Loading from '~/components/Loading';
 import s from './style';
@@ -13,30 +11,10 @@ export default class Home extends Component {
 		super();
 		this.state = {
 			showModal: false,
-			showModalb: false
+			showModalb: false,
+			voiceId: null,
+			voiceStatus: '0'
 		};
-	}
-
-	componentDidMount() {
-		wechat({
-			debug: false,
-			appId:'wx2f995336548675b4',
-			timestamp:'1489029986',
-			nonceStr:'a360855d-eb0e-44ee-9ea6-456d672badb8',
-			signature:'ce8715c4d5980383d3628f59f5222be8b0b3b369',
-			jsApiList:['showMenuItems', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'scanQRCode', 'showAllNonBaseMenuItem']
-		}).then(() => {
-			console.log(window.wx);
-			share(
-				{
-					title: '标题',
-					link: '分享链接',
-					imgUrl: '图片',
-					desc: '描述'
-				},
-				()=>{console.log('success');}
-			);
-		});
 	}
 
 	handleOpenModal = () => {
@@ -62,6 +40,37 @@ export default class Home extends Component {
 		}, 4000);
 	}
 
+	handleStartVoice = () => {
+		window.wx.ready(() => {
+			window.wx.startRecord();
+			this.setState({
+				voiceStatus: '1'
+			});
+		});
+	}
+
+	handleEndVoice = () => {
+		let __this = this;
+		window.wx.stopRecord({
+			success (res) {
+				__this.setState({
+					voiceId: res.localId,
+					voiceStatus: '2'
+				});
+			}
+		});
+	}
+
+	handlePlayVoice = () => {
+		let __this = this;
+		window.wx.playVoice({
+			localId: this.state.voiceId
+		});
+		this.setState({
+			voiceStatus: '0'
+		});
+	}
+
 	render() {
 		console.log(this.context);
 		return (
@@ -77,6 +86,30 @@ export default class Home extends Component {
 					>
 					ShowLoading
 					</button>
+					{
+						this.state.voiceStatus === '0' ?
+						<button className={`${s.root} bg-orange mgt1 ww pd1 radius-small`}
+							onClick={this.handleStartVoice}
+						>
+						录音sssss
+						</button> : null
+					}
+					{
+						this.state.voiceStatus === '1' ?
+						<button className={`${s.root} bg-orange mgt1 ww pd1 radius-small`}
+							onClick={this.handleEndVoice}
+						>
+						停止
+						</button> : null
+					}
+					{
+						this.state.voiceStatus === '2' ?
+						<button className={`${s.root} bg-orange mgt1 ww pd1 radius-small`}
+							onClick={this.handlePlayVoice}
+						>
+						播放
+						</button> : null
+					}
 				</div>
 
 				<Modal

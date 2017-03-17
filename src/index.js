@@ -1,6 +1,10 @@
 // import 'promise-polyfill';
 // import 'isomorphic-fetch';
 import { h, render } from 'preact';
+window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+	window.alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber
+    + ' Column: ' + column + ' StackTrace: ' +  errorObj);
+};
 
 let root;
 function init() {

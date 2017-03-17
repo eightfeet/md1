@@ -18,6 +18,7 @@ module.exports = {
 
 	output: {
 		path: path.resolve(__dirname, "build"),
+		// publicPath: ENV==='production' ? 'http://wx-test.by-health.com/' : '',
 		publicPath: '',
 		filename: 'bundle.js'
 	},
@@ -210,8 +211,8 @@ module.exports = {
 		open: true,
 
 		proxy: {
-			'/firstactivity/activity': {
-				target: 'http://funs.4000916916.com',
+			'/common': {
+				target: 'http://wx-test.by-health.com',
 				changeOrigin: true
 			}
 		}
