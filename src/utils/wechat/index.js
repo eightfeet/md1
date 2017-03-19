@@ -23,9 +23,7 @@ function loaded() {
 }
 
 function arrConcat(arr1, arr2) {
-	//不要直接使用var arr = arr1，这样arr只是arr1的一个引用，两者的修改会互相影响
 	let arr = arr1.concat();
-	//或者使用slice()复制，var arr = arr1.slice(0)
 	for (let i = 0; i < arr2.length; i++){
 		arr.indexOf(arr2[i]) === -1 ? arr.push(arr2[i]) : 0;
 	}
