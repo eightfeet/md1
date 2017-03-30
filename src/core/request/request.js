@@ -1,14 +1,16 @@
 /**
  * BY-Health Official Website
  *
- * Copyright © 2016 By-Health Co Ltd. All rights reserved.
+ * Copyright © 2016-2017 By-Health Co Ltd. All rights reserved.
  */
 /* eslint-disable class-methods-use-this */
 
-import 'whatwg-fetch';
 import extend from 'extend';
 import { stringify } from 'query-string';
 
+/**
+ * Request - A fetch api enhanced.
+ */
 class Request {
 
   /**
@@ -64,6 +66,16 @@ class Request {
 	}
 
   /**
+   * Is http url
+   *
+   * @param {string} url
+   * @returns {boolean}
+   */
+	isHttp(url) {
+		return /^(http(s)?:)?\/\//.test(url);
+	}
+
+  /**
    * Send request
    *
    * @param {string} method
@@ -73,7 +85,7 @@ class Request {
 	request(method = 'GET', url = '', options = {}) {
 		const opts = extend(true, {}, this.configs, options);
 
-		const baseUrl = /^(http(s)?:)?\/\//.test(url) ? '' : opts.baseUrl;
+		const baseUrl = this.isHttp(url) ? '' : opts.baseUrl;
 		const queryString = stringify(opts.params);
 		const concatSymbol = url.indexOf('?') > -1 ? '&' : '?';
 		const uri = `${baseUrl}${url}${queryString && (concatSymbol + queryString)}`;
@@ -89,19 +101,20 @@ class Request {
 			body: this.serialize(opts.type, opts.payload)
 		});
 
-		return opts.middlewares
-      .reduce((chain, fn) => fn(chain), defered);
+		return opts.middlewares.reduce((chain, fn) => fn(chain), defered);
 	}
 
   /**
    * Send GET request
    *
    * @param {string} url
+   * @param {object} params
    * @param {object} options
    */
-	get(url, options) {
+	get(url, params, options) {
 		return this.request('GET', url, {
-			...options
+			...options,
+			params
 		});
 	}
 
