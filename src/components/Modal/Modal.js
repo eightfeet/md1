@@ -14,9 +14,9 @@ const style = {
 	},
 	content : {
 		position                   : 'absolute',
-		top                        : '20%',
+		//top                        : '20%',
 		width                      : '80%',
-		left                       : '10%',
+		//left                       : '10%',
 		right                      : '10%',
 		bottom                     : 'auto',
 		minHeight                  : '20%',
@@ -27,7 +27,9 @@ const style = {
 		WebkitOverflowScrolling    : 'touch',
 		borderRadius               : '1rem',
 		outline                    : 'none',
-		padding                    : '0'
+		padding                    : '0',
+		top: '50%',
+		left: '50%'
 	}
 };
 
@@ -37,14 +39,15 @@ export default class Modal extends Component {
 		const { onRequestClose, children } = this.props;
 
 		return (
-		<ReactModal
-			shouldCloseOnOverlayClick={false}
-			style={style}
-			{ ...this.props }
-		>
-			{onRequestClose ? <button className={s.close} onClick={onRequestClose}>关闭</button> : null}
-			{children}
-		</ReactModal>
+			<ReactModal
+				shouldCloseOnOverlayClick={false}
+				style={style}
+				{ ...this.props }
+				className={s.warp}
+			>
+				{onRequestClose ? <button className={s.close} onClick={onRequestClose}>关闭</button> : null}
+				{children}
+			</ReactModal>
 		);
 	}
 }
