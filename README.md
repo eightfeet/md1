@@ -1,3 +1,4 @@
-activitiesCli-by-health
-- [demo](https://by-healthfed.github.io/activitiesCli-by-health/)
+## clone and install
+> Run with Node.js 7.x
+
 
