@@ -146,10 +146,10 @@ module.exports = {
 		}),
 		new ScriptExtHtmlWebpackPlugin({
 			defaultAttribute: "async"
-		})
-		// new CopyWebpackPlugin([
-		// 	{ from: './favicon.ico', to: './' }
-		// ])
+		}),
+		new CopyWebpackPlugin([
+			{ from: './assets', to: './assets' }
+		])
 	]).concat(ENV==='production' ? [
 		// new V8LazyParseWebpackPlugin(),
 		new webpack.optimize.UglifyJsPlugin({
