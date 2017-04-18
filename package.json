@@ -13,7 +13,8 @@
   "keywords": [
     "preact",
     "boilerplate",
-    "webpack"
+    "webpack",
+    "redux"
   ],
   "license": "MIT",
   "author": "Jason Miller <jason@developit.ca>",
