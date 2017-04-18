@@ -15,15 +15,12 @@ import SView from '~/containers/View';
 import {wechatInfo} from '~/config';
 import wechat, {share} from '~/utils/wechat';
 import Request from '~/core/request';
-
+import {connect} from 'preact-redux';
 const url = window.location.href.split('#');
 
-export default class App extends Component {
+class App extends Component {
 	constructor() {
 		super();
-		this.state = {
-			user: {name: 'xiehuiming'}
-		};
 	}
 
 	componentDidMount() {
@@ -60,15 +57,8 @@ export default class App extends Component {
 				throw new Error(JSON.stringify(error));
 			});
 	}
-
-
-	getChildContext() {
-		return {
-			user: this.state.user
-		};
-	}
 	render() {
-		console.log(this.context);
+		console.log(this.props);
 		return (
 			<div id="app"  >
 				<HeaderBar />
@@ -85,3 +75,9 @@ export default class App extends Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	return state;
+}
+
+export default connect(mapStateToProps)(App);

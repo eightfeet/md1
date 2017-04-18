@@ -78,10 +78,12 @@
     "history": "^4.6.0",
     "preact": "^6.0.0",
     "preact-compat": "^3.0.0",
+    "preact-redux": "^2.0.1",
     "preact-router": "^2.0.0",
     "promise-polyfill": "^6.0.2",
     "proptypes": "^0.14.3",
     "react-modal": "1.7.2",
+    "redux": "^3.6.0",
     "serve": "^3.1.0",
     "whatwg-fetch": "^2.0.3"
   }
