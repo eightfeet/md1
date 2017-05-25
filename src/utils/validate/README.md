@@ -33,6 +33,9 @@
 ### Validate 键值属性（String or Array）       
 
 - VPhone(data, Msg, strict)    
+```jsx
+	validate({VPhone: [data, Msg, strict]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
@@ -41,6 +44,9 @@
 | strict  | 开启严格模式 | string |  设为'strict'时开启严格验证，不填时只验证已1开头的11位手机号码 |
 
 - VName(data, Msg, Zh)    
+```jsx
+	validate({VName: [data, Msg, Zh]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
@@ -49,6 +55,9 @@
 | Zh  | 开启严格模式 | string |  设为'Zh'时开启严格验证，只能填写2以上中文字符 |
 
 - VEmail(data, Msg)   
+```jsx
+	validate({VEmail: [data, Msg]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
@@ -56,6 +65,9 @@
 | Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
 
 - VSecurityCode(data, Msg)   
+```jsx
+	validate({VSecurityCode: [data, Msg]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
@@ -63,6 +75,9 @@
 | Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
 
 - VBarCode(data, Msg)    
+```jsx
+	validate({VBarCode: [data, Msg]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
@@ -70,6 +85,9 @@
 | Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
 
 - VVerificationCode(data, Msg, length)    
+```jsx
+	validate({VVerificationCode: [data, Msg, length]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
@@ -78,6 +96,9 @@
 | length  | 开启严格模式 | number |  验证码的长度(number)不填时默认验证4位验证码 |
 
 - VRequire(data, Msg, length)  
+```jsx
+	validate({VRequire: [data, Msg, length]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
@@ -86,6 +107,9 @@
 | length  | 开启严格模式 | number |  最少要求多少位字符(number)不填时默认1个字符 |
 
 - VLimit(data, Msg, length)   
+```jsx
+	validate({VLimit: [data, Msg, length]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
@@ -94,6 +118,9 @@
 | length  | 开启严格模式 | number |  length: 最多输入多少位字符(number)不填时默认20个字符 |
 
 - VNumber(data, Msg)   
+```jsx
+	validate({VNumber: [data, Msg]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
@@ -101,6 +128,9 @@
 | Msg  |  错误返回信息 | string  |  必填 |
 
 - VChinese(data, Msg)   
+```jsx
+	validate({VChinese: [data, Msg]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
@@ -108,6 +138,9 @@
 | Msg  |  错误返回信息 | string  |  必填 |
 
 - VEnglish(data, Msg)   
+```jsx
+	validate({VEnglish: [data, Msg]})
+```
 
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
