@@ -1,6 +1,8 @@
 import { h, Component } from 'preact';
 import Modal from '~/components/Modal';
-import validate, { VPhone, VName, VSecurityCode, VEnglish } from '~/utils/validate';
+import validate from '~/utils/validate';
+
+const avalidate =  new validate();
 
 export default class SecurityCode extends Component {
 	constructor() {
@@ -39,10 +41,11 @@ export default class SecurityCode extends Component {
 
 	validateData = () => {
 		const { vname, Zh, vphone, strict } = this.state;
-		const eMsg = validate(
-			VName(vname, Zh),
-			VPhone(vphone, strict)
-		);
+		const eMsg = validate({
+			VRequire: [this.state.vname, '请输入名字'],
+			VChinese: [this.state.vname, '名字请输入中文字符'],
+			VPhone: this.state.vphone
+		});
 		if (eMsg) {
 			this.setState({
 				errorMsg: eMsg,

@@ -1,36 +1,11 @@
 /**
-* VPhone(data, Msg, strict)
-* 验证手机，data: 手机号码，strict: 当第二个参数设为'strict'时开启严格验证，不填时只验证已1开头的11位手机号码
-* VName(data, Msg, Zh)
-* 验证姓名，data: 姓名，Zh: 当第二个参数设为'Zh'时开启严格验证，只能填写2以上中文字符
-* VEmail(data, Msg)
-* 验证邮箱
-* VSecurityCode(data, Msg)
-* 验证防伪码
-* VBarCode(data, Msg)
-* 验证条形码
-* VVerificationCode(data, Msg, length)
-* 验证数字验证码，data: 验证码，length: 验证码的长度(number)不填时默认验证四位验证码。
-* VRequire(data, Msg, length)
-* 验证必填，data: 需要验证的内容，length: 最少要求多少位字符(number)不填时默认1个字符。
-* VLimit(data, Msg, length)
-* 验证不超过，data: 需要验证的内容，length: 最多输入多少位字符(number)不填时默认20个字符。
-* VNumber(data, Msg)
-* 验证数字，data: 需要验证的内容
-* VChinese(data, Msg)
-* 验证中文，data: 需要验证的内容
-* VEnglish(data, Msg)
-* 验证英文，data: 需要验证的内容
- */
-
-/**
  * validate the phone
  *
  * @export
  * @data {String|Number} request
  * @strict {String}
  */
-const VPhone = function(data, Msg, strict) {
+export function VPhone(data, strict) {
 	let Str;
 
 	if (data !== 0) {
@@ -46,24 +21,23 @@ const VPhone = function(data, Msg, strict) {
 	const fixStrict = strict || null;
 
 	if (!Str || Str.length !== 11) {
-		console.log('Str', Str);
-		return (Msg || '请输入11位手机号码');
+		return ('请输入11位手机号码');
 	}
 
 	if (!(/^[0-9]*$/.test(Str))) {
-		return (Msg || '手机号码格式不正确');
+		return ('手机号码格式不正确');
 	}
 
 	if (fixStrict !== 'strict' && !(/^1\d{10}$/.test(Str))) {
-		return (Msg || '请输入以1开头的11位手机号码');
+		return ('请输入以1开头的11位手机号码');
 	}
 
 	if (fixStrict === 'strict' && !(/^1[3|4|5|7|8]\d{9}$/.test(Str))) {
-		return (Msg || '请输入正确手机号码');
+		return ('请输入正确手机号码');
 	}
 
 	return false;
-};
+}
 
 /**
  * validate the name
@@ -72,7 +46,7 @@ const VPhone = function(data, Msg, strict) {
  * @data {String} request
  * @Zh {String} = 'Zh' validate the chinese name
  */
-const VName = function(data, Msg, Zh) {
+export function VName(data, Zh) {
 	let Str;
 
 	if (data !== 0) {
@@ -87,23 +61,23 @@ const VName = function(data, Msg, Zh) {
 	const fixZh = Zh || null;
 
 	if (!Str || Str.length < 1) {
-		return (Msg || '请输入您的姓名');
+		return ('请输入您的姓名');
 	}
 
 	if (fixZh !== 'Zh' && !(/^[\u4E00-\u9FA5A-Za-z0-9]+$/.test(Str))) {
-		return (Msg || '姓名请使用非特殊字符');
+		return (`姓名请使用非特殊字符`);
 	}
 
 	if (fixZh === 'Zh' && Str.length < 2) {
-		return (Msg || '请输您的真实姓名');
+		return ('请输您的真实姓名');
 	}
 
 	if (fixZh === 'Zh' && !(/^[\u4e00-\u9fa5]+$/.test(Str))) {
-		return (Msg || '请输您的真实姓名');
+		return ('请输您的真实姓名');
 	}
 
 	return false;
-};
+}
 
 /**
  * validate the email address
@@ -111,7 +85,7 @@ const VName = function(data, Msg, Zh) {
  * @export
  * @data {String} request
  */
-const VEmail = function(data, Msg) {
+export function VEmail(data) {
 	let Str;
 
 	if (data !== 0) {
@@ -125,15 +99,15 @@ const VEmail = function(data, Msg) {
         : null;
 
 	if (!Str || Str.length < 1) {
-		return (Msg || '请输入您的邮箱');
+		return ('请输入您的邮箱');
 	}
 
 	if (!(/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test(Str))) {
-		return (Msg || '请输正确的邮箱地址');
+		return ('请输正确的邮箱地址');
 	}
 
 	return false;
-};
+}
 
 /**
  * validate the security code
@@ -141,7 +115,7 @@ const VEmail = function(data, Msg) {
  * @export
  * @data {String} request
  */
-const VSecurityCode = function(data, Msg) {
+export function VSecurityCode(data) {
 	let Str;
 
 	if (data !== 0) {
@@ -155,15 +129,15 @@ const VSecurityCode = function(data, Msg) {
         : null;
 
 	if (!Str || Str.length !== 16) {
-		return (Msg || '请输入16位防伪码');
+		return ('请输入16位防伪码');
 	}
 
 	if (!(/^[0-9]*$/.test(Str))) {
-		return (Msg || '您输入的防伪码格式不正确，请重新输入');
+		return ('您输入的防伪码格式不正确，请重新输入');
 	}
 
 	return false;
-};
+}
 
 /**
  * validate the bar code
@@ -171,7 +145,7 @@ const VSecurityCode = function(data, Msg) {
  * @export
  * @data {String} request
  */
-const VBarCode = function(data, Msg) {
+export function VBarCode(data) {
 	let Str;
 
 	if (data !== 0) {
@@ -185,15 +159,15 @@ const VBarCode = function(data, Msg) {
         : null;
 
 	if (!Str || Str.length !== 13) {
-		return (Msg || '请输入13位产品条形码');
+		return ('请输入13位产品条形码');
 	}
 
 	if (!(/^[0-9]*$/.test(data))) {
-		return (Msg || '您输入的产品条形码格式不正确，请重新输入');
+		return ('您输入的产品条形码格式不正确，请重新输入');
 	}
 
 	return false;
-};
+}
 
 /**
  * validate the verification code
@@ -202,7 +176,7 @@ const VBarCode = function(data, Msg) {
  * @data {String} request
  * @length {Number} default 4
  */
-const VVerificationCode = function(data, Msg, length) {
+export function VVerificationCode(data, length) {
 	let Str;
 
 	if (data !== 0) {
@@ -217,19 +191,19 @@ const VVerificationCode = function(data, Msg, length) {
 	const fixLength = length || 4;
 
 	if (length && isNaN(fixLength)) {
-		return Msg || '验证码验证时参数错误';
+		return '验证码验证时参数错误';
 	}
 
 	if (!Str || Str.length !== fixLength) {
-		return (Msg || `请输入${fixLength}位验证码`);
+		return (`请输入${fixLength}位验证码`);
 	}
 
 	if (!(/^[0-9]*$/.test(Str))) {
-		return (Msg || '您输入的验证码格式不正确，请重新输入');
+		return ('您输入的验证码格式不正确，请重新输入');
 	}
 
 	return false;
-};
+}
 
 /**
  * validate the required data
@@ -238,7 +212,7 @@ const VVerificationCode = function(data, Msg, length) {
  * @data {String} request
  * @length {Number} request
  */
-const VRequire = function(data, Msg, length) {
+export function VRequire(data, length) {
 	let Str;
 
 	if (data !== 0) {
@@ -253,7 +227,7 @@ const VRequire = function(data, Msg, length) {
 	const fixLength = length || 1;
 
 	if (isNaN(fixLength) || !Str) {
-		return Msg || '必填项验证时参数错误';
+		return '必填项验证时参数错误';
 	}
 
 	if (Str.length < fixLength) {
@@ -261,7 +235,7 @@ const VRequire = function(data, Msg, length) {
 	}
 
 	return false;
-};
+}
 
 /**
  * Limit string length
@@ -270,7 +244,7 @@ const VRequire = function(data, Msg, length) {
  * @data {String} request
  * @length {Number} request
  */
-const VLimit = function(data, Msg, length) {
+export function VLimit(data, length) {
 	let Str;
 
 	if (data !== 0) {
@@ -285,7 +259,7 @@ const VLimit = function(data, Msg, length) {
 	const fixLength = length || 20;
 
 	if (isNaN(fixLength) || !Str) {
-		return Msg || '限制字符串长度验证时参数错误';
+		return '限制字符串长度验证时参数错误';
 	}
 
 	if (Str.length > fixLength) {
@@ -293,7 +267,7 @@ const VLimit = function(data, Msg, length) {
 	}
 
 	return false;
-};
+}
 
 /**
  * input number
@@ -301,7 +275,7 @@ const VLimit = function(data, Msg, length) {
  * @export
  * @data {String} request
  */
-const VNumber = function(data, Msg) {
+export function VNumber(data) {
 	let Str;
 
 	if (data !== 0) {
@@ -315,11 +289,11 @@ const VNumber = function(data, Msg) {
         : null;
 
 	if (!(/^[0-9]*$/.test(Str))) {
-		return Msg || true;
+		return true;
 	}
 
 	return false;
-};
+}
 
 /**
  * input chinese
@@ -327,7 +301,7 @@ const VNumber = function(data, Msg) {
  * @export
  * @data {String} request
  */
-const VChinese = function(data, Msg) {
+export function VChinese(data) {
 	let Str;
 
 	if (data !== 0) {
@@ -341,11 +315,11 @@ const VChinese = function(data, Msg) {
         : null;
 
 	if (!(/^[\u4e00-\u9fa5]+$/.test(Str))) {
-		return Msg || true;
+		return true;
 	}
 
 	return false;
-};
+}
 
 /**
  * input English
@@ -353,7 +327,7 @@ const VChinese = function(data, Msg) {
  * @export
  * @data {String} request
  */
-const VEnglish = function(data, Msg) {
+export function VEnglish(data) {
 	let Str;
 
 	if (data !== 0) {
@@ -367,11 +341,11 @@ const VEnglish = function(data, Msg) {
         : null;
 
 	if (!(/^[a-zA-Z]*$/.test(Str))) {
-		return Msg || true;
+		return true;
 	}
 
 	return false;
-};
+}
 
 /**
  * validate
@@ -379,49 +353,22 @@ const VEnglish = function(data, Msg) {
  * @export
  * @arguments {String|Boolean} request
  */
-function validate(data) {
+export default function validate() {
+	for (let i = 0; i < arguments.length; i++) {
+		const arg = arguments[i];
+		const argType = typeof arg;
 
-	if (!data || !(data instanceof Object)) {
-		console.error('validate方法，请传入对象类型参数{key: value}');
-		return '验证失败，传入参数不正确！';
-	}
-
-	if (Array.isArray(data)) {
-		console.error('validate方法，请传入对象类型参数{key: value}');
-		return '验证失败，传入参数不正确！';
-	}
-
-	for (let key in data) {
-		if ({}.hasOwnProperty.call(data, key)) {
-			if (validate[key]) {
-				if (Array.isArray(data[key])) {
-					if (validate[key].apply( validate[key], data[key])) {
-						return validate[key].apply( validate[key], data[key]);
-					}
-				}
-
-				if (validate[key](data[key])) {
-					return (validate[key](data[key]));
-				}
-			}
+		if (!arg) {
+			continue;
 		}
+
+		if (argType === 'string' || argType === 'boolean') {
+			return arg;
+		}
+		console.error(`Warning: Failed argument type expected "String|Boolean"  but type of" ${arg} is a ${typeof arg}`);
+		continue;
+
 	}
 
 	return false;
 }
-
-
-validate.VPhone = VPhone;
-validate.VName = VName;
-validate.VEmail = VEmail;
-validate.VSecurityCode = VSecurityCode;
-validate.VBarCode = VBarCode;
-validate.VVerificationCode = VVerificationCode;
-validate.VRequire = VRequire;
-validate.VLimit = VLimit;
-validate.VNumber = VNumber;
-validate.VChinese = VChinese;
-validate.VEnglish = VEnglish;
-
-export default validate;
-

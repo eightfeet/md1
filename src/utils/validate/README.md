@@ -2,22 +2,18 @@
 
 ```jsx
     ...
-    import validate, { VPhone, VName, VSecurityCode, VEnglish } from './../../utils/validate';
+    import validate from './../../utils/validate';
     ...
     export class example extends React.Component {
-        constructor(props) {
-            this.state = {
-            errorMsg: null,
-            }
-        }
         ...
         handleSubmit = () => {
-            const error = validate(
-                VPhone('13845674324'), // return false
-                VName('asd@#'), // return 姓名请使用非特殊字符
-                VEnglish('jk123123') ? '昵称请使用英文字母' : false, // return 昵称请使用英文字母
-                VSecurityCode('1asd21as1') // return 请输入16位防伪码
-            );
+            const error = validate({
+				VPhone: ['11845674324', '请输入正确手机号码', 'strict'], // return 请输入正确手机号码
+				VName: 'asd@#', // return 姓名请使用非特殊字符
+				VEnglish: ['jk123123', '请使用英文名'], // return 请使用英文名
+				VSecurityCode: '1asd21as1' // return 请输入16位防伪码
+			});
+
             if (error) {
                 this.showModal(error); // 显示错误
                 return;
@@ -35,25 +31,74 @@
     export default example;
 ```
 ### Validate Method
-- VPhone(data, strict)    
-验证手机，data: 手机号码，strict: 当第二个参数设为'strict'时开启严格验证，不填时只验证已1开头的11位手机号码
-- VName(data, Zh)    
-验证姓名，data: 姓名，Zh: 当第二个参数设为'Zh'时开启严格验证，只能填写2以上中文字符
-- VEmail(data)   
-验证邮箱
-- VSecurityCode(data)   
+- VPhone(data, Msg, strict)    
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证电话号码 |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
+| strict  | 开启严格模式 | string |  设为'strict'时开启严格验证，不填时只验证已1开头的11位手机号码 |
+
+- VName(data, Msg, Zh)    
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证名字 |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
+| Zh  | 开启严格模式 | string |  设为'Zh'时开启严格验证，只能填写2以上中文字符 |
+
+- VEmail(data, Msg)   
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证email |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
+
+- VSecurityCode(data, Msg)   
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证防伪码 |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
+
 验证防伪码
-- VBarCode(data)    
-验证条形码
-- VVerificationCode(data, length)    
-验证数字验证码，data: 验证码，length: 验证码的长度(number)不填时默认验证四位验证码。
-- VRequire(data, length)  
-验证必填，data: 需要验证的内容，length: 最少要求多少位字符(number)不填时默认1个字符。
-- VLimit(data, length)   
-验证不超过，data: 需要验证的内容，length: 最多输入多少位字符(number)不填时默认20个字符。
-- VNumber(data)   
-验证数字，data: 需要验证的内容
-- VChinese(data)   
-验证中文，data: 需要验证的内容
-- VEnglish(data)   
-验证英文，data: 需要验证的内容
+- VBarCode(data, Msg)    
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证条形码 |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
+
+- VVerificationCode(data, Msg, length)    
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证名字 |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
+| length  | 开启严格模式 | number |  验证码的长度(number)不填时默认验证4位验证码 |
+
+- VRequire(data, Msg, length)  
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证最少字符数 |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  必填 |
+| length  | 开启严格模式 | number |  最少要求多少位字符(number)不填时默认1个字符 |
+
+- VLimit(data, Msg, length)   
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证最大字符数 |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  必填 |
+| length  | 开启严格模式 | number |  length: 最多输入多少位字符(number)不填时默认20个字符 |
+
+- VNumber(data, Msg)   
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证数字 |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  必填 |
+
+- VChinese(data, Msg)   
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证中文 |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  必填 |
+
+- VEnglish(data, Msg)   
+|  属性 | 说明  | 类型  |  默认值  |
+| ------------ | ------------ | ------------ | ------------ |
+|  data | 验证英文 |  string | 必填  |
+| Msg  |  错误返回信息 | string  |  必填 |
