@@ -30,7 +30,7 @@
     }
     export default example;
 ```
-### Validate 键值属性（String or Array）
+### Validate 键值属性（String or Array）       
 - VPhone(data, Msg, strict)    
 |  属性 | 说明  | 类型  |  默认值  |
 | ------------ | ------------ | ------------ | ------------ |
