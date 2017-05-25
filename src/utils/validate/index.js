@@ -1,8 +1,8 @@
 /**
 * VPhone(data, Msg, strict)
-* 验证手机，data: 手机号码，strict: 当第二个参数设为'strict'时开启严格验证，不填时只验证已1开头的11位手机号码
+* 验证手机，data: 手机号码，strict: 当第三个参数设为'strict'时开启严格验证，不填时只验证已1开头的11位手机号码
 * VName(data, Msg, Zh)
-* 验证姓名，data: 姓名，Zh: 当第二个参数设为'Zh'时开启严格验证，只能填写2以上中文字符
+* 验证姓名，data: 姓名，Zh: 当第三个参数设为'Zh'时开启严格验证，只能填写2以上中文字符
 * VEmail(data, Msg)
 * 验证邮箱
 * VSecurityCode(data, Msg)
