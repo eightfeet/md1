@@ -41,6 +41,7 @@
 | strict  | 开启严格模式 | string |  设为'strict'时开启严格验证，不填时只验证已1开头的11位手机号码 |
 
 - VName(data, Msg, Zh)    
+
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
 |  data | 验证名字 |  string | 必填  |
@@ -48,25 +49,28 @@
 | Zh  | 开启严格模式 | string |  设为'Zh'时开启严格验证，只能填写2以上中文字符 |
 
 - VEmail(data, Msg)   
+
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
 |  data | 验证email |  string | 必填  |
 | Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
 
 - VSecurityCode(data, Msg)   
+
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
 |  data | 验证防伪码 |  string | 必填  |
 | Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
 
-验证防伪码
 - VBarCode(data, Msg)    
+
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
 |  data | 验证条形码 |  string | 必填  |
 | Msg  |  错误返回信息 | string  |  不填时显示默认提示信息 |
 
 - VVerificationCode(data, Msg, length)    
+
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
 |  data | 验证名字 |  string | 必填  |
@@ -74,6 +78,7 @@
 | length  | 开启严格模式 | number |  验证码的长度(number)不填时默认验证4位验证码 |
 
 - VRequire(data, Msg, length)  
+
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
 |  data | 验证最少字符数 |  string | 必填  |
@@ -81,6 +86,7 @@
 | length  | 开启严格模式 | number |  最少要求多少位字符(number)不填时默认1个字符 |
 
 - VLimit(data, Msg, length)   
+
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
 |  data | 验证最大字符数 |  string | 必填  |
@@ -88,18 +94,21 @@
 | length  | 开启严格模式 | number |  length: 最多输入多少位字符(number)不填时默认20个字符 |
 
 - VNumber(data, Msg)   
+
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
 |  data | 验证数字 |  string | 必填  |
 | Msg  |  错误返回信息 | string  |  必填 |
 
 - VChinese(data, Msg)   
+
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
 |  data | 验证中文 |  string | 必填  |
 | Msg  |  错误返回信息 | string  |  必填 |
 
 - VEnglish(data, Msg)   
+
 属性 | 说明 | 类型 | 默认值
 -----|-----|-----|------
 data | 验证英文 |  string | 必填  
