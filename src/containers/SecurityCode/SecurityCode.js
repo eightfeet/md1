@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import Modal from '~/components/Modal';
-import validate from '~/utils/validate';
+import validate from 'validate-by-health';
 
 export default class SecurityCode extends Component {
 	constructor() {
