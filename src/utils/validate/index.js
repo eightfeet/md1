@@ -21,6 +21,12 @@
 * 验证中文，data: 需要验证的内容
 * VEnglish(data, Msg)
 * 验证英文，data: 需要验证的内容
+* VEnglish_(label)
+＊ 多个字段用同类型规则验证时需要给Key家label VEnglish_(label)
+* validate({
+	VChinese_name: name,
+	VChinese_address: address,
+})
  */
 
 /**
@@ -46,7 +52,6 @@ const VPhone = function(data, Msg, strict) {
 	const fixStrict = strict || null;
 
 	if (!Str || Str.length !== 11) {
-		console.log('Str', Str);
 		return (Msg || '请输入11位手机号码');
 	}
 
@@ -379,29 +384,102 @@ const VEnglish = function(data, Msg) {
  * @export
  * @arguments {String|Boolean} request
  */
-function validate(data) {
+function validate(data, strict) {
 
 	if (!data || !(data instanceof Object)) {
-		console.error('validate方法，请传入对象类型参数{key: value}');
+		console.error('validate方法，请传入验证对象类型参数{key: value}');
 		return '验证失败，传入参数不正确！';
 	}
 
 	if (Array.isArray(data)) {
-		console.error('validate方法，请传入对象类型参数{key: value}');
+		console.error('validate方法，请传入验证对象类型参数{key: value}');
 		return '验证失败，传入参数不正确！';
+	}
+
+	if (strict && typeof strict === 'boolean') {
+		const VError = {};
+		for (let key in data) {
+			if ({}.hasOwnProperty.call(data, key)) {
+
+				if (key.indexOf('_') !== -1) {
+					const splitkey = key.split('_')[0];
+					if (validate[splitkey]) {
+						if (Array.isArray(data[key])) {
+							const _Ad = validate[splitkey].apply( validate[splitkey], data[key]);
+							if (_Ad) {
+								VError[key] = _Ad;
+							} else {
+								VError[key] = false;
+							}
+						} else {
+							const _Nd = validate[splitkey](data[key]);
+							if (_Nd) {
+								VError[key] = _Nd;
+							} else {
+								VError[key] = false;
+							}
+						}
+					}
+				}
+
+				if (key.indexOf('_') === -1) {
+					if (validate[key]) {
+						if (Array.isArray(data[key])) {
+							const Ad = validate[key].apply( validate[key], data[key]);
+							if (Ad) {
+								VError[key] = Ad;
+							} else {
+								VError[key] = false;
+							}
+						} else {
+							const Nd = validate[key](data[key]);
+							if (Nd) {
+								VError[key] = Nd;
+							} else {
+								VError[key] = false;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return VError;
 	}
 
 	for (let key in data) {
 		if ({}.hasOwnProperty.call(data, key)) {
-			if (validate[key]) {
-				if (Array.isArray(data[key])) {
-					if (validate[key].apply( validate[key], data[key])) {
-						return validate[key].apply( validate[key], data[key]);
+
+			if (key.indexOf('_') !== -1) {
+				const splitkey = key.split('_')[0];
+				if (validate[splitkey]) {
+					if (Array.isArray(data[key])) {
+						const _Ad = validate[splitkey].apply( validate[splitkey], data[key]);
+						if (_Ad) {
+							return _Ad;
+						}
+					} else {
+						const _Nd = validate[splitkey](data[key]);
+						if (_Nd) {
+							return _Nd;
+						}
 					}
 				}
+			}
 
-				if (validate[key](data[key])) {
-					return (validate[key](data[key]));
+			if (key.indexOf('_') === -1) {
+				if (validate[key]) {
+					if (Array.isArray(data[key])) {
+						const Ad = validate[key].apply( validate[key], data[key]);
+						if (Ad) {
+							return Ad;
+						}
+					} else {
+						const Nd = validate[key](data[key]);
+						if (Nd) {
+							return (Nd);
+						}
+					}
 				}
 			}
 		}

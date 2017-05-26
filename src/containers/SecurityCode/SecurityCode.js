@@ -2,8 +2,6 @@ import { h, Component } from 'preact';
 import Modal from '~/components/Modal';
 import validate from '~/utils/validate';
 
-const avalidate =  new validate();
-
 export default class SecurityCode extends Component {
 	constructor() {
 		super();
@@ -42,10 +40,16 @@ export default class SecurityCode extends Component {
 	validateData = () => {
 		const { vname, Zh, vphone, strict } = this.state;
 		const eMsg = validate({
-			VRequire: [this.state.vname, '请输入名字'],
-			VChinese: [this.state.vname, '名字请输入中文字符'],
-			VPhone: this.state.vphone
+			VName: [this.state.vname, null, Zh],
+			VPhone: [this.state.vphone, null, strict],
+			VRequire: ['', '必填字段'], // 必填验证字段
+			VRequire_name: ['1', '必填字段name'], // 验证通过
+			VPhone_Jhon: ['12622809420', 'Jhon电话验证不通过', 'strict'], // Jhon电话验证不通过
+			VPhone_Jime: 13111111111 // 验证通过
 		});
+
+		console.log('eMsg', eMsg);
+
 		if (eMsg) {
 			this.setState({
 				errorMsg: eMsg,
@@ -74,7 +78,7 @@ export default class SecurityCode extends Component {
 				<div className="pd2 radius-small bg-white">
 					<h3 className="al-c">validate</h3>
 					<div className="ww formBox clearfix">
-						<div className="w8 fl mgb1">
+						<div className="w6 fl mgb1">
 							<input
 								type="text"
 								className="pd1 ww radius-small bg-gray-lighter"
@@ -84,13 +88,13 @@ export default class SecurityCode extends Component {
 								onChange={this.onChangeName}
 							/>
 						</div>
-						<div className="w2 fl mgb1">
+						<div className="w4 fl mgb1">
 							<select name="" id="" className="ww" onChange={this.VNameSet}>
-								<option value="">N</option>
-								<option value="Zh">Zh</option>
+								<option value="">正常</option>
+								<option value="Zh">中文姓名验证</option>
 							</select>
 						</div>
-						<div className="w8 fl mgb1">
+						<div className="w6 fl mgb1">
 							<input
 								type="text"
 								className="pd1 ww radius-small bg-gray-lighter"
@@ -100,10 +104,10 @@ export default class SecurityCode extends Component {
 								onChange={this.onChangePhone}
 							/>
 						</div>
-						<div className="w2 fl mgb1">
+						<div className="w4 fl mgb1">
 							<select name="" id="" className="ww" onChange={this.VPhoneSet}>
-								<option value="">N</option>
-								<option value="strict">strict</option>
+								<option value="">正常</option>
+								<option value="strict">手机严格验证</option>
 							</select>
 						</div>
 						<div className="ww">
