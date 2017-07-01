@@ -202,13 +202,13 @@ module.exports = {
 	devtool: ENV==='production' ? '' : 'cheap-module-eval-source-map',
 
 	devServer: {
-		port: process.env.PORT || 8080,
-		host: 'localhost',
+		port: process.env.PORT || 3000,
+		host: '0.0.0.0',
 		// colors: true, // no longer used
 		publicPath: '',
 		contentBase: './src',
 		historyApiFallback: true,
-		open: true,
+		open: false,
 
 		proxy: {
 			'/common': {
