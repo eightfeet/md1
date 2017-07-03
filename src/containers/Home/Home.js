@@ -1,6 +1,4 @@
 import { h, Component } from 'preact';
-import _ from 'lodash';
-import { FStringPrivacy, FTimeStamp } from '~/utils/fliter';
 import history from '~/core/history';
 import Modal from '~/components/Modal';
 import Loading from '~/components/Loading';
@@ -24,9 +22,34 @@ class Home extends Component {
 		const { item } = this.state;
 
 		return (
-			<div className="pdt2 al-c center w6">
+			<div className="pdt2 al-c center w6" style={{height: '200rem'}}>
 				<div onClick={() => (history.push('./view'))}>测试</div>
-				怎么动？
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
+				<p>怎么动？</p>
 			</div>
 		);
 	}

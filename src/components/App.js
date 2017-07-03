@@ -18,10 +18,6 @@ class App extends Component {
 	constructor() {
 		super();
 	}
-
-	componentDidMount() {
-		console.log(this.props.state);
-	}
 	render() {
 		console.log(this.props);
 		return (

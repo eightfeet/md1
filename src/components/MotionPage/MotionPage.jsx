@@ -1,6 +1,7 @@
 import preact, { h, Component } from 'preact';
 import { Animate } from 'react-move';
 import Springer from 'springer';
+import s from './MotionPage.scss';
 
 const normalSpring = Springer();
 const hardSpring = Springer(0.9, 0.3);
@@ -11,33 +12,30 @@ const MotionPage = (ComposedComponent) => {
 		constructor() {
 			super();
 		}
-		componentDidMount() {
-			console.log('componentDidMount');
-		}
 		render() {
 			const { item } = this.state;
 			return (
 				<Animate
 					default={{
-						left: -20,
-						opacity: 0
+						left: -40,
+						opacity: 0,
+						scale: 0.8
 					}}
 					data={{
 						left: 0,
-						opacity: 1
+						opacity: 1,
+						scale: 1
 					}}
-					duration={3000}
-					easing={wobblySpring}
+					duration={2000}
+					easing={hardSpring}
 				>
 					{data => {
 						return (<div
+							className={s.root}
 							style={{
-								width: '100%',
-								position:'absolute',
-								background: '#aaa',
 								opacity: data.opacity,
-								height: '10rem',
-								left: data.left
+								// transform: `scale(${data.scale})`,
+								transform: `translateX(${data.left}px)`,
 							}}
 						>
 							<ComposedComponent {...this.props}/>
