@@ -1,6 +1,5 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router';
-import SubNav from './SubNav';
 import s from './HeaderBar.scss';
 import logo from '~/assets/logo.png';
 import svglogo from '~/assets/logo.svg';

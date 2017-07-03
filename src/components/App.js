@@ -26,7 +26,6 @@ class App extends Component {
 		console.log(this.props);
 		return (
 			<div id="app"  >
-				<HeaderBar />
 				<Router history={history}>
 					<Home path="/" />
 					<SView path="/view" />

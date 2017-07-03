@@ -19,21 +19,21 @@ export default class View extends Component {
 	}
 
 	render() {
-		const { item } = this.state
+		const { item } = this.state;
 
 		return (
 			<div className="pdt2 al-c center w6">
+				<div onClick={() => (history.push('/'))}>测试</div>
 				<Animate
-						default={{
-							left: -20,
-              				color: 'blue'
-						}}
-						data={{
-							left: 0,
-              				color: 'green'
-						}}
-						duration={300}
-					>
+					default={{
+						left: -20,
+						color: 'blue'
+					}}
+					data={{
+						left: 0,
+						color: 'green'
+					}}
+				>
 					{data => {
 						return (
 							<div
@@ -46,9 +46,9 @@ export default class View extends Component {
 							>
 							怎么动？
 							</div>
-						)
-						}}
-					</Animate>
+						);
+					}}
+				</Animate>
 			</div>
 		);
 	}
