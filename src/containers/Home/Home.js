@@ -20,15 +20,23 @@ class Home extends Component {
 		};
 	}
 
+	handlePage = () => new Promise((resolve, reject) => {
+		window.clearTimeout(this.timerDelay);
+		this.timerDelay = window.setTimeout(() => {
+			console.log(1);
+			reject();
+		}, 2000);
+	});
+
 	render() {
 		const { item } = this.state;
 
 		return (
-			<div className="pdt2 al-c center w6">
+			<div className="pdt2 al-c center w1">
 				<div onClick={() => (history.push('./view'))}>测试</div>
 				<ScrollLoading
-					scrollToTop={<div style={{position: 'absolute', right: 0}}>'返回顶部'</div>}
-					loadingHtml={<div className="al-c red">...</div>}
+					handlePage={this.handlePage}
+					scrollToTop
 				>
 					<p>怎么动？</p>
 					<p>怎么动？</p>

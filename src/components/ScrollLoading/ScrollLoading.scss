@@ -1,3 +1,8 @@
+.scrollLoadingWrap, .scrollLoading {
+	padding: 0;
+	margin: 0;
+}
+
 .scrollLoading {
   display: block;
   position: absolute;
@@ -5,7 +10,7 @@
   right: 0;
   bottom: 0;
   top: 0;
-  overflow: auto;
+  overflow-y: auto;
 	overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
@@ -19,8 +24,8 @@
   transform: scale(0.2);
   background: none;
   position: relative;
-  width: fixpx(200);
-  height: fixpx(48);
+  width: 9rem;
+  height: 2rem;
 }
 
 @-webkit-keyframes nomore {
@@ -150,7 +155,8 @@
 }
 
 .nomoren {
-  height: 0;
+  height: 4rem;
+	line-height: 4rem;
   overflow: hidden;
   display: block;
 }
@@ -346,16 +352,16 @@
 .backtotop {
   width: 5rem;
   height: 4.8rem;
-  border-radius: $radius-small;
+  border-radius: 10rem;
   position: absolute;
   right: 0.5rem;
   bottom: 4rem;
   background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 0 3px 1px rgba(194, 194, 194, 0.57);
-}
+	color: #aaa;
 
-.absolute_position{
-	position: absolute;
-	left: 0;
-	top: 0;
+	img {
+		width: 1.5rem;
+		opacity: 0.5;
+	}
 }

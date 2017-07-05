@@ -7,51 +7,55 @@ class ScrollLoading extends Component {
 		super(props);
 		this.state = {
 			showLoading: false,
-			isPageOver: false,
-			noMore: false,
+			pageOver: false,
+			showNoMore: false,
 			stopBack: false,
 			showScrollToTop: false
 		};
-		this.timer = null;
-		this.timerDelay = null;
-		this.timerDelayB = null;
+
+		this.timerScrollLockInit = null;
+		this.timerNoMore = null;
+		this.timerScrollToTopRun = null;
+
 		this.scrollLocked = false;
 	}
 
 	componentWillUnmount() {
-		window.clearTimeout(this.timer);
+		window.clearTimeout(this.timerNoMore);
+		window.clearTimeout(this.timerScrollLockInit);
+		window.clearInterval(this.timerScrollToTopRun);
+	}
+
+	scrollLockInit = () => {
+		window.clearTimeout(this.timerScrollLockInit);
+		this.timerScrollLockInit = window.setTimeout(() => {
+			this.scrollLocked = false;
+			// 这里让滚动条回退1px是为了使每次下拉都可以触发触底动作
+			this.refWarp.scrollTop--;
+		}, 200);
 	}
 
 	showLoadingBar = () => new Promise((resolve) => {
 		this.setState({
 			showLoading: true
-		}, resolve(console.log('显示')));
+		}, resolve());
 	});
 
 	hideLoadingBar = () => new Promise((resolve) => {
 		this.setState({
 			showLoading: false
-		}, resolve(console.log('隐藏')));
+		}, resolve());
 	});
 
 	lockedScroll = () => new Promise((resolve) => {
 		this.setState({
 			showLoading: false
-		}, resolve(console.log('隐藏')));
-	});
-
-	action = (res) => new Promise((resolve, rej) => {
-		window.clearTimeout(this.timerDelay);
-		this.timerDelay = window.setTimeout(() => {
-			console.log(1);
-			resolve();
-			return res;
-		}, 2000);
+		}, resolve());
 	});
 
 	onScroll = (e) => {
 		const {
-			handleAction, totalsize, currentpage, pagesize,
+			handlePage, totalSize, currentPage, pagesize,
 			scrollToTop
 		} = this.props;
 
@@ -63,49 +67,48 @@ class ScrollLoading extends Component {
 		const contentHeight = e.currentTarget.childNodes[0].offsetHeight;
 
 		// 翻页是否结束
-		if (!this.state.isPageOver) {
+		if (!this.state.pageOver) {
 			// 页面是否触底
 			if (scrollTop + boxHeight >= contentHeight) {
 
 				if (!this.scrollLocked) {
 					// 锁定滚动
 					this.scrollLocked = true;
-					// if (!handleAction) {
-					// 	console.log('!!!!!!!!!!请务必传入Promise方法  handleAction = () => new Promise((resolve) => {doing...})');
-					// 	return;
-					// }
 
-					// 页面请求
+					// 事件流 显示loading -> 操作翻页 -> 隐藏loading -> 初始化滚动状态／关闭
 					Promise.resolve()
 					.then(this.showLoadingBar)
-					.then(this.action)
+					.then(handlePage)
 					.then(this.hideLoadingBar)
-					.then(() => {
-						this.timer = window.setTimeout(() => {
-							this.scrollLocked = false;
-						}, 100);
-					}).catch(() => {
+					.then(this.scrollLockInit)
+					.catch(() => {
+						this.scrollLockInit()
 						this.setState({
-							isPageOver: true,
+							pageOver: true,
 							showLoading: false,
-							noMore: true
 						});
 					});
 				}
 
-				if (totalsize <= (currentpage * pagesize)) {
+				// 计算页面总数是否翻完关闭滚动
+				if (totalSize <= (currentPage * pagesize)) {
 					this.setState({
-						isPageOver: true,
-						showLoading: false,
-						noMore: true
+						pageOver: true,
+						showLoading: false
 					});
 				}
 
 			}
-		} else if (!this.state.stopBack) {
-			this.setState({
-				stopBack: true
-			});
+		} else {
+			// 处理已关闭翻页的状态
+			if (scrollTop + boxHeight >= contentHeight) {
+				if (!this.scrollLocked) {
+					this.scrollLocked = true;
+					Promise.resolve()
+					.then(this.displayNoMore)
+					.then(this.scrollLockInit)
+				}
+			}
 		}
 		if (scrollToTop) {
 			this.displayScrollToTop();
@@ -113,19 +116,19 @@ class ScrollLoading extends Component {
 	}
 
 	onScrollToTop = () => {
-		this.startrun();
+		this.ScrollToTopRun();
 	}
 
-	startrun = () => {
-		clearInterval(this.timer);
-		this.timer = setInterval(() => {
+	ScrollToTopRun = () => {
+		window.clearInterval(this.timerScrollToTopRun);
+		this.timerScrollToTopRun = setInterval(() => {
+			if (this.refWarp.scrollTop === 0) {
+				window.clearInterval(this.timerScrollToTopRun);
+				return;
+			}
 			let speed = this.refWarp.scrollTop / 8;
 			speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
-			if (this.refWarp.scrollTop === 0) {
-				clearInterval(this.timer);
-			} else {
-				this.refWarp.scrollTop -= speed;
-			}
+			this.refWarp.scrollTop -= speed;
 		}, 30);
 	}
 
@@ -143,12 +146,27 @@ class ScrollLoading extends Component {
 		}
 	}
 
+	displayNoMore = () => new Promise((resolve) => {
+		clearInterval(this.timerNoMore);
+		this.setState(
+			{showNoMore: true},
+			() => {
+				this.timerNoMore = setTimeout(() => {
+					this.setState(
+						{showNoMore: false},
+						resolve()
+					)
+				}, 1000);
+			}
+		)}
+	)
+
 	renderScrollToTopFlag = () => {
 		const { scrollToTop } = this.props;
 		const defaultHtml = (
 			<div className={s.backtotop}>
-				<div className="al-c icon-uparrow orangered pdt1" style={{ fontSize: '1.8rem' }} />
-				<p className="orangered al-c font-small">置顶</p>
+				<img src={require('./chevron-up.svg')} alt=""/>
+				<p className="al-c font-small">返回<br/>顶部</p>
 			</div>
 		);
 
@@ -193,10 +211,13 @@ class ScrollLoading extends Component {
 	}
 
 	render() {
-		const { children, scrollToTop } = this.props;
-		const { showScrollToTop, showLoading, noMore } = this.state;
+		const { children } = this.props;
+		const { showScrollToTop, showLoading, showNoMore } = this.state;
 		return (
-      <div ref={this.props.inRef}>
+      <div
+				ref={this.props.inRef}
+				className={s.scrollLoadingWrap}
+			>
         <div
 					className={s.scrollLoading}
 					onScroll={this.onScroll}
@@ -210,7 +231,7 @@ class ScrollLoading extends Component {
               null
             }
 						{
-							noMore ?
+							showNoMore ?
 							this.renderNoMore() :
 							null
 						}
