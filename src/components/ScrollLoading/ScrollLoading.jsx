@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import s from './ScrollLoading.scss';
+import iconUp from './chevron-up.svg';
 
 class ScrollLoading extends Component {
 
@@ -10,7 +11,10 @@ class ScrollLoading extends Component {
 			pageOver: false,
 			showNoMore: false,
 			stopBack: false,
-			showScrollToTop: false
+			showScrollToTop: false,
+			reloadBarScale: 0,
+			PullRefreshIconAngle: 0,
+			PullRefreshText: '下拉'
 		};
 
 		this.timerScrollLockInit = null;
@@ -66,6 +70,10 @@ class ScrollLoading extends Component {
     // 内容高度
 		const contentHeight = e.currentTarget.childNodes[0].offsetHeight;
 
+		if (scrollToTop) {
+			this.displayScrollToTop();
+		}
+
 		// 翻页是否结束
 		if (!this.state.pageOver) {
 			// 页面是否触底
@@ -82,10 +90,10 @@ class ScrollLoading extends Component {
 					.then(this.hideLoadingBar)
 					.then(this.scrollLockInit)
 					.catch(() => {
-						this.scrollLockInit()
+						this.scrollLockInit();
 						this.setState({
 							pageOver: true,
-							showLoading: false,
+							showLoading: false
 						});
 					});
 				}
@@ -99,19 +107,16 @@ class ScrollLoading extends Component {
 				}
 
 			}
-		} else {
-			// 处理已关闭翻页的状态
-			if (scrollTop + boxHeight >= contentHeight) {
-				if (!this.scrollLocked) {
-					this.scrollLocked = true;
-					Promise.resolve()
-					.then(this.displayNoMore)
-					.then(this.scrollLockInit)
-				}
-			}
+			return;
 		}
-		if (scrollToTop) {
-			this.displayScrollToTop();
+		// 处理已关闭翻页的状态
+		if (scrollTop + boxHeight >= contentHeight) {
+			if (!this.scrollLocked) {
+				this.scrollLocked = true;
+				Promise.resolve()
+				.then(this.displayNoMore)
+				.then(this.scrollLockInit);
+			}
 		}
 	}
 
@@ -155,17 +160,17 @@ class ScrollLoading extends Component {
 					this.setState(
 						{showNoMore: false},
 						resolve()
-					)
-				}, 1000);
+					);
+				}, 2000);
 			}
-		)}
+		);}
 	)
 
 	renderScrollToTopFlag = () => {
 		const { scrollToTop } = this.props;
 		const defaultHtml = (
 			<div className={s.backtotop}>
-				<img src={require('./chevron-up.svg')} alt=""/>
+				<img src={iconUp} alt=""/>
 				<p className="al-c font-small">返回<br/>顶部</p>
 			</div>
 		);
@@ -210,6 +215,61 @@ class ScrollLoading extends Component {
 			没有了</div>);
 	}
 
+	renderPullRefresh = () => {
+		const {PullRefreshIconAngle, PullRefreshText} = this.state;
+		return (
+			PullRefreshIconAngle > 0 ?
+			(<div className={s.PullRefresh}>
+				<div className={s.info}>
+					<img src={iconUp} alt="" style={{transform:`rotate(${PullRefreshIconAngle}deg)`}}/>
+					{PullRefreshText}
+				</div>
+			</div>) :
+			null
+		);
+	}
+
+	TouchStartY = 0
+
+	TouchEndY = 0
+
+	handleTouchStart = (e) => {
+		const startY = event.touches[0].pageY;
+		const elem = e.currentTarget;
+		const scrollTop = elem.scrollTop;
+
+		e.preventDefault();
+
+		this.TouchStartY = 0;
+		if (scrollTop === 0) {
+			this.TouchStartY = e.touches[0].pageY;
+			console.log('起始Y坐标', this.TouchStartY);
+		}
+	}
+
+	handleTouchMove = (e) => {
+		const scrollTop = this.refWarp.scrollTop;
+		this.TouchEndY = 0;
+		if (scrollTop === 0) {
+			this.TouchEndY = e.touches[0].pageY;
+			let distance = this.TouchEndY - this.TouchStartY;
+			distance = distance > 200 ? distance = 200 : distance;
+			const angle = 180 / (200 / distance);
+			this.setState({PullRefreshIconAngle: angle});
+			console.log(angle);
+		}
+	}
+
+	handleTouchEnd = (e) => {
+		console.log(e);
+		const scrollTop = this.refWarp.scrollTop;
+		this.setState({PullRefreshIconAngle: 0});
+		this.TouchStartY = 0;
+		if (scrollTop === 0) {
+			console.log('结束Y坐标', this.TouchEndY);
+		}
+	}
+
 	render() {
 		const { children } = this.props;
 		const { showScrollToTop, showLoading, showNoMore } = this.state;
@@ -222,7 +282,11 @@ class ScrollLoading extends Component {
 					className={s.scrollLoading}
 					onScroll={this.onScroll}
 					ref={(ref) => { this.refWarp = ref; }}
+					onTouchStart={this.handleTouchStart}
+					onTouchMove={this.handleTouchMove}
+					onTouchEnd={this.handleTouchEnd}
 				>
+					{this.renderPullRefresh()}
           <div>
             {children}
             {
