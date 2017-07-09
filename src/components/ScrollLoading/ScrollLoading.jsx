@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import { scroll, pullRefresh } from './touch';
 import s from './ScrollLoading.scss';
 import iconUp from './chevron-up.svg';
 
@@ -14,6 +15,8 @@ class ScrollLoading extends Component {
 			showScrollToTop: false,
 			reloadBarScale: 0,
 			PullRefreshIconAngle: 0,
+			PullRefreshHeight: 0,
+			PullRefreshScale: 0,
 			PullRefreshText: '下拉'
 		};
 
@@ -22,6 +25,8 @@ class ScrollLoading extends Component {
 		this.timerScrollToTopRun = null;
 
 		this.scrollLocked = false;
+
+		this.timerEazy = null;
 	}
 
 	componentWillUnmount() {
@@ -63,11 +68,11 @@ class ScrollLoading extends Component {
 			scrollToTop
 		} = this.props;
 
-    // 滚动条当前的高度
+    	// 滚动条当前的高度
 		const scrollTop = e.currentTarget.scrollTop;
-    // 外框高度
+    	// 外框高度
 		const boxHeight = e.currentTarget.offsetHeight;
-    // 内容高度
+    	// 内容高度
 		const contentHeight = e.currentTarget.childNodes[0].offsetHeight;
 
 		if (scrollToTop) {
@@ -161,7 +166,7 @@ class ScrollLoading extends Component {
 						{showNoMore: false},
 						resolve()
 					);
-				}, 2000);
+				}, 6000);
 			}
 		);}
 	)
@@ -216,10 +221,13 @@ class ScrollLoading extends Component {
 	}
 
 	renderPullRefresh = () => {
-		const {PullRefreshIconAngle, PullRefreshText} = this.state;
+		const {PullRefreshIconAngle, PullRefreshHeight, PullRefreshText} = this.state;
 		return (
 			PullRefreshIconAngle > 0 ?
-			(<div className={s.PullRefresh}>
+			(<div
+				className={s.PullRefresh}
+				style={{height:`${PullRefreshHeight}px`}}
+				>
 				<div className={s.info}>
 					<img src={iconUp} alt="" style={{transform:`rotate(${PullRefreshIconAngle}deg)`}}/>
 					{PullRefreshText}
@@ -234,52 +242,56 @@ class ScrollLoading extends Component {
 	TouchEndY = 0
 
 	handleTouchStart = (e) => {
-		const startY = event.touches[0].pageY;
-		const elem = e.currentTarget;
-		const scrollTop = elem.scrollTop;
-
 		e.preventDefault();
-
-		this.TouchStartY = 0;
-		if (scrollTop === 0) {
-			this.TouchStartY = e.touches[0].pageY;
-			console.log('起始Y坐标', this.TouchStartY);
-		}
+		pullRefresh.touchStart(e);
+		scroll.touchStart(e);
 	}
 
 	handleTouchMove = (e) => {
-		const scrollTop = this.refWarp.scrollTop;
-		this.TouchEndY = 0;
-		if (scrollTop === 0) {
-			this.TouchEndY = e.touches[0].pageY;
-			let distance = this.TouchEndY - this.TouchStartY;
-			distance = distance > 200 ? distance = 200 : distance;
-			const angle = 180 / (200 / distance);
-			this.setState({PullRefreshIconAngle: angle});
-			console.log(angle);
-		}
+		const data = pullRefresh.touchMove(e);
+		this.setState({
+			PullRefreshIconAngle: data.angle,
+			PullRefreshHeight: data.height
+		});
+		scroll.touchMove(e);
 	}
 
 	handleTouchEnd = (e) => {
-		console.log(e);
-		const scrollTop = this.refWarp.scrollTop;
-		this.setState({PullRefreshIconAngle: 0});
-		this.TouchStartY = 0;
-		if (scrollTop === 0) {
-			console.log('结束Y坐标', this.TouchEndY);
-		}
+		this.setState({
+			PullRefreshIconAngle: 0,
+			PullRefreshHeight: 0
+		});
+
+		let v = parseInt(scroll.touchEnd(e)*50, 0);
+		pullRefresh.touchEnd(e);
+		console.log('mainHeight', this.refWarp.scrollHeight - this.refWarp.offsetHeight);
+		let length = this.refWarp.scrollHeight - this.refWarp.offsetHeight
+		window.clearInterval(this.timerEazy);
+		this.timerEazy = setInterval(() => {
+			const currentHeight = this.scrollTop;
+			if (this.refWarp.scrollTop === 0 || this.scrollTop >= length - 1) {
+				window.clearInterval(this.timerEazy);
+				return;
+			}
+			if (v > 0) {
+				v = v - 1;
+				this.refWarp.scrollTop -= v;
+			}
+			if (v < 0) {
+				v = v + 1;
+				this.refWarp.scrollTop -= v;
+			}
+		}, 30);
 	}
 
 	render() {
 		const { children } = this.props;
 		const { showScrollToTop, showLoading, showNoMore } = this.state;
 		return (
-      <div
-				ref={this.props.inRef}
-				className={s.scrollLoadingWrap}
-			>
+      <div className={s.scrollLoadingWrap}
+		>
         <div
-					className={s.scrollLoading}
+					className={`${s.scrollLoading} scc`}
 					onScroll={this.onScroll}
 					ref={(ref) => { this.refWarp = ref; }}
 					onTouchStart={this.handleTouchStart}

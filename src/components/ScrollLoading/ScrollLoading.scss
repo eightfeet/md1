@@ -159,6 +159,9 @@
 	line-height: 4rem;
   overflow: hidden;
   display: block;
+	background-color: #eee;
+	color: gray;
+	font-size: 0.8rem;
 }
 
 .nomore {
@@ -373,6 +376,7 @@
 	text-align: center;
 	font-size: 10px;
 	color: gray;
+	overflow: hidden;
 	.info {
 		margin-top: 10px;
 		display: inline-block;
@@ -396,6 +400,8 @@
 	}
 
 }
+
+
 
 
 

@@ -15,8 +15,9 @@ class Home extends Component {
 			item: {
 				left: 10,
 				color: 'red',
-				rotate: 45
-			}
+				rotate: 45,
+			},
+			data: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51]
 		};
 	}
 
@@ -29,93 +30,17 @@ class Home extends Component {
 	});
 
 	render() {
-		const { item } = this.state;
+		const { item, data } = this.state;
 
 		return (
-			<div className="pdt2 al-c center w1">
+			<div className="pdt2 al-c center ww">
 				<div onClick={() => (history.push('./view'))}>测试</div>
 				<ScrollLoading
 					handlePage={this.handlePage}
 					scrollToTop
-				>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
+				>	{
+						data.map((item) => (<p onClick={() => {window.alert(item)}} key={item} style={{height:'3rem'}}>list{item}</p>))
+					}
 				</ScrollLoading>
 			</div>
 		);
