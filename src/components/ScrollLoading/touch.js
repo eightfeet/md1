@@ -13,6 +13,12 @@ let nowY = 0;
 
 export const scroll = {
 	touchStart: (e) => {
+
+		lastMoveTime = 0;
+		lastMoveStart = 0;
+		stopInertiaMove = false; // 是否停止缓动
+		nowY = 0;
+
 		lastY = startY = e.touches[0].pageY;
 		lastY = startY = e.touches[0].pageY;
 
@@ -24,7 +30,7 @@ export const scroll = {
 		stopInertiaMove = true;
 	},
 	touchMove: (e) => {
-		const elem = e.currentTarget
+		const elem = e.currentTarget;
 		nowY = e.touches[0].pageY;
 		const moveY = nowY - lastY;
 		const contentTop = elem.scrollTop;
@@ -37,7 +43,7 @@ export const scroll = {
 		 */
 		const nowTime = e.timeStamp || Date.now();
 		stopInertiaMove = true;
-		if(nowTime - lastMoveTime > 300) {
+		if (nowTime - lastMoveTime > 300) {
 			lastMoveTime = nowTime;
 			lastMoveStart = nowY;
 		}
@@ -47,13 +53,14 @@ export const scroll = {
 		/**
 		 * 缓动代码
 		 */
-		const elem = e.currentTarget
+		const elem = e.currentTarget;
 		const nowTime = e.timeStamp || Date.now();
+		console.log(nowY, lastMoveStart, nowTime, lastMoveTime);
 		let v = 0;
 		v = (nowY - lastMoveStart) / (nowTime - lastMoveTime); //最后一段时间手指划动速度
 		return v;
 	}
-}
+};
 
 let refreshTouchStartY = 0;
 let refreshTouchEndY = 0;
@@ -88,11 +95,11 @@ export const pullRefresh = {
 			angle,
 			scale,
 			height
-		}
+		};
 	},
 	touchEnd: (e) => {
 		const elem = e.currentTarget;
 		const scrollTop = elem.scrollTop;
 		refreshTouchStartY = 0;
 	}
-}
+};

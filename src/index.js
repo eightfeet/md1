@@ -3,11 +3,16 @@
 import { h, render } from 'preact';
 import { createStore } from 'redux';
 import { Provider } from 'preact-redux';
+import FastClick from 'fastclick';
 import reducer from '~/reducers/user';
 window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
 	window.alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber
     + ' Column: ' + column + ' StackTrace: ' +  errorObj);
 };
+
+// window.onload = function() {
+// 	FastClick.attach(document.body);
+// };
 
 let root;
 const store = createStore(reducer);

@@ -265,8 +265,9 @@ class ScrollLoading extends Component {
 		let v = parseInt(scroll.touchEnd(e)*50, 0);
 		pullRefresh.touchEnd(e);
 		console.log('mainHeight', this.refWarp.scrollHeight - this.refWarp.offsetHeight);
-		let length = this.refWarp.scrollHeight - this.refWarp.offsetHeight
+		let length = this.refWarp.scrollHeight - this.refWarp.offsetHeight;
 		window.clearInterval(this.timerEazy);
+		console.log('v', v);
 		this.timerEazy = setInterval(() => {
 			const currentHeight = this.scrollTop;
 			if (this.refWarp.scrollTop === 0 || this.scrollTop >= length - 1) {
@@ -288,35 +289,34 @@ class ScrollLoading extends Component {
 		const { children } = this.props;
 		const { showScrollToTop, showLoading, showNoMore } = this.state;
 		return (
-      <div className={s.scrollLoadingWrap}
-		>
+    <div className={s.scrollLoadingWrap}>
         <div
-					className={`${s.scrollLoading} scc`}
-					onScroll={this.onScroll}
-					ref={(ref) => { this.refWarp = ref; }}
-					onTouchStart={this.handleTouchStart}
-					onTouchMove={this.handleTouchMove}
-					onTouchEnd={this.handleTouchEnd}
-				>
-					{this.renderPullRefresh()}
-          <div>
-            {children}
-            {
-              showLoading ?
-                this.renderLoading() :
-              null
-            }
-						{
-							showNoMore ?
-							this.renderNoMore() :
-							null
-						}
-          </div>
+			className={`${s.scrollLoading} scc`}
+			onScroll={this.onScroll}
+			ref={(ref) => { this.refWarp = ref; }}
+			onTouchStart={this.handleTouchStart}
+			onTouchMove={this.handleTouchMove}
+			onTouchEnd={this.handleTouchEnd}
+			>
+			{this.renderPullRefresh()}
+			<div>
+				{children}
+				{
+				showLoading ?
+					this.renderLoading() :
+				null
+				}
+							{
+								showNoMore ?
+								this.renderNoMore() :
+								null
+							}
+			</div>
         </div>
 				<div onClick={this.onScrollToTop} >
 					{showScrollToTop ? this.renderScrollToTopFlag() : null}
 				</div>
-      </div>
+    </div>
 		);
 	}
 }
