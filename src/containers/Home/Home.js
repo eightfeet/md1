@@ -4,7 +4,7 @@ import Modal from '~/components/Modal';
 import Loading from '~/components/Loading';
 import Spin from '~/components/Loading/Spin';
 import MotionPage from '~/components/MotionPage';
-import ScrollList from '~/components/Scrolllist';
+import MyScroll from '~/components/MyScroll';
 import s from './style';
 import sl from './styleb';
 
@@ -35,6 +35,7 @@ class Home extends Component {
 		return (
 			<div className="pdt2 al-c center ww">
 				<div onClick={() => (history.push('./view'))}>测试</div>
+<<<<<<< HEAD
 				<ScrollList
 					handlePage={this.handlePage}
 					scrollToTop
@@ -42,6 +43,12 @@ class Home extends Component {
 						data.map((item) => (<p onClick={() => {window.alert(item);}} key={item} style={{height:'3rem'}}>list{item}</p>))
 					}
 				</ScrollList>
+=======
+				<MyScroll>	{
+						data.map((item) => (<p onClick={() => {window.alert(item)}} key={item} style={{height:'3rem'}}>list{item}</p>))
+					}
+				</MyScroll>
+>>>>>>> 8942cf7502031604c21cc228c2f346ae6ddf1e32
 			</div>
 		);
 	}
