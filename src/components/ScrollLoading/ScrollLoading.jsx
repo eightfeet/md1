@@ -82,10 +82,10 @@ class ScrollLoading extends Component {
 					.then(this.hideLoadingBar)
 					.then(this.scrollLockInit)
 					.catch(() => {
-						this.scrollLockInit()
+						this.scrollLockInit();
 						this.setState({
 							pageOver: true,
-							showLoading: false,
+							showLoading: false
 						});
 					});
 				}
@@ -99,15 +99,13 @@ class ScrollLoading extends Component {
 				}
 
 			}
-		} else {
+		} else if (scrollTop + boxHeight >= contentHeight) {
 			// 处理已关闭翻页的状态
-			if (scrollTop + boxHeight >= contentHeight) {
-				if (!this.scrollLocked) {
-					this.scrollLocked = true;
-					Promise.resolve()
-					.then(this.displayNoMore)
-					.then(this.scrollLockInit)
-				}
+			if (!this.scrollLocked) {
+				this.scrollLocked = true;
+				Promise.resolve()
+				.then(this.displayNoMore)
+				.then(this.scrollLockInit);
 			}
 		}
 		if (scrollToTop) {
@@ -155,10 +153,10 @@ class ScrollLoading extends Component {
 					this.setState(
 						{showNoMore: false},
 						resolve()
-					)
+					);
 				}, 1000);
 			}
-		)}
+		);}
 	)
 
 	renderScrollToTopFlag = () => {
