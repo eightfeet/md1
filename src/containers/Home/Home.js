@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import classNames from 'classnames';
 import history from '~/core/history';
 import Modal from '~/components/Modal';
 import Loading from '~/components/Loading';
@@ -17,7 +18,8 @@ class Home extends Component {
 				color: 'red',
 				rotate: 45
 			},
-			timeModal: false
+			timeModal: false,
+			times: 10
 		};
 	}
 
@@ -55,6 +57,20 @@ class Home extends Component {
 		console.log(0);
 	}
 
+	handleMinus = (e) => {
+		e.preventDefault();
+		this.setState({
+			times: this.state.times > 1 ? this.state.times - 1 : 1
+		});
+	}
+
+	handlePlus = (e) => {
+		e.preventDefault();
+		this.setState({
+			times: this.state.times < 60 ? this.state.times + 1 : 60
+		});
+	}
+
 	render() {
 		const { item } = this.state;
 
@@ -63,7 +79,7 @@ class Home extends Component {
 				<div className={s.view}>
 					<img src={require('./show.jpg')} alt="" />
 				</div>
-				<div className="clearfix">
+				<div className={classNames(s.iconlayout, 'clearfix')}>
 					<div className="fl w4 al-r">
 						<a href="" onClick={this.handleList}>
 							<i className={`icon_layers ${s.icon}`} />
@@ -75,9 +91,11 @@ class Home extends Component {
 						</a>
 					</div>
 				</div>
-				<div className="w8 center mgt4">
-					<div className="btn">
-						开&nbsp;&nbsp;始
+				<div className={classNames(s.bottombtn, 'mgt4')}>
+					<div className="w8 center">
+						<button className="btn">
+							开&nbsp;&nbsp;始
+						</button>
 					</div>
 				</div>
 				<Modal
@@ -85,6 +103,39 @@ class Home extends Component {
 					isOpen={this.state.timeModal}
 					onRequestClose={this.hideTimeModal}
 				>
+					<h3 className="al-c font-bigger pdt2 pdb2">
+						设置速写时间
+					</h3>
+					<div className={classNames(s.lh3, 'clearfix w9 center pdb3 formBox')}>
+						<div className="fl w3 al-r">间隔时间：</div>
+						<div className="w4-5 fl border">
+							<div
+								className="fl w3 al-c font-biggest"
+								onClick={this.handleMinus}>
+								<a href="">
+									<i className="icon_minus" />
+								</a>
+							</div>
+							<div className="fl w4">
+								<input type="text" value={this.state.times} readOnly className="ww al-c" />
+							</div>
+							<div
+								className="fl w3 al-c font-biggest"
+								onClick={this.handlePlus}>
+								<a href="">
+									<i className="icon_plus" />
+								</a>
+							</div>
+						</div>
+						<div className="fl w2">
+							&nbsp;&nbsp;分钟
+						</div>
+					</div>
+					<div className="w9 center pdb1">
+						<button className="btn font">
+							确&nbsp;&nbsp;认
+						</button>
+					</div>
 				</Modal>
 			</div>
 		);

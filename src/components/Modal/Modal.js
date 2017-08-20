@@ -21,6 +21,7 @@ const style = {
 		bottom                     : 'auto',
 		minHeight                  : '20%',
 		maxHeight                  : '80%',
+		maxWidth                   : '460px',
 		border                     : 'node',
 		background                 : '#fff',
 		overflow                   : 'auto',
