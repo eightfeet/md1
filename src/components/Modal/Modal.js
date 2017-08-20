@@ -25,7 +25,7 @@ const style = {
 		background                 : '#fff',
 		overflow                   : 'auto',
 		WebkitOverflowScrolling    : 'touch',
-		borderRadius               : '1rem',
+		borderRadius               : '0.2rem',
 		outline                    : 'none',
 		padding                    : '0',
 		top: '50%',
@@ -45,7 +45,12 @@ export default class Modal extends Component {
 				{ ...this.props }
 				className={s.warp}
 			>
-				{onRequestClose ? <button className={s.close} onClick={onRequestClose}>关闭</button> : null}
+				{onRequestClose ?
+					<a className={s.icon} onClick={(e) => {e.preventDefault();}}>
+						<i className="icon_x" onClick={onRequestClose} />
+					</a> :
+					null
+				}
 				{children}
 			</ReactModal>
 		);

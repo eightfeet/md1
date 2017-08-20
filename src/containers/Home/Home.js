@@ -16,7 +16,8 @@ class Home extends Component {
 				left: 10,
 				color: 'red',
 				rotate: 45
-			}
+			},
+			timeModal: false
 		};
 	}
 
@@ -28,95 +29,63 @@ class Home extends Component {
 		}, 2000);
 	});
 
+	handleList = (e) => {
+		e.preventDefault();
+		history.push('list');
+	}
+
+	handleTime = (e) => {
+		e.preventDefault();
+	}
+
+	showTimeModal = (e) => {
+		e.preventDefault();
+		this.setState({
+			timeModal: true
+		});
+	}
+
+	hideTimeModal = () => {
+		this.setState({
+			timeModal: false
+		});
+	}
+
+	onRequestClose = () => {
+		console.log(0);
+	}
+
 	render() {
 		const { item } = this.state;
 
 		return (
-			<div className="pdt2 al-c center w1">
-				<div onClick={() => (history.push('./view'))}>测试</div>
-				<ScrollLoading
-					handlePage={this.handlePage}
-					scrollToTop
+			<div className={s.root}>
+				<div className={s.view}>
+					<img src={require('./show.jpg')} alt="" />
+				</div>
+				<div className="clearfix">
+					<div className="fl w4 al-r">
+						<a href="" onClick={this.handleList}>
+							<i className={`icon_layers ${s.icon}`} />
+						</a>
+					</div>
+					<div className="fr w4 al-l">
+						<a href="" onClick={this.showTimeModal}>
+							<i className={`icon_clock ${s.icon}`} />
+						</a>
+					</div>
+				</div>
+				<div className="w8 center mgt4">
+					<div className="btn">
+						开&nbsp;&nbsp;始
+					</div>
+				</div>
+				<Modal
+					contentLabel="time"
+					isOpen={this.state.timeModal}
+					onRequestClose={this.hideTimeModal}
 				>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-					<p>怎么动？</p>
-				</ScrollLoading>
+				</Modal>
 			</div>
 		);
 	}

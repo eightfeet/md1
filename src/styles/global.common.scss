@@ -414,3 +414,18 @@ body {
   rgba(black, $shadowalph) fixpx(-5) 0 fixpx(5),
   rgba(black, $shadowalph) 0 0 0;
 }
+
+.btn {
+	height: 3rem;
+	line-height: 3rem;
+	text-align: center;
+	width: 100%;
+	background: $gray-darkest;
+	color: #fff;
+	border-radius: 0.2rem;
+	user-select:none;
+}
+
+.btn:active {
+	background: $spec-green;
+}

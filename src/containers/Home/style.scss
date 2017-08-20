@@ -1,3 +1,18 @@
 .root{
-	color: white;
+}
+
+.view{
+	width: 20rem;
+	height: 20rem;
+	overflow: hidden;
+	border-radius: 20rem;
+	margin: 4rem auto;
+
+	img {
+		width: 100%;
+	}
+}
+
+.icon {
+	font-size: 2rem;
 }
