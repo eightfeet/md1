@@ -1,7 +1,5 @@
 import { h, Component } from 'preact';
-import { scroll, pullRefresh } from './touch';
 import s from './ScrollLoading.scss';
-import iconUp from './chevron-up.svg';
 
 class ScrollLoading extends Component {
 
@@ -12,12 +10,7 @@ class ScrollLoading extends Component {
 			pageOver: false,
 			showNoMore: false,
 			stopBack: false,
-			showScrollToTop: false,
-			reloadBarScale: 0,
-			PullRefreshIconAngle: 0,
-			PullRefreshHeight: 0,
-			PullRefreshScale: 0,
-			PullRefreshText: '下拉'
+			showScrollToTop: false
 		};
 
 		this.timerScrollLockInit = null;
@@ -25,8 +18,6 @@ class ScrollLoading extends Component {
 		this.timerScrollToTopRun = null;
 
 		this.scrollLocked = false;
-
-		this.timerEazy = null;
 	}
 
 	componentWillUnmount() {
@@ -68,16 +59,12 @@ class ScrollLoading extends Component {
 			scrollToTop
 		} = this.props;
 
-    	// 滚动条当前的高度
+    // 滚动条当前的高度
 		const scrollTop = e.currentTarget.scrollTop;
-    	// 外框高度
+    // 外框高度
 		const boxHeight = e.currentTarget.offsetHeight;
-    	// 内容高度
+    // 内容高度
 		const contentHeight = e.currentTarget.childNodes[0].offsetHeight;
-
-		if (scrollToTop) {
-			this.displayScrollToTop();
-		}
 
 		// 翻页是否结束
 		if (!this.state.pageOver) {
@@ -112,16 +99,17 @@ class ScrollLoading extends Component {
 				}
 
 			}
-			return;
-		}
-		// 处理已关闭翻页的状态
-		if (scrollTop + boxHeight >= contentHeight) {
+		} else if (scrollTop + boxHeight >= contentHeight) {
+			// 处理已关闭翻页的状态
 			if (!this.scrollLocked) {
 				this.scrollLocked = true;
 				Promise.resolve()
 				.then(this.displayNoMore)
 				.then(this.scrollLockInit);
 			}
+		}
+		if (scrollToTop) {
+			this.displayScrollToTop();
 		}
 	}
 
@@ -166,7 +154,7 @@ class ScrollLoading extends Component {
 						{showNoMore: false},
 						resolve()
 					);
-				}, 6000);
+				}, 1000);
 			}
 		);}
 	)
@@ -175,7 +163,7 @@ class ScrollLoading extends Component {
 		const { scrollToTop } = this.props;
 		const defaultHtml = (
 			<div className={s.backtotop}>
-				<img src={iconUp} alt=""/>
+				<img src={require('./chevron-up.svg')} alt=""/>
 				<p className="al-c font-small">返回<br/>顶部</p>
 			</div>
 		);
@@ -220,103 +208,37 @@ class ScrollLoading extends Component {
 			没有了</div>);
 	}
 
-	renderPullRefresh = () => {
-		const {PullRefreshIconAngle, PullRefreshHeight, PullRefreshText} = this.state;
-		return (
-			PullRefreshIconAngle > 0 ?
-			(<div
-				className={s.PullRefresh}
-				style={{height:`${PullRefreshHeight}px`}}
-				>
-				<div className={s.info}>
-					<img src={iconUp} alt="" style={{transform:`rotate(${PullRefreshIconAngle}deg)`}}/>
-					{PullRefreshText}
-				</div>
-			</div>) :
-			null
-		);
-	}
-
-	TouchStartY = 0
-
-	TouchEndY = 0
-
-	handleTouchStart = (e) => {
-		e.preventDefault();
-		pullRefresh.touchStart(e);
-		scroll.touchStart(e);
-	}
-
-	handleTouchMove = (e) => {
-		const data = pullRefresh.touchMove(e);
-		this.setState({
-			PullRefreshIconAngle: data.angle,
-			PullRefreshHeight: data.height
-		});
-		scroll.touchMove(e);
-	}
-
-	handleTouchEnd = (e) => {
-		this.setState({
-			PullRefreshIconAngle: 0,
-			PullRefreshHeight: 0
-		});
-
-		let v = parseInt(scroll.touchEnd(e)*50, 0);
-		pullRefresh.touchEnd(e);
-		console.log('mainHeight', this.refWarp.scrollHeight - this.refWarp.offsetHeight);
-		let length = this.refWarp.scrollHeight - this.refWarp.offsetHeight;
-		window.clearInterval(this.timerEazy);
-		console.log('v', v);
-		this.timerEazy = setInterval(() => {
-			const currentHeight = this.scrollTop;
-			if (this.refWarp.scrollTop === 0 || this.scrollTop >= length - 1) {
-				window.clearInterval(this.timerEazy);
-				return;
-			}
-			if (v > 0) {
-				v = v - 1;
-				this.refWarp.scrollTop -= v;
-			}
-			if (v < 0) {
-				v = v + 1;
-				this.refWarp.scrollTop -= v;
-			}
-		}, 30);
-	}
-
 	render() {
 		const { children } = this.props;
 		const { showScrollToTop, showLoading, showNoMore } = this.state;
 		return (
-    <div className={s.scrollLoadingWrap}>
-        <div
-			className={`${s.scrollLoading} scc`}
-			onScroll={this.onScroll}
-			ref={(ref) => { this.refWarp = ref; }}
-			onTouchStart={this.handleTouchStart}
-			onTouchMove={this.handleTouchMove}
-			onTouchEnd={this.handleTouchEnd}
+      <div
+				ref={this.props.inRef}
+				className={s.scrollLoadingWrap}
 			>
-			{this.renderPullRefresh()}
-			<div>
-				{children}
-				{
-				showLoading ?
-					this.renderLoading() :
-				null
-				}
-							{
-								showNoMore ?
-								this.renderNoMore() :
-								null
-							}
-			</div>
+        <div
+					className={s.scrollLoading}
+					onScroll={this.onScroll}
+					ref={(ref) => { this.refWarp = ref; }}
+				>
+          <div>
+            {children}
+            {
+              showLoading ?
+                this.renderLoading() :
+              null
+            }
+						{
+							showNoMore ?
+							this.renderNoMore() :
+							null
+						}
+          </div>
         </div>
 				<div onClick={this.onScrollToTop} >
 					{showScrollToTop ? this.renderScrollToTopFlag() : null}
 				</div>
-    </div>
+      </div>
 		);
 	}
 }

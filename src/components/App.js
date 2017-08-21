@@ -6,6 +6,7 @@ import history from '~/core/history';
 
 import HeaderBar from './HeaderBar';
 import Home from '~/containers/Home';
+import List from '~/containers/List';
 import SView from '~/containers/View';
 
 import {wechatInfo} from '~/config';
@@ -24,6 +25,7 @@ class App extends Component {
 			<div id="app"  >
 				<Router history={history}>
 					<Home path="/" />
+					<List path="/list" />
 					<SView path="/view" />
 				</Router>
 			</div>

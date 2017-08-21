@@ -159,9 +159,6 @@
 	line-height: 4rem;
   overflow: hidden;
   display: block;
-	background-color: #eee;
-	color: gray;
-	font-size: 0.8rem;
 }
 
 .nomore {
@@ -368,40 +365,3 @@
 		opacity: 0.5;
 	}
 }
-
-.PullRefresh {
-	position: relative;
-	height: 50px;
-	background-color: #eee;
-	text-align: center;
-	font-size: 10px;
-	color: gray;
-	overflow: hidden;
-	.info {
-		margin-top: 10px;
-		display: inline-block;
-		position: relative;
-		height: 30px;
-		padding-left: 30px;
-		line-height: 30px;
-		img {
-			position: absolute;
-			opacity: 0.3;
-			height: 30px;
-			left: 0;
-		}
-	}
-	.rotate {
-		width: 1rem;
-		height: 2rem;
-		position: absolute;
-		background-color: #f00;
-		left: 0;
-	}
-
-}
-
-
-
-
-
