@@ -75,14 +75,6 @@ class Home extends Component {
 		const { item } = this.state;
 
 		return (
-<<<<<<< HEAD
-			<div className="pdt2 al-c center ww">
-				<div onClick={() => (history.push('./view'))}>测试</div>
-				<MyScroll>	{
-						data.map((item) => (<p onClick={() => {window.alert(item);}} key={item} style={{height:'3rem'}}>list{item}</p>))
-					}
-				</MyScroll>
-=======
 			<div className={s.root}>
 				<div className={s.view}>
 					<img src={require('./show.jpg')} alt="" />
@@ -145,7 +137,6 @@ class Home extends Component {
 						</button>
 					</div>
 				</Modal>
->>>>>>> bffee7705f9e5bee82d9d18333aa58ed48558d5d
 			</div>
 		);
 	}
