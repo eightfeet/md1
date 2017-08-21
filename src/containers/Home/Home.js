@@ -132,7 +132,7 @@ class Home extends Component {
 						</div>
 					</div>
 					<div className="w9 center pdb1">
-						<button className="btn font">
+						<button className="btngreen font">
 							确&nbsp;&nbsp;认
 						</button>
 					</div>

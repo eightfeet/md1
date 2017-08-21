@@ -1,5 +1,6 @@
-import { h, Component } from 'preact';
+import { h, Component, PropTypes } from 'preact';
 import { Link } from 'preact-router';
+import history from '~/core/history';
 import s from './HeaderBar.scss';
 import logo from '~/assets/logo.png';
 import svglogo from '~/assets/logo.svg';
@@ -12,58 +13,46 @@ class HeaderBar extends Component {
 			isSubMenu: false
 		};
 	}
-	handlerSearch = () => {
-		const serchinput = window.document.getElementById('search');
-		if (this.state.isSearch) {
-			this.setState({ isSearch: false });
-			serchinput.blur();
+
+	handleLeftIcon = (e) => {
+		const {onClickLeft} = this.props;
+		if (onClickLeft && typeof onClickLeft === 'function') {
+			onClickLeft(e);
 		} else {
-			this.setState({ isSearch: true });
-			serchinput.focus();
+			history.goBack();
 		}
 	}
 
-	handlerOpenMenu = () => {
-		if (!this.state.isSubMenu) {
-			this.setState({ isSubMenu: true });
-		}
-	}
-	handlerCloseMenu = () => {
-		if (this.state.isSubMenu) {
-			this.setState({ isSubMenu: false });
+	handleRightIcon = (e) => {
+		const {onClickRight} = this.props;
+		if (onClickRight && typeof onClickRight === 'function') {
+			onClickRight(e);
+		} else {
+			history.goBack();
 		}
 	}
 
 	render() {
+		const { title, leftIcon, onClickLeft, onClickRight, rightIcon} = this.props;
 		return (
       <header>
         <div className={`${s.heardbar} clearfix`}>
-          <div className="center w3 pr">
-            <img
-              ref={(ref) => { this.logoRef = ref; }}
-              src={svglogo}
-              onError={() => { this.logoRef.src = logo; }}
-              className={s.svglogo}
-            />
-          </div>
-          <div className={`${s.fixleft} ${s.headerbarIcon}`} onClick={this.handlerOpenMenu}>
-            <span className={`icon-more-b ${s.bannerico}`} />
-          </div>
-          <div className={`${s.fixright} ${s.headerbarIcon}`} >
-            <Link to="/search">
-              <span className={`icon-search-a ${s.bannerico}`} />
-            </Link>
-          </div>
-
-        </div>
-        <div
-          className={this.state.isSubMenu
-          ? `fr ${s.submenu} show`
-          : `fr ${s.submenu} hide`}
-          onClick={this.handlerCloseMenu}
-
-        >
-          <SubNav />
+          <h3 className="center al-c w3 pr txt_cut">
+					{title}
+          </h3>
+          {onClickLeft ? (<div className={`${s.fixleft} ${s.headerbarIcon}`} onClick={this.handleLeftIcon}>
+						<a href="" onClick={e => {e.preventDefault();}}>
+							<span className={`${leftIcon ? leftIcon : 'icon_chevron_left'} ${s.bannerico}`} />
+						</a>
+					</div>) : null}
+					{
+						onClickRight && typeof onClickRight === 'function' ?
+						(<div className={`${s.fixright} ${s.headerbarIcon}`} onClick={onClickRight}>
+							<a href="" onClick={e => {e.preventDefault();}}>
+								<span className={`${rightIcon ? rightIcon : 'icon_circle'} ${s.bannerico}`} />
+							</a>
+						</div>) : null
+					}
         </div>
       </header>
 		);

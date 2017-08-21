@@ -430,3 +430,19 @@ body {
 .btn:active {
 	background: $spec-green;
 }
+
+.btngreen {
+	height: 3rem;
+	line-height: 3rem;
+	text-align: center;
+	width: 100%;
+	background: $spec-green;
+	color: #fff;
+	border-radius: 0.2rem;
+	user-select:none;
+	font-size: $font;
+}
+
+.btngreen:active {
+	background: $gray-darkest;
+}

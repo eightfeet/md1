@@ -355,13 +355,11 @@
   border-radius: 10rem;
   position: absolute;
   right: 0.5rem;
-  bottom: 4rem;
+  bottom: 5rem;
   background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 0 3px 1px rgba(194, 194, 194, 0.57);
 	color: #aaa;
-
-	img {
-		width: 1.5rem;
-		opacity: 0.5;
-	}
+	text-align: center;
+	line-height: 4.8rem;
+	font-size: 1.5rem;
 }

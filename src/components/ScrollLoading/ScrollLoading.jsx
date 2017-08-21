@@ -163,8 +163,7 @@ class ScrollLoading extends Component {
 		const { scrollToTop } = this.props;
 		const defaultHtml = (
 			<div className={s.backtotop}>
-				<img src={require('./chevron-up.svg')} alt=""/>
-				<p className="al-c font-small">返回<br/>顶部</p>
+				<i className="icon_arrow_up"></i>
 			</div>
 		);
 
@@ -172,7 +171,7 @@ class ScrollLoading extends Component {
 			return defaultHtml;
 		}
 
-		if (typeof this.props.scrollToTop === 'object' && scrollToTop) {
+		if (typeof this.props.scrollToTop === 'function' && scrollToTop) {
 			return scrollToTop;
 		}
 
