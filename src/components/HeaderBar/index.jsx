@@ -41,14 +41,14 @@ class HeaderBar extends Component {
 					{title}
           </h3>
           {onClickLeft ? (<div className={`${s.fixleft} ${s.headerbarIcon}`} onClick={this.handleLeftIcon}>
-						<a href="" onClick={e => {e.preventDefault();}}>
+						<a href="" onClick={e => {e.preventDefault();}} className={this.props.leftIconClass}>
 							<span className={`${leftIcon ? leftIcon : 'icon_chevron_left'} ${s.bannerico}`} />
 						</a>
 					</div>) : null}
 					{
 						onClickRight && typeof onClickRight === 'function' ?
 						(<div className={`${s.fixright} ${s.headerbarIcon}`} onClick={onClickRight}>
-							<a href="" onClick={e => {e.preventDefault();}}>
+							<a href="" onClick={e => {e.preventDefault();}} className={this.props.rightIconClass}>
 								<span className={`${rightIcon ? rightIcon : 'icon_circle'} ${s.bannerico}`} />
 							</a>
 						</div>) : null

@@ -78,33 +78,29 @@ class List extends Component {
 			list: []
 		};
 		this.selected = [];
-		this.historySelect = [];
+		this.historySelected = [];
 	}
 
 
 	componentWillMount() {
-		this.historySelected = JSON.parse(window.localStorage.getItem('selected')) || [];
-		const currentdata = JSON.parse(JSON.stringify([...this.state.list, ...listpage, ...listpage]));
-		console.log('currentdata', currentdata);
-		for (let i = 0; i < currentdata.length; i += 1) {
-			for (let n = 0; n < this.historySelected.length; n += 1) {
-				if (this.historySelected[n].index === i && this.historySelected[n].selected) {
-					currentdata[i].selected = true;
-				}
-			}
+		let operationSelected;
+		try {
+			this.historySelected = JSON.parse(window.localStorage.getItem('selected'));
+		} catch (error) {
+			this.historySelected = [];
 		}
-		this.setState({
-			list: currentdata
-		});
-	}
 
-	componentDidMount() {
-		this.selected = this.getSelected();
+		const currentdata = JSON.parse(JSON.stringify([...this.state.list, ...listpage, ...listpage]));
+		this.selectedHistory2New(currentdata);
 	}
 
 
 	componentWillUnmount() {
-		window.localStorage.setItem('selected', JSON.stringify(this.selected));
+		if (Array.isArray(this.selected) && this.selected.length > 0) {
+			window.localStorage.setItem('selected', JSON.stringify(this.selected));
+		} else {
+			window.localStorage.setItem('selected', JSON.stringify(this.historySelected));
+		}
 	}
 
 	handlePage = () => new Promise((resolve, reject) => {
@@ -112,7 +108,7 @@ class List extends Component {
 		this.timerDelay = window.setTimeout(() => {
 			this.setState({
 				list: JSON.parse(JSON.stringify([...this.state.list, ...listpage]))
-			}, () => {this.selected = this.getSelected();});
+			}, () => {this.selectedHistory2New(this.state.list);});
 			resolve();
 		}, 1000);
 	});
@@ -124,18 +120,19 @@ class List extends Component {
 		this.setState({
 			list: this.state.list
 		}, () => {
-			this.selected = this.getSelected();
+			this.selected = this.selectedNew2History();
+			console.log('this.selected', this.selected);
 		});
 	}
 
-	getSelected = () => {
+	selectedNew2History = () => {
 		const { list } = this.state;
 		const selected = [];
 		list.forEach((item, index) => { // 遍历当前选择列表
 			// 修改老值
 			this.historySelected.forEach((el, i) => { // 同时遍历旧数据
 				if (el.index === index) { // 如果新老值是同一个项
-					el.selected = item.select; // 以新值选择结果为标准
+					el.selected = item.selected; // 以新值选择结果为标准
 				}
 			});
 
@@ -151,6 +148,22 @@ class List extends Component {
 		return JSON.parse(JSON.stringify(selected));
 	}
 
+	selectedHistory2New = (current) => {
+		const operationList = JSON.parse(JSON.stringify(current));
+		console.log(current);
+		operationList.forEach((item, index) => { // 遍历当前选择列表
+			// 修改新值
+			this.historySelected.forEach((el, i) => { // 同时遍历旧数据
+				if (el.index === index) { // 如果新老值是同一个项
+					item.selected = el.selected; // 以旧值选择结果为标准
+				}
+			});
+		});
+		this.setState({
+			list: operationList
+		});
+	}
+
 	render() {
 		const { item } = this.state;
 		let p1 = 0, p2 = 0, p3 = 0;
@@ -163,6 +176,8 @@ class List extends Component {
 						console.log(e);
 					}}
 					rightIcon="icon_grid"
+					leftIcon="icon_check"
+					leftIconClass={s.checked}
 				/>
 				<div className={s.list}>
 					<ScrollLoading
