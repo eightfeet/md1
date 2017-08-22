@@ -19,7 +19,8 @@ class Home extends Component {
 				rotate: 45
 			},
 			timeModal: false,
-			times: 10
+			times: 1,
+			error: null
 		};
 	}
 
@@ -71,6 +72,36 @@ class Home extends Component {
 		});
 	}
 
+	onStart = () => {
+		let selected;
+		try {
+			selected = JSON.parse(window.localStorage.getItem('selected')) || [];
+		} catch (error) {
+			selected = [];
+		}
+		if (selected.length <= 0) {
+			this.setState({
+				error: '您还没选择图片！'
+			});
+			return;
+		}
+		console.log(this.state.times);
+		if (this.state.times <= 0) {
+			this.setState({
+				error: '老杆子，稳！但建议还是大于1分钟吧！'
+			});
+			return;
+		}
+		window.localStorage.setItem('selectedtime', this.state.times);
+		history.push('/view');
+	}
+
+	closeError = () => {
+		this.setState({
+			error: null
+		});
+	}
+
 	render() {
 		const { item } = this.state;
 
@@ -93,7 +124,7 @@ class Home extends Component {
 				</div>
 				<div className={classNames(s.bottombtn, 'mgt4')}>
 					<div className="w8 center">
-						<button className="btn">
+						<button className="btn" onClick={this.onStart}>
 							开&nbsp;&nbsp;始
 						</button>
 					</div>
@@ -132,10 +163,20 @@ class Home extends Component {
 						</div>
 					</div>
 					<div className="w9 center pdb1">
-						<button className="btngreen font">
+						<button className="btngreen font" onClick={this.hideTimeModal}>
 							确&nbsp;&nbsp;认
 						</button>
 					</div>
+				</Modal>
+				<Modal
+					contentLabel="time"
+					isOpen={this.state.error}
+					onRequestClose={this.closeError}
+				>
+					<h3 className="al-c font-bigger pdt2 pdb1">
+						对不起
+					</h3>
+					<div className="al-c pdb2">{this.state.error}</div>
 				</Modal>
 			</div>
 		);
