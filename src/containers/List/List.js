@@ -12,55 +12,81 @@ import s from './style';
 const listpage = [
 	{
 		imgUrl: 'http://img5.imgtn.bdimg.com/it/u=2243701330,2386498511&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 533,
+		height: 300
 	},
 	{
 		imgUrl: 'http://img1.imgtn.bdimg.com/it/u=3628947011,505585406&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 362,
+		height: 300
 	},
 	{
 		imgUrl: 'http://img1.imgtn.bdimg.com/it/u=1205296975,4286953648&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 500,
+		height: 381
 	},
 	{
 		imgUrl: 'http://img4.imgtn.bdimg.com/it/u=975038807,749581031&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 446,
+		height: 639
 	},
 	{
 		imgUrl: 'http://img1.imgtn.bdimg.com/it/u=1861043010,2397656605&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 533,
+		height: 300
 	},
 	{
 		imgUrl: 'http://img4.imgtn.bdimg.com/it/u=3680595641,4143353235&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 400,
+		height: 300
 	},
 	{
 		imgUrl: 'http://img1.imgtn.bdimg.com/it/u=2372562168,3526692767&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 500,
+		height: 333
 	},
 	{
 		imgUrl: 'http://img2.imgtn.bdimg.com/it/u=1245768616,3995611220&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 500,
+		height: 410
 	},
 	{
 		imgUrl: 'http://img0.imgtn.bdimg.com/it/u=681383717,363372355&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 500,
+		height: 342
 	},
 	{
 		imgUrl: 'http://img1.imgtn.bdimg.com/it/u=506262978,941851135&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 407,
+		height: 300
 	},
 	{
 		imgUrl: 'http://img5.imgtn.bdimg.com/it/u=1552435254,2290838453&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 500,
+		height: 335
 	},
 	{
 		imgUrl: 'http://img3.imgtn.bdimg.com/it/u=258966460,797303537&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 400,
+		height: 300
 	},
 	{
 		imgUrl: 'http://img4.imgtn.bdimg.com/it/u=3686337225,1366131359&fm=26&gp=0.jpg',
-		selected: false
+		selected: false,
+		width: 500,
+		height: 325
 	}
 ];
 

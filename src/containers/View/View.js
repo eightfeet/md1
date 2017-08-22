@@ -55,6 +55,7 @@ class View extends Component {
 		this.setState({
 			time
 		});
+		this.nextImg(0);
 	}
 
 	componentDidMount() {
@@ -63,6 +64,12 @@ class View extends Component {
 
 	componentWillUnmount() {
 		window.clearInterval(this.timer);
+	}
+
+	nextImg = (index) => {
+		const img = window.document.createElement('img');
+		img.src = this.state.list[index].imgUrl;
+		console.log('img.src', img.src);
 	}
 
 	reSet = (sec) => {
@@ -78,7 +85,13 @@ class View extends Component {
 		}, 1000);
 	}
 
-	handleChangeIndex = () => {
+	handleChangeIndex = (e) => {
+		if (e < (this.state.list.length - 1)) {
+			this.nextImg(e + 1);
+		} else {
+			this.nextImg(0);
+		}
+
 		this.reSet(this.state.time);
 	}
 
@@ -97,7 +110,11 @@ class View extends Component {
 					{
 						list.map(item =>
 							(<div>
-								<img className="shadow-bottom" src={item.imgUrl} alt="" />
+								<img className="shadow-bottom" src={item.imgUrl}
+								style={{
+									height:item.width > item.height ? 'auto':'100%',
+									width:item.width > item.height ? '100%': 'auto'
+								}} />
 							</div>)
 						)
 					}
