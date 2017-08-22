@@ -85,7 +85,7 @@ class List extends Component {
 	componentWillMount() {
 		let operationSelected;
 		try {
-			this.historySelected = JSON.parse(window.localStorage.getItem('selected'));
+			this.historySelected = JSON.parse(window.localStorage.getItem('selected')) || [];
 		} catch (error) {
 			this.historySelected = [];
 		}
