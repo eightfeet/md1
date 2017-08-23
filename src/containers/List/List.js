@@ -12,82 +12,112 @@ import s from './style';
 
 const listpage = [
 	{
-		imgUrl: 'http://img5.imgtn.bdimg.com/it/u=2243701330,2386498511&fm=26&gp=0.jpg',
-		selected: false,
-		width: 533,
-		height: 300
-	},
-	{
-		imgUrl: 'http://img1.imgtn.bdimg.com/it/u=3628947011,505585406&fm=26&gp=0.jpg',
-		selected: false,
-		width: 362,
-		height: 300
-	},
-	{
-		imgUrl: 'http://img1.imgtn.bdimg.com/it/u=1205296975,4286953648&fm=26&gp=0.jpg',
-		selected: false,
-		width: 500,
-		height: 381
-	},
-	{
-		imgUrl: 'http://img4.imgtn.bdimg.com/it/u=975038807,749581031&fm=26&gp=0.jpg',
-		selected: false,
-		width: 446,
-		height: 639
-	},
-	{
-		imgUrl: 'http://img1.imgtn.bdimg.com/it/u=1861043010,2397656605&fm=26&gp=0.jpg',
-		selected: false,
-		width: 533,
-		height: 300
-	},
-	{
-		imgUrl: 'http://img4.imgtn.bdimg.com/it/u=3680595641,4143353235&fm=26&gp=0.jpg',
+		imgUrl: './assets/6.png',
 		selected: false,
 		width: 400,
-		height: 300
+		height: 685
 	},
 	{
-		imgUrl: 'http://img1.imgtn.bdimg.com/it/u=2372562168,3526692767&fm=26&gp=0.jpg',
+		imgUrl: './assets/1.png',
 		selected: false,
-		width: 500,
-		height: 333
+		width: 600,
+		height: 1128
 	},
 	{
-		imgUrl: 'http://img2.imgtn.bdimg.com/it/u=1245768616,3995611220&fm=26&gp=0.jpg',
+		imgUrl: './assets/2.png',
 		selected: false,
-		width: 500,
-		height: 410
+		width: 924,
+		height: 1000
 	},
 	{
-		imgUrl: 'http://img0.imgtn.bdimg.com/it/u=681383717,363372355&fm=26&gp=0.jpg',
+		imgUrl: './assets/3.png',
 		selected: false,
-		width: 500,
-		height: 342
+		width: 984,
+		height: 1000
 	},
 	{
-		imgUrl: 'http://img1.imgtn.bdimg.com/it/u=506262978,941851135&fm=26&gp=0.jpg',
+		imgUrl: './assets/4.png',
 		selected: false,
-		width: 407,
-		height: 300
+		width: 657,
+		height: 1000
 	},
 	{
-		imgUrl: 'http://img5.imgtn.bdimg.com/it/u=1552435254,2290838453&fm=26&gp=0.jpg',
+		imgUrl: './assets/5.png',
 		selected: false,
-		width: 500,
-		height: 335
+		width: 1125,
+		height: 710
 	},
 	{
-		imgUrl: 'http://img3.imgtn.bdimg.com/it/u=258966460,797303537&fm=26&gp=0.jpg',
+		imgUrl: './assets/6.png',
 		selected: false,
 		width: 400,
-		height: 300
+		height: 685
 	},
 	{
-		imgUrl: 'http://img4.imgtn.bdimg.com/it/u=3686337225,1366131359&fm=26&gp=0.jpg',
+		imgUrl: './assets/1.png',
 		selected: false,
-		width: 500,
-		height: 325
+		width: 600,
+		height: 1128
+	},
+	{
+		imgUrl: './assets/2.png',
+		selected: false,
+		width: 924,
+		height: 1000
+	},
+	{
+		imgUrl: './assets/3.png',
+		selected: false,
+		width: 984,
+		height: 1000
+	},
+	{
+		imgUrl: './assets/1.png',
+		selected: false,
+		width: 600,
+		height: 1128
+	},
+	{
+		imgUrl: './assets/2.png',
+		selected: false,
+		width: 924,
+		height: 1000
+	},
+	{
+		imgUrl: './assets/3.png',
+		selected: false,
+		width: 984,
+		height: 1000
+	},
+	{
+		imgUrl: './assets/4.png',
+		selected: false,
+		width: 657,
+		height: 1000
+	},
+	{
+		imgUrl: './assets/5.png',
+		selected: false,
+		width: 1125,
+		height: 710
+	},
+	{
+		imgUrl: './assets/4.png',
+		selected: false,
+		width: 657,
+		height: 1000
+	},
+	{
+		imgUrl: './assets/5.png',
+		selected: false,
+		width: 1125,
+		height: 710
+	},
+	{
+		imgUrl: './assets/6.png',
+		selected: false,
+		width: 400,
+		height: 685
 	}
 ];
 
@@ -149,7 +179,9 @@ class List extends Component {
 		}, () => {
 			this.selected = this.selectedNew2History();
 			console.log('this.selected', this.selected);
-			window.localStorage.setItem('selected', JSON.stringify(this.selected));
+			if (this.selected.length === 0) {
+				window.localStorage.setItem('selected', JSON.stringify(this.selected));
+			}
 		});
 	}
 
