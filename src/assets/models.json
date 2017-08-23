@@ -1,0 +1,62 @@
+[
+	{
+		"imgUrl": "./assets/models/001.png",
+		"selected": false,
+		"width": 885,
+		"height": 640
+	},
+	{
+		"imgUrl": "./assets/models/002.png",
+		"selected": false,
+		"width": 640,
+		"height": 1136
+	},
+	{
+		"imgUrl": "./assets/models/003.png",
+		"selected": false,
+		"width": 640,
+		"height": 1136
+	},
+	{
+		"imgUrl": "./assets/models/004.png",
+		"selected": false,
+		"width": 640,
+		"height": 1136
+	},
+	{
+		"imgUrl": "./assets/models/005.png",
+		"selected": false,
+		"width": 640,
+		"height": 1136
+	},
+	{
+		"imgUrl": "./assets/models/006.png",
+		"selected": false,
+		"width": 640,
+		"height": 1136
+	},
+	{
+		"imgUrl": "./assets/models/007.png",
+		"selected": false,
+		"width": 843,
+		"height": 640
+	},
+	{
+		"imgUrl": "./assets/models/008.png",
+		"selected": false,
+		"width": 843,
+		"height": 640
+	},
+	{
+		"imgUrl": "./assets/models/009.png",
+		"selected": false,
+		"width": 1265,
+		"height": 640
+	},
+	{
+		"imgUrl": "./assets/models/010.png",
+		"selected": false,
+		"width": 1265,
+		"height": 640
+	}
+]

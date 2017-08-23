@@ -2,8 +2,6 @@ import { h, Component, PropTypes } from 'preact';
 import { Link } from 'preact-router';
 import history from '~/core/history';
 import s from './HeaderBar.scss';
-import logo from '~/assets/logo.png';
-import svglogo from '~/assets/logo.svg';
 
 class HeaderBar extends Component {
 	constructor() {
