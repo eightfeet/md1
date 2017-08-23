@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import classNames from 'classnames';
+import queryString from 'query-string';
 import history from '~/core/history';
 import Modal from '~/components/Modal';
 import HeaderBar from '~/components/HeaderBar';
@@ -148,6 +149,7 @@ class List extends Component {
 		}, () => {
 			this.selected = this.selectedNew2History();
 			console.log('this.selected', this.selected);
+			window.localStorage.setItem('selected', JSON.stringify(this.selected));
 		});
 	}
 
@@ -190,6 +192,10 @@ class List extends Component {
 		});
 	}
 
+	onClickRight = (e) => {
+		console.log(e);
+	}
+
 	render() {
 		const { item } = this.state;
 		let p1 = 0, p2 = 0, p3 = 0;
@@ -198,9 +204,7 @@ class List extends Component {
 				<HeaderBar
 					title={'选择模特'}
 					onClickLeft
-					onClickRight={(e) => {
-						console.log(e);
-					}}
+					onClickRight={this.onClickRight}
 					rightIcon="icon_grid"
 					leftIcon="icon_check"
 					leftIconClass={s.checked}

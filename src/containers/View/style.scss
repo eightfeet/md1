@@ -3,6 +3,10 @@
 	height: 100%;
 	background-color: $gray-darkest;
 	text-align: center;
+	vertical-align: middle;
+	img {
+		width: 100%;
+	}
 }
 
 .timer {
@@ -14,8 +18,42 @@
 	color: $gray-light;
 	top: 0.5rem;
 	left: 0.5rem;
+	height: 1.2rem;
+	line-height: 1.2rem;
+}
+
+.pic {
+	background-color: $gray-darkest;
+	position: absolute;
+	z-index: 10;
+	padding: 0.5rem;
+	border-radius: 1.2rem;
+	color: $gray-light;
+	top: 0.5rem;
+	right: 0.5rem;
+	height: 1.2rem;
+	width: 1.2rem;
 }
 
 .timerred {
 	color: $red;
+}
+
+
+.iconlayout {
+	margin-top: 5%;
+}
+
+.icon {
+	font-size: 2rem;
+}
+
+.bottombtn {
+	bottom: 10%;
+	width: 100%;
+}
+
+.lh3 {
+	line-height: 2.5rem;
+	color: #aaa;
 }

@@ -19,10 +19,24 @@ class Home extends Component {
 				rotate: 45
 			},
 			timeModal: false,
-			times: 1,
+			times: 0,
 			error: null
 		};
 	}
+
+
+	componentWillMount() {
+		let times = parseInt(window.localStorage.getItem('selectedtime'), 0) || 1;
+		this.setState({
+			times
+		});
+	}
+
+	componentWillUnmount() {
+		window.localStorage.setItem('selectedtime', this.state.times);
+	}
+
+
 
 	handlePage = () => new Promise((resolve, reject) => {
 		window.clearTimeout(this.timerDelay);
@@ -35,10 +49,6 @@ class Home extends Component {
 	handleList = (e) => {
 		e.preventDefault();
 		history.push('list');
-	}
-
-	handleTime = (e) => {
-		e.preventDefault();
 	}
 
 	showTimeModal = (e) => {
