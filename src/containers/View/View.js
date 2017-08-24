@@ -234,4 +234,4 @@ class View extends Component {
 	}
 }
 
-export default MotionPage(View);
+export default View;

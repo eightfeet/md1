@@ -193,4 +193,4 @@ class Home extends Component {
 	}
 }
 
-export default MotionPage(Home);
+export default Home;

@@ -206,4 +206,4 @@ class List extends Component {
 	}
 }
 
-export default MotionPage(List);
+export default List;
