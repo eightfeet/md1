@@ -5,7 +5,8 @@ import history from '~/core/history';
 import Modal from '~/components/Modal';
 import HeaderBar from '~/components/HeaderBar';
 import Loading from '~/components/Loading';
-import listpage from '~/assets/models.json';
+// models
+import modelslist from '~/assets/models.json';
 import Spin from '~/components/Loading/Spin';
 import MotionPage from '~/components/MotionPage';
 import ScrollLoading from '~/components/ScrollLoading';
@@ -22,6 +23,8 @@ class List extends Component {
 				color: 'red',
 				rotate: 45
 			},
+			currentpage: 0,
+			pagesize: 15,
 			list: []
 		};
 		this.selected = [];
@@ -37,7 +40,7 @@ class List extends Component {
 			this.historySelected = [];
 		}
 
-		const currentdata = JSON.parse(JSON.stringify([...this.state.list, ...listpage, ...listpage]));
+		const currentdata = JSON.parse(JSON.stringify([...this.state.list, ...this.getpagedata()]));
 		this.selectedHistory2New(currentdata);
 	}
 
@@ -50,11 +53,20 @@ class List extends Component {
 		}
 	}
 
+	getpagedata = () => {
+		const {currentpage, pagesize} = this.state;
+		const pagedata = modelslist.slice(currentpage*pagesize, currentpage*pagesize + pagesize);
+		this.setState({
+			currentpage: this.state.currentpage+1
+		});
+		return pagedata;
+	}
+
 	handlePage = () => new Promise((resolve, reject) => {
 		window.clearTimeout(this.timerDelay);
 		this.timerDelay = window.setTimeout(() => {
 			this.setState({
-				list: JSON.parse(JSON.stringify([...this.state.list, ...listpage]))
+				list: JSON.parse(JSON.stringify([...this.state.list, ...this.getpagedata()]))
 			}, () => {this.selectedHistory2New(this.state.list);});
 			resolve();
 		}, 1000);
@@ -141,7 +153,7 @@ class List extends Component {
 							{
 								this.state.list.map((item, i) => {
 									const img = window.document.createElement('img');
-									img.src = item.imgUrl;
+									img.src = `./assets/models/${item.imgUrl}`;
 									const rate = img.width / (window.innerWidth/3);
 									if (isNaN(rate)|| rate === 0) {
 										return;
@@ -177,7 +189,7 @@ class List extends Component {
 										>
 											<img src={img.src} alt="" />
 											{
-												<div onClick={this.handleSelect} id={i} className={item.selected ? s.selected : s.select} />
+												<div onClick={this.handleSelect} id={i} className={item.selected ? s.selectedbutton : s.selectbutton} />
 											}
 										</div>
 									);

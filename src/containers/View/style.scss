@@ -4,6 +4,11 @@
 	background-color: $gray-darkest;
 	text-align: center;
 	vertical-align: middle;
+	border: none;
+	border-radius: 0;
+	position: absolute;
+	left:0;
+	top:0;
 	img {
 		width: 100%;
 	}
@@ -14,6 +19,7 @@
 	position: absolute;
 	z-index: 10;
 	padding: 0.5rem;
+	border: none;
 	border-radius: 1rem;
 	color: $gray-light;
 	top: 0.5rem;
@@ -28,6 +34,7 @@
 	z-index: 10;
 	padding: 0.5rem;
 	border-radius: 1.2rem;
+	border: none;
 	color: $gray-light;
 	top: 0.5rem;
 	right: 0.5rem;

@@ -45,7 +45,7 @@
 	bottom: 1rem;
 }
 
-.select {
+.selectbutton {
 	border: 0.3rem solid #ccc;
 	border-radius: 3rem;
 	position: absolute;
@@ -56,7 +56,7 @@
 	z-index: 1;
 }
 
-.selected {
+.selectedbutton {
 	border: 0.3rem solid $spec-green;;
 	border-radius: 3rem;
 	position: absolute;

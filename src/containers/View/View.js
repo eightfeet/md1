@@ -48,7 +48,7 @@ class View extends Component {
 	componentWillMount() {
 		console.log('做了什么！！！');
 		let times = parseInt(window.localStorage.getItem('selectedtime'), 0) || 2;
-		const strList = window.localStorage.getItem('selected');
+		const strList = window.localStorage.getItem('selected') || [];
 		try {
 			this.setState({
 				list: JSON.parse(strList),
@@ -87,9 +87,12 @@ class View extends Component {
 	}
 
 	nextImg = (index) => {
-		const img = window.document.createElement('img');
-		img.src = this.state.list[index].imgUrl;
-		console.log('img.src', img.src);
+		try {
+			const img = window.document.createElement('img');
+			img.src = `./assets/models/${this.state.list[index].imgUrl}`;
+		} catch (error) {
+			console.log('img.src', error);
+		}
 	}
 
 	reSet = (sec) => {
@@ -172,7 +175,7 @@ class View extends Component {
 					{
 						list.map(item =>
 							(<div>
-								<img className="shadow-bottom" src={item.imgUrl} />
+								<img className="shadow-bottom" src={`./assets/models/${item.imgUrl}`} />
 							</div>)
 						)
 					}
