@@ -46,15 +46,6 @@ class Home extends Component {
 	}
 
 
-
-	handlePage = () => new Promise((resolve, reject) => {
-		window.clearTimeout(this.timerDelay);
-		this.timerDelay = window.setTimeout(() => {
-			console.log(1);
-			reject();
-		}, 2000);
-	});
-
 	handleList = (e) => {
 		e.preventDefault();
 		history.push('list');
@@ -71,10 +62,6 @@ class Home extends Component {
 		this.setState({
 			timeModal: false
 		});
-	}
-
-	onRequestClose = () => {
-		console.log(0);
 	}
 
 	handleMinus = (e) => {
@@ -104,7 +91,6 @@ class Home extends Component {
 			});
 			return;
 		}
-		console.log(this.state.times);
 		if (this.state.times <= 0) {
 			this.setState({
 				error: '老杆子，稳！但建议还是大于1分钟吧！'
@@ -189,7 +175,7 @@ class Home extends Component {
 				</Modal>
 				<Modal
 					contentLabel="time"
-					isOpen={this.state.error}
+					isOpen={!!this.state.error}
 					onRequestClose={this.closeError}
 				>
 					<h3 className="al-c font-bigger pdt2 pdb1">

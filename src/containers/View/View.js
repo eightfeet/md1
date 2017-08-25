@@ -46,7 +46,6 @@ class View extends Component {
 	}
 
 	componentWillMount() {
-		console.log('做了什么！！！');
 		let times = parseInt(window.localStorage.getItem('selectedtime'), 0) || 2;
 		const strList = window.localStorage.getItem('selected') || [];
 		try {
@@ -96,7 +95,6 @@ class View extends Component {
 	}
 
 	reSet = (sec) => {
-		console.log('重来了', sec);
 		window.clearInterval(this.timer);
 		const getTime = arrivedTime(sec);
 		const _this = this;
@@ -137,10 +135,6 @@ class View extends Component {
 		this.reSet(this.state.times);
 	}
 
-	onRequestClose = () => {
-		console.log(0);
-	}
-
 	handleMinus = (e) => {
 		e.preventDefault();
 		this.setState({
@@ -167,6 +161,7 @@ class View extends Component {
 					onClick={this.showTimeModal}
 				><span className="icon_clock pdr-2" />{infomation}</div>
 				<div onClick={this.handleList} className={s.pic}><i className="icon_layers" /></div>
+				<div onClick={() => {history.push('/');}} className={s.backhome}><i className="icon_home" /></div>
 				<AutoPlaySwipeableViews
 					interval={ times * 60000 }
 					onChangeIndex={this.handleChangeIndex}
@@ -221,7 +216,7 @@ class View extends Component {
 				</Modal>
 				<Modal
 					contentLabel="time"
-					isOpen={this.state.error}
+					isOpen={!!this.state.error}
 					onRequestClose={this.closeError}
 				>
 					<h3 className="al-c font-bigger pdt2 pdb1">

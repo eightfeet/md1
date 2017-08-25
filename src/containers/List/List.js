@@ -33,6 +33,7 @@ class List extends Component {
 
 
 	componentWillMount() {
+		listHeight = 0;
 		let operationSelected;
 		try {
 			this.historySelected = JSON.parse(window.localStorage.getItem('selected')) || [];
@@ -45,6 +46,10 @@ class List extends Component {
 
 
 	componentWillUnmount() {
+		this.initPageData();
+	}
+
+	initPageData = () => {
 		if (Array.isArray(this.selected) && this.selected.length > 0) {
 			window.localStorage.setItem('selected', JSON.stringify(this.selected));
 		} else {
@@ -74,15 +79,11 @@ class List extends Component {
 	handleSelect = (e) => {
 		const index = parseInt(e.target.id, 0);
 		this.state.list[index].selected = !this.state.list[index].selected;
-		console.log(1);
 		this.setState({
 			list: this.state.list
 		}, () => {
 			this.selected = this.selectedNew2History();
-			console.log('this.selected', this.selected);
-			if (this.selected.length === 0) {
-				window.localStorage.setItem('selected', JSON.stringify(this.selected));
-			}
+			this.initPageData();
 		});
 	}
 
@@ -105,7 +106,6 @@ class List extends Component {
 			}
 		});
 
-		console.log();
 		return JSON.parse(JSON.stringify(selected));
 	}
 
@@ -152,17 +152,15 @@ class List extends Component {
 							{
 								this.state.list.map((item, i) => {
 									const img = window.document.createElement('img');
-									img.src = `./assets/models/${item.imgUrl}`;
-									let rate;
-									img.onload = function() {
-										console.log('rate', img.width);
-										rate = img.width / (window.innerWidth/3);
-										if (isNaN(rate)|| rate === 0) {
-											return;
-										}
-									};
+									img.src = `./assets/models/small/${item.imgUrl}`;
+									const imginfo = item.imgUrl.split('&');
+									const rate = parseInt(imginfo[1], 0) / (window.innerWidth/3);
+
+									if (isNaN(rate)|| rate === 0) {
+										return;
+									}
 									const width = window.innerWidth/3;
-									const height = img.height / rate;
+									const height = parseInt(imginfo[2], 0) / rate;
 									const pageInd = i + 1;
 									const hp1 = p1, hp2 = p2, hp3 = p3;
 									let left = 0, top = 0;
@@ -211,9 +209,9 @@ class List extends Component {
 								})
 							}
 						</div>
-						<div className={s.loading} style={{top:listHeight}}>
+						{this.state.list.length !== modelslist.length ? (<div className={s.loading} style={{top:listHeight}}>
 							<img src={require('./loading.svg')} />
-						</div>
+						</div>) : null}
 					</ScrollLoading>
 				</div>
 			</div>
