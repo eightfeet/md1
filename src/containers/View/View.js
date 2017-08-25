@@ -155,7 +155,7 @@ class View extends Component {
 			window.clearInterval(this.timer);
 		}
 		return (
-			<div className={s.view}>
+			<div className={s.view} style={{border: 'none'}}>
 				<div
 					className={classNames(s.timer, num < 20 ? s.timerred : null)}
 					onClick={this.showTimeModal}
