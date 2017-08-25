@@ -1,6 +1,9 @@
 import { h, Component } from 'preact';
+import { connect } from 'preact-redux';
+import { bindActionCreators } from 'redux';
 import classNames from 'classnames';
 import history from '~/core/history';
+import { setRuntimeVariable } from '~/actions/user';
 import Modal from '~/components/Modal';
 import Loading from '~/components/Loading';
 import Spin from '~/components/Loading/Spin';
@@ -31,6 +34,7 @@ class Home extends Component {
 
 
 	componentWillMount() {
+		this.props.setStore({name:'year', value: 1983});
 		let times = parseInt(window.localStorage.getItem('selectedtime'), 0) || 1;
 		this.setState({
 			times
@@ -65,6 +69,7 @@ class Home extends Component {
 	}
 
 	handleMinus = (e) => {
+		console.log(this.props.year);
 		e.preventDefault();
 		this.setState({
 			times: this.state.times > 1 ? this.state.times - 1 : 1
@@ -109,7 +114,6 @@ class Home extends Component {
 
 	render() {
 		const { item } = this.state;
-
 		return (
 			<div className={s.root}>
 				<div className={s.view}>
@@ -188,4 +192,13 @@ class Home extends Component {
 	}
 }
 
-export default MotionPage(Home);
+function mapStateToProps(state) {
+	return state;
+}
+
+
+function mapDispatchToProps(dispatch){
+	return bindActionCreators({ setStore: setRuntimeVariable}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MotionPage(Home));

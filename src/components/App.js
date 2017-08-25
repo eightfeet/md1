@@ -20,7 +20,6 @@ class App extends Component {
 		super();
 	}
 	render() {
-		console.log(this.props);
 		return (
 			<div id="app"  >
 				<Router history={history}>

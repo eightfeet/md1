@@ -63,7 +63,6 @@ class View extends Component {
 	}
 
 	componentDidMount() {
-		this.forceUpdate();
 	}
 
 	componentWillUnmount() {
@@ -81,8 +80,9 @@ class View extends Component {
 	hideTimeModal = () => {
 		this.setState({
 			timeModal: false
+		}, () => {
+			window.localStorage.setItem('selectedtime', this.state.times);
 		});
-		window.localStorage.setItem('selectedtime', this.state.times);
 	}
 
 	nextImg = (index) => {
@@ -139,6 +139,8 @@ class View extends Component {
 		e.preventDefault();
 		this.setState({
 			times: this.state.times > 1 ? this.state.times - 1 : 1
+		}, () => {
+			window.localStorage.setItem('selectedtime', this.state.times);
 		});
 	}
 
@@ -146,6 +148,8 @@ class View extends Component {
 		e.preventDefault();
 		this.setState({
 			times: this.state.times < 60 ? this.state.times + 1 : 60
+		}, () => {
+			window.localStorage.setItem('selectedtime', this.state.times);
 		});
 	}
 
@@ -166,6 +170,7 @@ class View extends Component {
 					interval={ times * 60000 }
 					onChangeIndex={this.handleChangeIndex}
 					style={{width: '100%', height: '100%'}}
+					animateTransitions
 				>
 					{
 						list.map(item =>
