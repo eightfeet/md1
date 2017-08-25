@@ -446,3 +446,11 @@ body {
 .btngreen:active {
 	background: $gray-darkest;
 }
+
+.selectbutton {
+	border: 0.3rem solid #ccc;
+}
+
+.selectedbutton {
+	border: 0.3rem solid $spec-green;
+}

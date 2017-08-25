@@ -39,7 +39,6 @@ class List extends Component {
 		} catch (error) {
 			this.historySelected = [];
 		}
-
 		const currentdata = JSON.parse(JSON.stringify([...this.state.list, ...this.getpagedata()]));
 		this.selectedHistory2New(currentdata);
 	}
@@ -112,7 +111,6 @@ class List extends Component {
 
 	selectedHistory2New = (current) => {
 		const operationList = JSON.parse(JSON.stringify(current));
-		console.log(current);
 		operationList.forEach((item, index) => { // 遍历当前选择列表
 			// 修改新值
 			this.historySelected.forEach((el, i) => { // 同时遍历旧数据
@@ -121,6 +119,7 @@ class List extends Component {
 				}
 			});
 		});
+
 		this.setState({
 			list: operationList
 		});
@@ -154,10 +153,14 @@ class List extends Component {
 								this.state.list.map((item, i) => {
 									const img = window.document.createElement('img');
 									img.src = `./assets/models/${item.imgUrl}`;
-									const rate = img.width / (window.innerWidth/3);
-									if (isNaN(rate)|| rate === 0) {
-										return;
-									}
+									let rate;
+									img.onload = function() {
+										console.log('rate', img.width);
+										rate = img.width / (window.innerWidth/3);
+										if (isNaN(rate)|| rate === 0) {
+											return;
+										}
+									};
 									const width = window.innerWidth/3;
 									const height = img.height / rate;
 									const pageInd = i + 1;
@@ -189,7 +192,19 @@ class List extends Component {
 										>
 											<img src={img.src} alt="" />
 											{
-												<div onClick={this.handleSelect} id={i} className={item.selected ? s.selectedbutton : s.selectbutton} />
+												<div
+													onClick={this.handleSelect} id={i}
+													style={{
+														border: !item.selected? '0.3rem solid #ccc':'0.3rem solid #00b67b',
+														borderRadius: '3rem',
+														position: 'absolute',
+														right: '0.5rem',
+														top: '0.5rem',
+														width: '1rem',
+														height: '1rem',
+														zIndex: '1'
+													}}
+													/>
 											}
 										</div>
 									);

@@ -45,28 +45,6 @@
 	bottom: 1rem;
 }
 
-.selectbutton {
-	border: 0.3rem solid #ccc;
-	border-radius: 3rem;
-	position: absolute;
-	right: 0.5rem;
-	top: 0.5rem;
-	width: 1rem;
-	height: 1rem;
-	z-index: 1;
-}
-
-.selectedbutton {
-	border: 0.3rem solid $spec-green;;
-	border-radius: 3rem;
-	position: absolute;
-	right: 0.5rem;
-	top: 0.5rem;
-	width: 1rem;
-	height: 1rem;
-	z-index: 100;
-}
-
 .checked {
 	color: $spec-green;
 }

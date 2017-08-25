@@ -9,6 +9,11 @@ import ScrollLoading from '~/components/ScrollLoading';
 import s from './style';
 import sl from './styleb';
 
+Loading.show();
+window.onload = function() {
+	Loading.hide();
+};
+
 class Home extends Component {
 	constructor() {
 		super();
@@ -31,6 +36,10 @@ class Home extends Component {
 			times
 		});
 	}
+
+	componentDidMount() {
+	}
+
 
 	componentWillUnmount() {
 		window.localStorage.setItem('selectedtime', this.state.times);
@@ -193,4 +202,4 @@ class Home extends Component {
 	}
 }
 
-export default Home;
+export default MotionPage(Home);
