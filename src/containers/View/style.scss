@@ -4,33 +4,56 @@
 	background-color: $gray-darkest;
 	text-align: center;
 	vertical-align: middle;
+	border: none;
+	border-radius: 0;
+	position: absolute;
+	left:0;
+	top:0;
 	img {
 		width: 100%;
 	}
 }
 
 .timer {
-	background-color: $gray-darkest;
+	background-color: rgba(25, 25, 25, 0.5);
 	position: absolute;
 	z-index: 10;
 	padding: 0.5rem;
+	border: none;
 	border-radius: 1rem;
 	color: $gray-light;
-	top: 0.5rem;
-	left: 0.5rem;
+	bottom: 0.5rem;
+	width: 6rem;
+	left: 50%;
+	margin-left: -3rem;
 	height: 1.2rem;
 	line-height: 1.2rem;
 }
 
 .pic {
-	background-color: $gray-darkest;
+	background-color: rgba(25, 25, 25, 0.5);
 	position: absolute;
 	z-index: 10;
 	padding: 0.5rem;
 	border-radius: 1.2rem;
-	color: $gray-light;
+	border: none;
+	color: $gray;
 	top: 0.5rem;
 	right: 0.5rem;
+	height: 1.2rem;
+	width: 1.2rem;
+}
+
+.backhome {
+	background-color: rgba(25, 25, 25, 0.5);
+	position: absolute;
+	z-index: 10;
+	padding: 0.5rem;
+	border-radius: 1.2rem;
+	border: none;
+	color: $gray;
+	top: 0.5rem;
+	left: 0.5rem;
 	height: 1.2rem;
 	width: 1.2rem;
 }

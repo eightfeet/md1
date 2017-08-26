@@ -1,6 +1,9 @@
 import { h, Component } from 'preact';
+import { connect } from 'preact-redux';
+import { bindActionCreators } from 'redux';
 import classNames from 'classnames';
 import history from '~/core/history';
+import { setRuntimeVariable } from '~/actions/user';
 import Modal from '~/components/Modal';
 import Loading from '~/components/Loading';
 import Spin from '~/components/Loading/Spin';
@@ -10,41 +13,13 @@ import s from './style';
 import sl from './styleb';
 
 class Home extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
-			item: {
-				left: 10,
-				color: 'red',
-				rotate: 45
-			},
 			timeModal: false,
-			times: 0,
 			error: null
 		};
 	}
-
-
-	componentWillMount() {
-		let times = parseInt(window.localStorage.getItem('selectedtime'), 0) || 1;
-		this.setState({
-			times
-		});
-	}
-
-	componentWillUnmount() {
-		window.localStorage.setItem('selectedtime', this.state.times);
-	}
-
-
-
-	handlePage = () => new Promise((resolve, reject) => {
-		window.clearTimeout(this.timerDelay);
-		this.timerDelay = window.setTimeout(() => {
-			console.log(1);
-			reject();
-		}, 2000);
-	});
 
 	handleList = (e) => {
 		e.preventDefault();
@@ -64,45 +39,36 @@ class Home extends Component {
 		});
 	}
 
-	onRequestClose = () => {
-		console.log(0);
-	}
-
 	handleMinus = (e) => {
 		e.preventDefault();
-		this.setState({
-			times: this.state.times > 1 ? this.state.times - 1 : 1
+		this.props.setStore({
+			name: 'time',
+			value: this.props.time > 1 ? this.props.time - 1 : 1
 		});
 	}
 
 	handlePlus = (e) => {
 		e.preventDefault();
-		this.setState({
-			times: this.state.times < 60 ? this.state.times + 1 : 60
+		this.props.setStore({
+			name: 'time',
+			value: this.props.time < 60 ? this.props.time + 1 : 60
 		});
 	}
 
 	onStart = () => {
-		let selected;
-		try {
-			selected = JSON.parse(window.localStorage.getItem('selected')) || [];
-		} catch (error) {
-			selected = [];
-		}
+		const { selected, time} = this.props;
 		if (selected.length <= 0) {
 			this.setState({
 				error: '您还没选择图片！'
 			});
 			return;
 		}
-		console.log(this.state.times);
-		if (this.state.times <= 0) {
+		if (time <= 0) {
 			this.setState({
 				error: '老杆子，稳！但建议还是大于1分钟吧！'
 			});
 			return;
 		}
-		window.localStorage.setItem('selectedtime', this.state.times);
 		history.push('/view');
 	}
 
@@ -114,7 +80,7 @@ class Home extends Component {
 
 	render() {
 		const { item } = this.state;
-
+		const {selected, time} = this.props;
 		return (
 			<div className={s.root}>
 				<div className={s.view}>
@@ -158,7 +124,7 @@ class Home extends Component {
 								</a>
 							</div>
 							<div className="fl w4">
-								<input type="text" value={this.state.times} readOnly className="ww al-c" />
+								<input type="text" value={time} readOnly className="ww al-c" />
 							</div>
 							<div
 								className="fl w3 al-c font-biggest"
@@ -180,7 +146,7 @@ class Home extends Component {
 				</Modal>
 				<Modal
 					contentLabel="time"
-					isOpen={this.state.error}
+					isOpen={!!this.state.error}
 					onRequestClose={this.closeError}
 				>
 					<h3 className="al-c font-bigger pdt2 pdb1">
@@ -193,4 +159,13 @@ class Home extends Component {
 	}
 }
 
-export default MotionPage(Home);
+function mapStateToProps(state) {
+	return state;
+}
+
+
+function mapDispatchToProps(dispatch){
+	return bindActionCreators({ setStore: setRuntimeVariable}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MotionPage(Home));

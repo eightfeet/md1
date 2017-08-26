@@ -46,7 +46,6 @@ class View extends Component {
 	}
 
 	componentWillMount() {
-		console.log('做了什么！！！');
 		let times = parseInt(window.localStorage.getItem('selectedtime'), 0) || 2;
 		const strList = window.localStorage.getItem('selected') || [];
 		try {
@@ -64,7 +63,6 @@ class View extends Component {
 	}
 
 	componentDidMount() {
-		this.forceUpdate();
 	}
 
 	componentWillUnmount() {
@@ -82,18 +80,21 @@ class View extends Component {
 	hideTimeModal = () => {
 		this.setState({
 			timeModal: false
+		}, () => {
+			window.localStorage.setItem('selectedtime', this.state.times);
 		});
-		window.localStorage.setItem('selectedtime', this.state.times);
 	}
 
 	nextImg = (index) => {
-		const img = window.document.createElement('img');
-		img.src = this.state.list[index].imgUrl;
-		console.log('img.src', img.src);
+		try {
+			const img = window.document.createElement('img');
+			img.src = `./assets/models/${this.state.list[index].imgUrl}`;
+		} catch (error) {
+			console.log('img.src', error);
+		}
 	}
 
 	reSet = (sec) => {
-		console.log('重来了', sec);
 		window.clearInterval(this.timer);
 		const getTime = arrivedTime(sec);
 		const _this = this;
@@ -134,14 +135,12 @@ class View extends Component {
 		this.reSet(this.state.times);
 	}
 
-	onRequestClose = () => {
-		console.log(0);
-	}
-
 	handleMinus = (e) => {
 		e.preventDefault();
 		this.setState({
 			times: this.state.times > 1 ? this.state.times - 1 : 1
+		}, () => {
+			window.localStorage.setItem('selectedtime', this.state.times);
 		});
 	}
 
@@ -149,6 +148,8 @@ class View extends Component {
 		e.preventDefault();
 		this.setState({
 			times: this.state.times < 60 ? this.state.times + 1 : 60
+		}, () => {
+			window.localStorage.setItem('selectedtime', this.state.times);
 		});
 	}
 
@@ -158,21 +159,23 @@ class View extends Component {
 			window.clearInterval(this.timer);
 		}
 		return (
-			<div className={s.view}>
+			<div className={s.view} style={{border: 'none'}}>
 				<div
 					className={classNames(s.timer, num < 20 ? s.timerred : null)}
 					onClick={this.showTimeModal}
 				><span className="icon_clock pdr-2" />{infomation}</div>
 				<div onClick={this.handleList} className={s.pic}><i className="icon_layers" /></div>
+				<div onClick={() => {history.push('/');}} className={s.backhome}><i className="icon_home" /></div>
 				<AutoPlaySwipeableViews
 					interval={ times * 60000 }
 					onChangeIndex={this.handleChangeIndex}
 					style={{width: '100%', height: '100%'}}
+					animateTransitions
 				>
 					{
 						list.map(item =>
 							(<div>
-								<img className="shadow-bottom" src={item.imgUrl} />
+								<img className="shadow-bottom" src={`./assets/models/${item.imgUrl}`} />
 							</div>)
 						)
 					}
@@ -218,7 +221,7 @@ class View extends Component {
 				</Modal>
 				<Modal
 					contentLabel="time"
-					isOpen={this.state.error}
+					isOpen={!!this.state.error}
 					onRequestClose={this.closeError}
 				>
 					<h3 className="al-c font-bigger pdt2 pdb1">
@@ -231,4 +234,4 @@ class View extends Component {
 	}
 }
 
-export default MotionPage(View);
+export default View;

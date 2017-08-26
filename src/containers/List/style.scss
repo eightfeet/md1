@@ -1,6 +1,4 @@
 .imgbox{
-	box-sizing: border-box;
-	border: 3px solid #fff;
 	position: absolute;
 	img {
 		width: 100%;
@@ -23,7 +21,7 @@
 
 .loading {
 	position: absolute;
-	background-color: #fff;
+	background-color: #f1f4f8;
 	width: 100%;
 	height: 4rem;
 	line-height: 4rem;
@@ -45,32 +43,41 @@
 	bottom: 1rem;
 }
 
-.select {
-	border: 0.3rem solid #ccc;
-	border-radius: 3rem;
-	position: absolute;
-	right: 0.5rem;
-	top: 0.5rem;
-	width: 1rem;
-	height: 1rem;
-	z-index: 1;
-}
-
-.selected {
-	border: 0.3rem solid $spec-green;;
-	border-radius: 3rem;
-	position: absolute;
-	right: 0.5rem;
-	top: 0.5rem;
-	width: 1rem;
-	height: 1rem;
-	z-index: 100;
-}
-
 .checked {
 	color: $spec-green;
 }
 
 .checked:hover {
 	color: red;
+}
+
+.menu {
+	position: absolute;
+	top: 3.5rem;
+	z-index: 10;
+	right: 0.5rem;
+	left: 0.5rem;
+	background-color: #00b67b;
+	border-radius: 0 0 0.5rem 0.5rem;
+	color: #fff;
+	overflow: hidden;
+	li{
+		height: 3rem;
+		line-height: 3rem;
+		border-top: 1px solid #0cda97;
+		border-bottom: 1px solid #039263;
+	}
+	li:first-child {
+		border-top: none;
+	}
+	li:last-child {
+		border-bottom: none;
+	}
+}
+
+.filter {
+	li{
+		height: 3rem;
+		line-height: 3rem;
+	}
 }

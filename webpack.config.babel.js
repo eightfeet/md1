@@ -199,11 +199,11 @@ module.exports = {
 	},
 
 	// devtool: ENV==='production' ? 'source-map' : 'cheap-module-eval-source-map',
-	devtool: ENV==='production' ? '' : 'cheap-module-eval-source-map',
+	devtool: ENV==='production' ? 'source-map' : 'cheap-module-eval-source-map',
 
 	devServer: {
 		port: process.env.PORT || 3000,
-		host: '192.168.88.104',
+		host: '192.168.88.100',
 		// colors: true, // no longer used
 		publicPath: '',
 		contentBase: './src',
