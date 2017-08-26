@@ -40,9 +40,12 @@ class List extends Component {
 
 
 	componentWillMount() {
-		this.sourceDataOperation();
+		const {isX, isY} = this.state;
+		this.sourceDataOperation({
+			isX,
+			isY
+		});
 		listHeight = 0;
-		let operationSelected;
 		try {
 			this.historySelected = JSON.parse(window.localStorage.getItem('selected')) || [];
 		} catch (error) {
@@ -52,13 +55,19 @@ class List extends Component {
 		this.selectedHistory2New(currentdata);
 	}
 
+	componentDidMount() {
+		console.log(this.props.sourceList);
+	}
+
+
 
 	componentWillUnmount() {
 		this.initPageData();
 	}
 
-	sourceDataOperation = () => {
-		const {isX, isY, isBody, isClothes} = this.state;
+	// 按筛选条件获取数据源
+	sourceDataOperation = (data) => {
+		const {isX, isY} = data;
 		const getdata = [];
 		for (let i = 0; i < sourcedata.length; i += 1) {
 			if ( isX && sourcedata[i].xy === 'x' ) {
@@ -70,6 +79,10 @@ class List extends Component {
 				continue;
 			}
 		}
+		this.props.setStore({
+			name: 'sourceList',
+			value: getdata
+		});
 		modelslist = getdata;
 	}
 
@@ -183,7 +196,11 @@ class List extends Component {
 	}
 
 	doFilter = () => {
-		this.sourceDataOperation();
+		const {isX, isY} = this.state;
+		this.sourceDataOperation({
+			isX,
+			isY
+		});
 		listHeight = 0;
 		let operationSelected;
 		try {
@@ -265,7 +282,8 @@ class List extends Component {
 							{
 								this.state.list.map((item, i) => {
 									const img = window.document.createElement('img');
-									img.src = `./assets/models/smalls/${item.imgUrl}`;
+									// img.src = `./assets/models/smalls/${item.imgUrl}`;
+									img.src = '';
 									const imginfo = item.imgUrl.split('&');
 									const rate = parseInt(imginfo[1], 0) / (window.innerWidth/3);
 

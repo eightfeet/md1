@@ -1,4 +1,5 @@
 const defaultState = {
+	sourceList: [],
 	selected: [],
 	time: 2
 };
