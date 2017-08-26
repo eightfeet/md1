@@ -48,7 +48,7 @@ class View extends Component {
 	componentWillMount() {
 		console.log('做了什么！！！');
 		let times = parseInt(window.localStorage.getItem('selectedtime'), 0) || 2;
-		const strList = window.localStorage.getItem('selected');
+		const strList = window.localStorage.getItem('selected') || [];
 		try {
 			this.setState({
 				list: JSON.parse(strList),
