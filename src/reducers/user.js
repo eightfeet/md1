@@ -1,4 +1,6 @@
 const defaultState = {
+	selected: [],
+	time: 2
 };
 const reducer = (state = defaultState, action) => {
 	const data = {};

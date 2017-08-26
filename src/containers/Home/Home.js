@@ -12,43 +12,14 @@ import ScrollLoading from '~/components/ScrollLoading';
 import s from './style';
 import sl from './styleb';
 
-Loading.show();
-window.onload = function() {
-	Loading.hide();
-};
-
 class Home extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
-			item: {
-				left: 10,
-				color: 'red',
-				rotate: 45
-			},
 			timeModal: false,
-			times: 0,
 			error: null
 		};
 	}
-
-
-	componentWillMount() {
-		this.props.setStore({name:'year', value: 1983});
-		let times = parseInt(window.localStorage.getItem('selectedtime'), 0) || 1;
-		this.setState({
-			times
-		});
-	}
-
-	componentDidMount() {
-	}
-
-
-	componentWillUnmount() {
-		window.localStorage.setItem('selectedtime', this.state.times);
-	}
-
 
 	handleList = (e) => {
 		e.preventDefault();
@@ -69,40 +40,35 @@ class Home extends Component {
 	}
 
 	handleMinus = (e) => {
-		console.log(this.props.year);
 		e.preventDefault();
-		this.setState({
-			times: this.state.times > 1 ? this.state.times - 1 : 1
+		this.props.setStore({
+			name: 'time',
+			value: this.props.time > 1 ? this.props.time - 1 : 1
 		});
 	}
 
 	handlePlus = (e) => {
 		e.preventDefault();
-		this.setState({
-			times: this.state.times < 60 ? this.state.times + 1 : 60
+		this.props.setStore({
+			name: 'time',
+			value: this.props.time < 60 ? this.props.time + 1 : 60
 		});
 	}
 
 	onStart = () => {
-		let selected;
-		try {
-			selected = JSON.parse(window.localStorage.getItem('selected')) || [];
-		} catch (error) {
-			selected = [];
-		}
+		const { selected, time} = this.props;
 		if (selected.length <= 0) {
 			this.setState({
 				error: '您还没选择图片！'
 			});
 			return;
 		}
-		if (this.state.times <= 0) {
+		if (time <= 0) {
 			this.setState({
 				error: '老杆子，稳！但建议还是大于1分钟吧！'
 			});
 			return;
 		}
-		window.localStorage.setItem('selectedtime', this.state.times);
 		history.push('/view');
 	}
 
@@ -114,6 +80,7 @@ class Home extends Component {
 
 	render() {
 		const { item } = this.state;
+		const {selected, time} = this.props;
 		return (
 			<div className={s.root}>
 				<div className={s.view}>
@@ -157,7 +124,7 @@ class Home extends Component {
 								</a>
 							</div>
 							<div className="fl w4">
-								<input type="text" value={this.state.times} readOnly className="ww al-c" />
+								<input type="text" value={time} readOnly className="ww al-c" />
 							</div>
 							<div
 								className="fl w3 al-c font-biggest"

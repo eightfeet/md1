@@ -1,6 +1,9 @@
 import { h, Component } from 'preact';
+import { connect } from 'preact-redux';
+import { bindActionCreators } from 'redux';
 import classNames from 'classnames';
 import queryString from 'query-string';
+import { setRuntimeVariable } from '~/actions/user';
 import history from '~/core/history';
 import Modal from '~/components/Modal';
 import HeaderBar from '~/components/HeaderBar';
@@ -19,11 +22,6 @@ class List extends Component {
 	constructor() {
 		super();
 		this.state = {
-			item: {
-				left: 10,
-				color: 'red',
-				rotate: 45
-			},
 			currentpage: 0,
 			pagesize: 15,
 			list: [],
@@ -227,6 +225,11 @@ class List extends Component {
 
 	render() {
 		const {
+			setStore,
+			time,
+			selected
+		} = this.props;
+		const {
 			item,
 			isX,
 			isY,
@@ -262,7 +265,7 @@ class List extends Component {
 							{
 								this.state.list.map((item, i) => {
 									const img = window.document.createElement('img');
-									img.src = `./assets/models/small/${item.imgUrl}`;
+									img.src = `./assets/models/smalls/${item.imgUrl}`;
 									const imginfo = item.imgUrl.split('&');
 									const rate = parseInt(imginfo[1], 0) / (window.innerWidth/3);
 
@@ -376,4 +379,13 @@ class List extends Component {
 	}
 }
 
-export default List;
+function mapStateToProps(state) {
+	return state;
+}
+
+
+function mapDispatchToProps(dispatch){
+	return bindActionCreators({ setStore: setRuntimeVariable}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MotionPage(List));
