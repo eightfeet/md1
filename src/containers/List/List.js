@@ -16,7 +16,7 @@ import ScrollLoading from '~/components/ScrollLoading';
 import s from './style';
 
 let listHeight = 0;
-let modelslist;
+let modelslist = [];
 
 class List extends Component {
 	constructor() {
@@ -40,52 +40,103 @@ class List extends Component {
 
 
 	componentWillMount() {
+		// 先根据筛选条件获取数据源
 		const {isX, isY} = this.state;
-		this.sourceDataOperation({
-			isX,
-			isY
-		});
-		listHeight = 0;
-		try {
-			this.historySelected = JSON.parse(window.localStorage.getItem('selected')) || [];
-		} catch (error) {
-			this.historySelected = [];
-		}
-		const currentdata = JSON.parse(JSON.stringify([...this.state.list, ...this.getpagedata()]));
-		this.selectedHistory2New(currentdata);
+		// 第一页
+		this.onPage(isX, isY);
 	}
-
-	componentDidMount() {
-		console.log(this.props.sourceList);
-	}
-
-
 
 	componentWillUnmount() {
 		this.initPageData();
 	}
 
-	// 按筛选条件获取数据源
-	sourceDataOperation = (data) => {
-		const {isX, isY} = data;
-		const getdata = [];
-		for (let i = 0; i < sourcedata.length; i += 1) {
-			if ( isX && sourcedata[i].xy === 'x' ) {
-				getdata.push(sourcedata[i]);
-				continue;
+	// 按筛选条件重制数据源 (初始化sourceList) data 筛选条件 sourcedata 数据源
+	sourceDataOperation = (data, sourcedata) => {
+		return new Promise((resolve, reject) => {
+			if (!sourcedata) {
+				reject();
 			}
-			if ( isY && sourcedata[i].xy === 'y' ) {
-				getdata.push(sourcedata[i]);
-				continue;
+			const {isX, isY} = data;
+			const getdata = [];
+			for (let i = 0; i < sourcedata.length; i += 1) {
+				if ( isX && sourcedata[i].xy === 'x' ) {
+					getdata.push(sourcedata[i]);
+					continue;
+				}
+				if ( isY && sourcedata[i].xy === 'y' ) {
+					getdata.push(sourcedata[i]);
+					continue;
+				}
 			}
-		}
-		this.props.setStore({
-			name: 'sourceList',
-			value: getdata
-		}, (data)=> {
-			console.log('youma', data);
+			this.props.setStore({
+				name: 'sourceList',
+				value: getdata
+			});
+			setTimeout(() => {
+				resolve();
+			});
 		});
-		modelslist = getdata;
+	}
+
+	// 创建更新页面数据
+	newPage = () => new Promise((resolve, reject) => {
+		const currentdata = JSON.parse(JSON.stringify([
+			...this.props.currentpage,
+			...this.getpagedata(this.props.sourceList)
+		]));
+
+		this.props.setStore({
+			name: 'currentdata',
+			value: JSON.parse(JSON.stringify(currentdata))
+		});
+		setTimeout(() => {
+			console.log('currentpage', this.props.currentpage);
+			console.log('sourceList', this.props.sourceList);
+			resolve();
+		});
+	})
+
+	// 比较选择历史更新页面
+	compareHistory = () => new Promise((resove, reject) => {
+		const { currentpage, selected, setStore } = this.props;
+		const operationList = JSON.parse(JSON.stringify(currentpage));
+
+		operationList.forEach((item, index) => { // 遍历当前选择列表
+			// 修改新值
+			selected.forEach((el, i) => { // 同时遍历旧数据
+				if (el.imgUrl === item.imgUrl) { // 如果新老值是同一个项
+					item.selected = el.selected; // 以旧值选择结果为标准
+				}
+			});
+		});
+
+		setStore({
+			name: 'currentpage',
+			value: operationList
+		});
+		setTimeout(() => {
+			resove();
+		});
+	});
+
+	// 更新页面
+	onPage = () => {
+		const {isX, isY} = this.state;
+		Promise.resolve().then(() => {
+			// 初始化数据
+			this.sourceDataOperation({
+				isX,
+				isY
+			}, sourcedata);
+		}).then(() => {
+			// 更新页面数据
+			this.newPage();
+		}).then(() => {
+			// 比较历史选择再更新页面数据
+			this.compareHistory();
+		}).catch(() => {
+			console.log('meile');
+		});
 	}
 
 	toggle = (element) => () => {
@@ -102,9 +153,9 @@ class List extends Component {
 		}
 	}
 
-	getpagedata = () => {
+	getpagedata = (souce) => {
 		const {currentpage, pagesize} = this.state;
-		const pagedata = modelslist.slice(currentpage*pagesize, currentpage*pagesize + pagesize);
+		const pagedata = souce.slice(currentpage*pagesize, currentpage*pagesize + pagesize);
 		this.setState({
 			currentpage: this.state.currentpage+1
 		});
@@ -246,7 +297,8 @@ class List extends Component {
 		const {
 			setStore,
 			time,
-			selected
+			selected,
+			currentdata
 		} = this.props;
 		const {
 			item,
@@ -255,6 +307,7 @@ class List extends Component {
 			isBody,
 			isClothes
 		} = this.state;
+
 		let p1 = 0, p2 = 0, p3 = 0;
 		return (
 			<div className={s.root}>
@@ -276,74 +329,76 @@ class List extends Component {
 				</div>
 				<div className={s.list}>
 					<ScrollLoading
-						handlePage={this.handlePage}
+						handlePage={this.onPage}
 						scrollToTop
 						loadingHtml={<div />}
 					>
 						<div className="clearfix" style={{height: listHeight}}>
 							{
-								this.state.list.map((item, i) => {
-									const img = window.document.createElement('img');
-									// img.src = `./assets/models/smalls/${item.imgUrl}`;
-									img.src = '';
-									const imginfo = item.imgUrl.split('&');
-									const rate = parseInt(imginfo[1], 0) / (window.innerWidth/3);
+								// if(currentdata) {
+									currentdata ? currentdata.map((item, i) => {
+										const img = window.document.createElement('img');
+										img.src = `./assets/models/small/${item.imgUrl}`;
+										// img.src = '';
+										const imginfo = item.imgUrl.split('&');
+										const rate = parseInt(imginfo[1], 0) / (window.innerWidth/3);
 
-									if (isNaN(rate)|| rate === 0) {
-										return;
-									}
-									const width = window.innerWidth/3;
-									const height = parseInt(imginfo[2], 0) / rate;
-									const pageInd = i + 1;
-									const hp1 = p1, hp2 = p2, hp3 = p3;
-									let left = 0, top = 0;
+										if (isNaN(rate)|| rate === 0) {
+											return;
+										}
+										const width = window.innerWidth/3;
+										const height = parseInt(imginfo[2], 0) / rate;
+										const pageInd = i + 1;
+										const hp1 = p1, hp2 = p2, hp3 = p3;
+										let left = 0, top = 0;
 
-									if (pageInd % 3 === 2) {
-										p1 = p1 + height;
-										left = 0;
-										top = hp1 + 3;
-									}
-									if (pageInd % 3 === 1) {
-										p2 = p2 + height;
-										left = width;
-										top = hp2 + 3;
-									}
-									if (pageInd % 3 === 0) {
-										p3 = p3 + height;
-										left = width * 2;
-										top = hp3 + 3;
-									}
+										if (pageInd % 3 === 2) {
+											p1 = p1 + height;
+											left = 0;
+											top = hp1 + 3;
+										}
+										if (pageInd % 3 === 1) {
+											p2 = p2 + height;
+											left = width;
+											top = hp2 + 3;
+										}
+										if (pageInd % 3 === 0) {
+											p3 = p3 + height;
+											left = width * 2;
+											top = hp3 + 3;
+										}
 
-									listHeight = Math.max(p1, p2, p3) + 3;
+										listHeight = Math.max(p1, p2, p3) + 3;
 
-									return (
-										<div
-											style={{
-												width, height, left, top,
-												boxSizing: 'border-box',
-												border: '3px solid #fff'
-											}}
-											className={s.imgbox}
-										>
-											<img src={img.src} alt="" />
-											{
-												<div
-													onClick={this.handleSelect(i)}
-													style={{
-														border: !item.selected? '0.3rem solid #ccc':'0.3rem solid #00b67b',
-														borderRadius: '3rem',
-														position: 'absolute',
-														right: '0.5rem',
-														top: '0.5rem',
-														width: '1rem',
-														height: '1rem',
-														zIndex: '1'
-													}}
-													/>
-											}
-										</div>
-									);
-								})
+										return (
+											<div
+												style={{
+													width, height, left, top,
+													boxSizing: 'border-box',
+													border: '3px solid #fff'
+												}}
+												className={s.imgbox}
+											>
+												<img src={img.src} alt="" />
+												{
+													<div
+														onClick={this.handleSelect(i)}
+														style={{
+															border: !item.selected? '0.3rem solid #ccc':'0.3rem solid #00b67b',
+															borderRadius: '3rem',
+															position: 'absolute',
+															right: '0.5rem',
+															top: '0.5rem',
+															width: '1rem',
+															height: '1rem',
+															zIndex: '1'
+														}}
+														/>
+												}
+											</div>
+										);
+									}) : null
+								//}
 							}
 						</div>
 						{this.state.list.length !== modelslist.length ? (<div className={s.loading} style={{top:listHeight}}>

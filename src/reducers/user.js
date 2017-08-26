@@ -1,6 +1,7 @@
 const defaultState = {
 	sourceList: [],
 	selected: [],
+	currentpage: [],
 	time: 2
 };
 const reducer = (state = defaultState, action) => {
