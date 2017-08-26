@@ -82,6 +82,8 @@ class List extends Component {
 		this.props.setStore({
 			name: 'sourceList',
 			value: getdata
+		}, (data)=> {
+			console.log('youma', data);
 		});
 		modelslist = getdata;
 	}
