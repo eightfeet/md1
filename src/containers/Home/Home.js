@@ -34,9 +34,12 @@ class Home extends Component {
 	}
 
 	hideTimeModal = () => {
+		const {time} = this.props;
 		this.setState({
 			timeModal: false
 		});
+		// 缓存时间数据到浏览器
+		window.localStorage.setItem('time', time);
 	}
 
 	handleMinus = (e) => {

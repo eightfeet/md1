@@ -32,7 +32,8 @@ class List extends Component {
 			isX: true,
 			isY: true,
 			isBody: true,
-			isClothes: true
+			isClothes: true,
+			loading: false
 		};
 		this.selected = [];
 		this.historySelected = [];
@@ -40,66 +41,67 @@ class List extends Component {
 
 
 	componentWillMount() {
-		// 先根据筛选条件获取数据源
-		const {isX, isY} = this.state;
-		// 第一页
-		this.onPage(isX, isY);
+		// 进入页面初始化
+		this.props.setStore({
+			name: 'currentdata',
+			value: []
+		});
+		// 重制第一页
+		setTimeout(() => {
+			this.onPage();
+		});
 	}
 
 	componentWillUnmount() {
-		this.initPageData();
+		// 缓存已选择数据到浏览器
+		window.localStorage.setItem('selected', JSON.stringify(this.props.selected));
 	}
 
 	// 按筛选条件重制数据源 (初始化sourceList) data 筛选条件 sourcedata 数据源
-	sourceDataOperation = (data, sourcedata) => {
-		return new Promise((resolve, reject) => {
-			if (!sourcedata) {
-				reject();
+	sourceDataOperation = (data, sourcedata) => new Promise((resolve, reject) => {
+		if (!sourcedata) {
+			reject();
+		}
+		const {isX, isY} = data;
+		const getdata = [];
+		for (let i = 0; i < sourcedata.length; i += 1) {
+			if ( isX && sourcedata[i].xy === 'x' ) {
+				getdata.push(sourcedata[i]);
+				continue;
 			}
-			const {isX, isY} = data;
-			const getdata = [];
-			for (let i = 0; i < sourcedata.length; i += 1) {
-				if ( isX && sourcedata[i].xy === 'x' ) {
-					getdata.push(sourcedata[i]);
-					continue;
-				}
-				if ( isY && sourcedata[i].xy === 'y' ) {
-					getdata.push(sourcedata[i]);
-					continue;
-				}
+			if ( isY && sourcedata[i].xy === 'y' ) {
+				getdata.push(sourcedata[i]);
+				continue;
 			}
-			this.props.setStore({
-				name: 'sourceList',
-				value: getdata
-			});
-			setTimeout(() => {
-				resolve();
-			});
+		}
+		this.props.setStore({
+			name: 'sourceList',
+			value: getdata
 		});
-	}
+		setTimeout(() => {
+			resolve();
+		}, 500);
+	});
 
 	// 创建更新页面数据
 	newPage = () => new Promise((resolve, reject) => {
 		const currentdata = JSON.parse(JSON.stringify([
-			...this.props.currentpage,
+			...this.props.currentdata,
 			...this.getpagedata(this.props.sourceList)
 		]));
-
 		this.props.setStore({
 			name: 'currentdata',
-			value: JSON.parse(JSON.stringify(currentdata))
+			value: currentdata
 		});
 		setTimeout(() => {
-			console.log('currentpage', this.props.currentpage);
-			console.log('sourceList', this.props.sourceList);
 			resolve();
 		});
 	})
 
 	// 比较选择历史更新页面
 	compareHistory = () => new Promise((resove, reject) => {
-		const { currentpage, selected, setStore } = this.props;
-		const operationList = JSON.parse(JSON.stringify(currentpage));
+		const { currentdata, selected, setStore, sourceList } = this.props;
+		const operationList = JSON.parse(JSON.stringify(currentdata));
 
 		operationList.forEach((item, index) => { // 遍历当前选择列表
 			// 修改新值
@@ -111,40 +113,39 @@ class List extends Component {
 		});
 
 		setStore({
-			name: 'currentpage',
+			name: 'currentdata',
 			value: operationList
 		});
 		setTimeout(() => {
 			resove();
+			this.setState({loading: false});
 		});
 	});
 
 	// 更新页面
 	onPage = () => {
-		const {isX, isY} = this.state;
-		Promise.resolve().then(() => {
-			// 初始化数据
+		this.setState({loading: true});
+		return Promise.resolve()
+		.then(() =>
 			this.sourceDataOperation({
-				isX,
-				isY
-			}, sourcedata);
-		}).then(() => {
-			// 更新页面数据
-			this.newPage();
-		}).then(() => {
-			// 比较历史选择再更新页面数据
-			this.compareHistory();
-		}).catch(() => {
-			console.log('meile');
-		});
+				isX: this.state.isX,
+				isY: this.state.isY
+			}, sourcedata)
+		).then(() =>
+			this.newPage()
+		).then(() =>
+			this.compareHistory()
+		);
 	}
 
+	// 筛选开关设置
 	toggle = (element) => () => {
 		const data = {};
 		data[element] = !this.state[element];
 		this.setState(data);
 	}
 
+	// delate
 	initPageData = () => {
 		if (Array.isArray(this.selected) && this.selected.length > 0) {
 			window.localStorage.setItem('selected', JSON.stringify(this.selected));
@@ -153,6 +154,7 @@ class List extends Component {
 		}
 	}
 
+	// 获取新增页面数据
 	getpagedata = (souce) => {
 		const {currentpage, pagesize} = this.state;
 		const pagedata = souce.slice(currentpage*pagesize, currentpage*pagesize + pagesize);
@@ -162,51 +164,52 @@ class List extends Component {
 		return pagedata;
 	}
 
-	handlePage = () => new Promise((resolve, reject) => {
-		window.clearTimeout(this.timerDelay);
-		this.timerDelay = window.setTimeout(() => {
-			if (this.state.list.length < modelslist.length) {
-				this.setState({
-					list: JSON.parse(JSON.stringify([...this.state.list, ...this.getpagedata()]))
-				}, () => {this.selectedHistory2New(this.state.list);});
-				resolve();
-			} else {
-				reject();
-			}
-
-		}, 500);
-	});
-
+	// 操作选择与取消选择图片
 	handleSelect = (i) => (e) => {
-		this.state.list[i].selected = !this.state.list[i].selected;
-		this.setState({
-			list: this.state.list
-		}, () => {
-			this.selected = this.selectedNew2History();
-			this.initPageData();
-		});
-	}
+		const { currentdata, selected, setStore, sourceList } = this.props;
+		const operationData = JSON.parse(JSON.stringify(currentdata));
+		let operationHistory = JSON.parse(JSON.stringify(selected));
 
-	selectedNew2History = () => {
-		const { list } = this.state;
-		const selected = [];
-		list.forEach((item, index) => { // 遍历当前选择列表
-			// 修改老值
-			this.historySelected.forEach((el, i) => { // 同时遍历旧数据
-				if (el.index === index) { // 如果新老值是同一个项
-					el.selected = item.selected; // 以新值选择结果为标准
+		// toggle 更新显示数据
+		operationData[i].selected = !operationData[i].selected;
+		this.props.setStore({
+			name: 'currentdata',
+			value: operationData
+		});
+
+		// 选择的情况
+		if (operationData[i].selected) {
+			// 判断已选择列表是否保存这个数
+			for (let index = 0; index < operationHistory.length; index += 1) {
+				if (operationHistory[index].imgUrl === operationData[i].imgUrl) {
+					// 有则不再操作
+					return;
 				}
-			});
-
-			// 重新定义新值
-			if (item.selected) { // 如果有选中
-				const newItem = item;
-				newItem.index = index;
-				selected.push(newItem); // 赋予索引值后推送到已选择
 			}
-		});
+			// 无则推送一条进已选择的列表
+			operationHistory.push(operationData[i]);
+			this.props.setStore({
+				name: 'selected',
+				value: operationHistory
+			});
+		}
 
-		return JSON.parse(JSON.stringify(selected));
+		// 取消选择的情况
+		if (!operationData[i].selected) {
+			// 移除已选择列表的当前项
+			for (let index = 0; index < operationHistory.length; index += 1) {
+				if (operationHistory[index].imgUrl === operationData[i].imgUrl) {
+					const parta = operationHistory.slice(0, index);
+					const partb = operationHistory.slice(index + 1, operationHistory.length);
+					operationHistory = parta.concat(partb);
+				}
+			}
+			// 更新已选择的列表
+			this.props.setStore({
+				name: 'selected',
+				value: operationHistory
+			});
+		}
 	}
 
 	selectedHistory2New = (current) => {
@@ -225,6 +228,7 @@ class List extends Component {
 		});
 	}
 
+	// 展示右菜单
 	onClickRight = (e) => {
 		console.log(e);
 		this.setState({
@@ -232,6 +236,7 @@ class List extends Component {
 		});
 	}
 
+	// 选择过滤子菜单展示过滤操作
 	Filter = () => {
 		this.setState({
 			showFilterModel: true,
@@ -239,41 +244,56 @@ class List extends Component {
 		});
 	}
 
+	// 隐藏过滤操作
 	closeFilterModel = () => {
+		this.doFilter();
+	}
+
+	// 过滤处理
+	doFilter = () => {
+		// 初始化翻页数据
 		this.setState({
 			showFilterModel: false,
-			list: []
-		}, () => {
-			this.doFilter();
+			currentpage: 0
+		});
+		// 初始化页面数据
+		this.props.setStore({
+			name: 'currentdata',
+			value: []
+		});
+		// 处理页面
+		setTimeout(() => {
+			this.onPage();
 		});
 	}
 
-	doFilter = () => {
-		const {isX, isY} = this.state;
-		this.sourceDataOperation({
-			isX,
-			isY
-		});
-		listHeight = 0;
-		let operationSelected;
-		try {
-			this.historySelected = JSON.parse(window.localStorage.getItem('selected')) || [];
-		} catch (error) {
-			this.historySelected = [];
-		}
-		const currentdata = JSON.parse(JSON.stringify([...this.state.list, ...this.getpagedata()]));
-		this.selectedHistory2New(currentdata);
-	}
-
+	// 重新选择
 	reSelect = () => {
-		const resetSelect = JSON.parse(JSON.stringify(this.state.list));
-		for (let i = 0; i < resetSelect.length; i += 1) {
-			resetSelect[i].selected = false;
-		}
+		const {
+			setStore,
+			time,
+			selected,
+			sourceList,
+			currentdata
+		} = this.props;
+
+		setStore({
+			name: 'selected',
+			value: []
+		});
+
+		setStore({
+			name: 'currentdata',
+			value: []
+		});
+
+		this.onPage();
+
 		this.setState({
-			showMenu: !this.state.showMenu,
-			list: resetSelect
-		}, () => {this.initPageData();});
+			showMenu: false,
+			currentpage: 0
+		});
+
 	}
 
 	closeError = () => {
@@ -298,6 +318,7 @@ class List extends Component {
 			setStore,
 			time,
 			selected,
+			sourceList,
 			currentdata
 		} = this.props;
 		const {
@@ -305,7 +326,8 @@ class List extends Component {
 			isX,
 			isY,
 			isBody,
-			isClothes
+			isClothes,
+			loading
 		} = this.state;
 
 		let p1 = 0, p2 = 0, p3 = 0;
@@ -401,7 +423,8 @@ class List extends Component {
 								//}
 							}
 						</div>
-						{this.state.list.length !== modelslist.length ? (<div className={s.loading} style={{top:listHeight}}>
+						{ currentdata.length < sourceList.length && loading ?
+							(<div className={s.loading} style={{top:listHeight}}>
 							<img src={require('./loading.svg')} />
 						</div>) : null}
 					</ScrollLoading>

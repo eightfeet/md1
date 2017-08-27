@@ -1,7 +1,10 @@
 import { h, Component } from 'preact';
+import { connect } from 'preact-redux';
+import { bindActionCreators } from 'redux';
 import SwipeableViews from 'react-swipeable-views';
 import classNames from 'classnames';
 import { autoPlay } from 'react-swipeable-views-utils';
+import { setRuntimeVariable } from '~/actions/user';
 import Modal from '~/components/Modal';
 import MotionPage from '~/components/MotionPage';
 import history from '~/core/history';
@@ -46,30 +49,31 @@ class View extends Component {
 	}
 
 	componentWillMount() {
-		let times = parseInt(window.localStorage.getItem('selectedtime'), 0) || 2;
-		const strList = window.localStorage.getItem('selected') || [];
-		try {
-			this.setState({
-				list: JSON.parse(strList),
-				times
-			}, () => {
-				this.nextImg(0);
-				this.setState({times});
-				this.reSet(times);
-			});
-		} catch (error) {
+		const {
+			sourceList,
+			selected,
+			currentdata,
+			time
+		} = this.props;
 
-		}
+		this.nextImg(0);
+		this.reSet(time);
 	}
 
 	componentDidMount() {
+		if (this.props.selected.length === 0) {
+			this.setState({
+				error: '您还没请选择图片'
+			});
+		}
+
 	}
 
 	componentWillUnmount() {
 		window.clearInterval(this.timer);
-		window.localStorage.setItem('selectedtime', this.state.times);
 	}
 
+	// 显示时间设置
 	showTimeModal = (e) => {
 		e.preventDefault();
 		this.setState({
@@ -77,14 +81,17 @@ class View extends Component {
 		});
 	}
 
+	// 隐藏时间
 	hideTimeModal = () => {
-		this.setState({
-			timeModal: false
-		}, () => {
-			window.localStorage.setItem('selectedtime', this.state.times);
-		});
+
 	}
 
+	// 存储时间到本地
+	saveTime = () => {
+		window.localStorage.setItem('selectedtime', this.props.time);
+	}
+
+	// 用来预先加载下一张图片
 	nextImg = (index) => {
 		try {
 			const img = window.document.createElement('img');
@@ -94,6 +101,7 @@ class View extends Component {
 		}
 	}
 
+	// 重制倒计时
 	reSet = (sec) => {
 		window.clearInterval(this.timer);
 		const getTime = arrivedTime(sec);
@@ -106,19 +114,25 @@ class View extends Component {
 		}, 1000);
 	}
 
+	// 图片切换操作
 	handleChangeIndex = (e) => {
-		if (e < (this.state.list.length - 1)) {
+		const {
+			time,
+			selected
+		} = this.props;
+		if (e < (selected.length - 1)) {
 			this.nextImg(e + 1);
 		} else {
 			this.nextImg(0);
 		}
-
-		this.reSet(this.state.times);
+		// 重置时间数据
+		this.reSet(time);
 	}
 
+	// 去列表页选择图片
 	handleList = (e) => {
 		e.preventDefault();
-		history.push('list/?backurl=view');
+		history.push('list');
 	}
 
 	showTimeModal = (e) => {
@@ -129,31 +143,45 @@ class View extends Component {
 	}
 
 	hideTimeModal = () => {
+		const {time} = this.props;
 		this.setState({
 			timeModal: false
 		});
-		this.reSet(this.state.times);
+		this.reSet(time);
+		// 缓存时间数据到浏览器
+		window.localStorage.setItem('time', time);
 	}
 
+	// 加时间
 	handleMinus = (e) => {
 		e.preventDefault();
-		this.setState({
-			times: this.state.times > 1 ? this.state.times - 1 : 1
-		}, () => {
-			window.localStorage.setItem('selectedtime', this.state.times);
+		this.props.setStore({
+			name: 'time',
+			value: this.props.time > 1 ? this.props.time - 1 : 1
 		});
 	}
 
+	// 减时间
 	handlePlus = (e) => {
 		e.preventDefault();
-		this.setState({
-			times: this.state.times < 60 ? this.state.times + 1 : 60
-		}, () => {
-			window.localStorage.setItem('selectedtime', this.state.times);
+		this.props.setStore({
+			name: 'time',
+			value: this.props.time < 60 ? this.props.time + 1 : 60
 		});
+	}
+
+	closeError = () => {
+		history.push('list');
 	}
 
 	render() {
+		const {
+			setStore,
+			time,
+			selected,
+			sourceList,
+			currentdata
+		} = this.props;
 		const { times, list, infomation, num } = this.state;
 		if (num === 0) {
 			window.clearInterval(this.timer);
@@ -163,17 +191,23 @@ class View extends Component {
 				<div
 					className={classNames(s.timer, num < 20 ? s.timerred : null)}
 					onClick={this.showTimeModal}
-				><span className="icon_clock pdr-2" />{infomation}</div>
-				<div onClick={this.handleList} className={s.pic}><i className="icon_layers" /></div>
-				<div onClick={() => {history.push('/');}} className={s.backhome}><i className="icon_home" /></div>
+				>
+					<span className="icon_clock pdr-2" />{infomation}
+				</div>
+				<div onClick={this.handleList} className={s.pic}>
+					<i className="icon_layers" />
+				</div>
+				<div onClick={() => {history.push('/');}} className={s.backhome}>
+					<i className="icon_home" />
+				</div>
 				<AutoPlaySwipeableViews
-					interval={ times * 60000 }
+					interval={ time * 60000 }
 					onChangeIndex={this.handleChangeIndex}
 					style={{width: '100%', height: '100%'}}
 					animateTransitions
 				>
 					{
-						list.map(item =>
+						selected.map(item =>
 							(<div>
 								<img className="shadow-bottom" src={`./assets/models/${item.imgUrl}`} />
 							</div>)
@@ -199,7 +233,7 @@ class View extends Component {
 								</a>
 							</div>
 							<div className="fl w4">
-								<input type="text" value={this.state.times} readOnly className="ww al-c" />
+								<input type="text" value={time} readOnly className="ww al-c" />
 							</div>
 							<div
 								className="fl w3 al-c font-biggest"
@@ -228,10 +262,23 @@ class View extends Component {
 						对不起
 					</h3>
 					<div className="al-c pdb2">{this.state.error}</div>
+					<div className="w9 center pdb1">
+						<button className="btngreen font" onClick={this.closeError}>
+							去选择
+						</button>
+					</div>
 				</Modal>
 			</div>
 		);
 	}
 }
 
-export default View;
+function mapStateToProps(state) {
+	return state;
+}
+
+function mapDispatchToProps(dispatch){
+	return bindActionCreators({ setStore: setRuntimeVariable}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MotionPage(View));
