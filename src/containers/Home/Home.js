@@ -81,14 +81,34 @@ class Home extends Component {
 		});
 	}
 
+	playVideo = () => {
+		console.log(this.video);
+		this.video.play();
+	}
+
+	renderVideo = () => {
+		return (<div className={s.view}>
+			<img src={require('./show.jpg')} alt=""
+				onClick={this.playVideo}
+			/>
+			<video id="video"
+				ref={ (ref) => {this.video = ref;}}
+				style={{width:'0', height: '0'}}
+				preload
+				loop
+				webkit-playsinline
+				>
+				<source type="video/mp4" src="./assets/move.mp4" />
+			</video>
+		</div>);
+	}
+
 	render() {
 		const { item } = this.state;
 		const {selected, time} = this.props;
 		return (
 			<div className={s.root}>
-				<div className={s.view}>
-					<img src={require('./show.jpg')} alt="" />
-				</div>
+				{this.renderVideo()}
 				<div className={classNames(s.iconlayout, 'clearfix')}>
 					<div className="fl w4 al-r">
 						<a href="" onClick={this.handleList}>
