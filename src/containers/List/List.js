@@ -33,6 +33,7 @@ class List extends Component {
 			isY: true,
 			isBody: true,
 			isClothes: true,
+			isFemale: true,
 			loading: false
 		};
 		this.selected = [];
@@ -452,7 +453,7 @@ class List extends Component {
 					<div className="pdl2 pdr2 nls al-c">
 						<ul className={classNames(s.filter, 'clearfix')}>
 							<li className="fl w4-5" onClick={this.toggle('isX')}>
-								<i className={this.filterToggle(isX)} />横向
+							<i className={this.filterToggle(isX)} />横向
 							</li>
 							<li className="fl w1"/>
 							<li className="fl w4-5" onClick={this.toggle('isY')}>
