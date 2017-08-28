@@ -397,7 +397,7 @@ class List extends Component {
 												style={{
 													width, height, left, top,
 													boxSizing: 'border-box',
-													border: '3px solid #fff'
+													border: '2px solid #fff'
 												}}
 												className={s.imgbox}
 											>
