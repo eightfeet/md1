@@ -60,12 +60,11 @@ class ScrollLoading extends Component {
 		} = this.props;
 
     // 滚动条当前的高度
-		const scrollTop = e.currentTarget.scrollTop;
+		const scrollTop = e.currentTarget.scrollTop + 5;
     // 外框高度
 		const boxHeight = e.currentTarget.offsetHeight;
     // 内容高度
 		const contentHeight = e.currentTarget.childNodes[0].offsetHeight;
-
 		// 翻页是否结束
 		if (!this.state.pageOver) {
 			// 页面是否触底

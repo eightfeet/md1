@@ -390,7 +390,7 @@ class List extends Component {
 											top = hp3 + 3;
 										}
 
-										listHeight = Math.max(p1, p2, p3) + 3;
+										listHeight = Math.max(p1, p2, p3);
 
 										return (
 											<div
@@ -423,10 +423,12 @@ class List extends Component {
 								//}
 							}
 						</div>
-						{ currentdata.length < sourceList.length && loading ?
+						{ currentdata.length < sourceList.length ?
 							(<div className={s.loading} style={{top:listHeight}}>
 							<img src={require('./loading.svg')} />
-						</div>) : null}
+						</div>) : (<div className={s.loading} style={{top:listHeight}}>
+							别扯了！这是底线
+						</div>)}
 					</ScrollLoading>
 				</div>
 				<Modal
