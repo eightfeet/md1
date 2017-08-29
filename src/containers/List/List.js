@@ -477,6 +477,12 @@ class List extends Component {
 				<div className={classNames({
 					hide: !this.state.showMenu
 				}, s.menu, 'shadow-bottom')}
+					style={{
+						display: this.state.showMenu ? 'block' : 'none',
+						padding: '0 0.5rem 0.5rem',
+						top: '3.5rem',
+						zIndex: '100'
+					}}
 					>
 					<ul className="nls">
 						<li className="pdl1" onClick={this.Filter}><i className="icon_filter pdl1"/>&nbsp;&nbsp;筛选</li>
