@@ -10,7 +10,7 @@ import HeaderBar from '~/components/HeaderBar';
 import Loading from '~/components/Loading';
 import Toggle from '~/components/Toggle';
 // models
-import sourcedata from '~/assets/models.json';
+import sourcedata from '~/data/models.json';
 import Spin from '~/components/Loading/Spin';
 import MotionPage from '~/components/MotionPage';
 import ScrollLoading from '~/components/ScrollLoading';
