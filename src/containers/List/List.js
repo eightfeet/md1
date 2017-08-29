@@ -426,6 +426,14 @@ class List extends Component {
 		e.preventDefault();
 		this.setState({
 			showFilterByMd: false,
+			isX: false,
+			isY: false,
+			isClothes: false,
+			isBody: false,
+			isMale: false,
+			isFemale: false,
+			isHeader: false,
+			isHandsFeet: false,
 			currentpage: 0 // 切记初始化翻页！！！！！
 		});
 
@@ -474,9 +482,7 @@ class List extends Component {
 					leftIcon="icon_check"
 					leftIconClass={s.checked}
 				/>
-				<div className={classNames({
-					hide: !this.state.showMenu
-				}, s.menu, 'shadow-bottom')}
+				<div className={classNames(s.menu, 'shadow-bottom')}
 					style={{
 						display: this.state.showMenu ? 'block' : 'none',
 						padding: '0 0.5rem 0.5rem',

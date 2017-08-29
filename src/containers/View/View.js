@@ -209,7 +209,14 @@ class View extends Component {
 					{
 						selected.map(item =>
 							(<div>
-								<img className="shadow-bottom" src={`./assets/models/${item.imgUrl}`} />
+								<img
+									className="shadow-bottom"
+									style={{
+										maxWidth: '800px',
+										width: item.isY ? 'auto' : '100%',
+										height: item.isY ? window.innerHeight : 'auto'
+									}}
+									src={`./assets/models/${item.imgUrl}`} />
 							</div>)
 						)
 					}
