@@ -486,7 +486,7 @@ class List extends Component {
 					>
 					<ul className="nls">
 						<li className="pdl1" onClick={this.Filter}><i className="icon_filter pdl1"/>&nbsp;&nbsp;筛选</li>
-						<li className="pdl1" onClick={this.selectModels}><i className="icon_check_circle pdl1"/>&nbsp;&nbsp;按模特选择</li>
+						<li className="pdl1" onClick={this.selectModels}><i className="icon_user pdl1"/>&nbsp;&nbsp;按模特选择</li>
 						<li className="pdl1" onClick={this.selectAll}><i className="icon_check_circle pdl1"/>&nbsp;&nbsp;选择全部</li>
 						<li className="pdl1" onClick={this.reSelect}><i className="icon_rotate_cw pdl1"/>&nbsp;&nbsp;重新选择</li>
 					</ul>
