@@ -11,6 +11,7 @@ import Loading from '~/components/Loading';
 import Toggle from '~/components/Toggle';
 // models
 import sourcedata from '~/data/models.json';
+import sourcedataindex from '~/data/modelsIndex.json';
 import Spin from '~/components/Loading/Spin';
 import MotionPage from '~/components/MotionPage';
 import ScrollLoading from '~/components/ScrollLoading';
@@ -26,6 +27,7 @@ class List extends Component {
 			currentpage: 0,
 			pagesize: 15,
 			list: [],
+			sourcedataindex,
 			showMenu: false,
 			error: null,
 			errorTitle: '对不起',
@@ -87,10 +89,8 @@ class List extends Component {
 			!isHeader &&
 			!isHandsFeet) {
 			getdata = sourcedata;
-			console.log('无选择', getdata);
 		} else {
 			getdata = this.filterSource(sourcedata);
-			console.log('有选择', getdata);
 		}
 
 		this.props.setStore({
@@ -128,6 +128,10 @@ class List extends Component {
 		}
 
 		return getdata;
+	}
+
+	filterSourceByid = (sourcedata) => {
+
 	}
 
 	// 创建更新页面数据
@@ -261,15 +265,16 @@ class List extends Component {
 	}
 
 	// 展示右菜单
-	onClickRight = (e) => {
-		console.log(e);
+	onToggleMenu = (e) => {
+		e.preventDefault();
 		this.setState({
 			showMenu: !this.state.showMenu
 		});
 	}
 
 	// 选择过滤子菜单展示过滤操作
-	Filter = () => {
+	Filter = (e) => {
+		e.preventDefault();
 		this.setState({
 			showFilterModel: true,
 			showMenu: !this.state.showMenu
@@ -303,11 +308,15 @@ class List extends Component {
 	reSelect = () => {
 		const {
 			setStore,
-			time,
 			selected,
-			sourceList,
 			currentdata
 		} = this.props;
+
+		const operatinData = JSON.parse(JSON.stringify(currentdata));
+
+		operatinData.forEach((item) => {
+			item.selected = false;
+		});
 
 		setStore({
 			name: 'selected',
@@ -316,14 +325,41 @@ class List extends Component {
 
 		setStore({
 			name: 'currentdata',
-			value: []
+			value: operatinData
 		});
 
-		this.onPage();
+		this.setState({
+			showMenu: false
+		});
+
+	}
+
+	// 重新选择
+	selectAll = () => {
+		const {
+			setStore,
+			selected,
+			currentdata
+		} = this.props;
+
+		const operatinData = JSON.parse(JSON.stringify(currentdata));
+
+		operatinData.forEach((item) => {
+			item.selected = true;
+		});
+
+		setStore({
+			name: 'selected',
+			value: operatinData
+		});
+
+		setStore({
+			name: 'currentdata',
+			value: operatinData
+		});
 
 		this.setState({
-			showMenu: false,
-			currentpage: 0
+			showMenu: false
 		});
 
 	}
@@ -345,6 +381,18 @@ class List extends Component {
 		});
 	}
 
+	toggleSelectModels = (item, index) => () => {
+		const operatinData = JSON.parse(JSON.stringify(this.state.sourcedataindex));
+		operatinData[index].selected = !operatinData[index].selected;
+		this.setState({
+			sourcedataindex: operatinData
+		});
+	}
+
+	filterModel = () => {
+
+	}
+
 	render() {
 		const {
 			setStore,
@@ -356,6 +404,7 @@ class List extends Component {
 		const {
 			item,
 			loading,
+			sourcedataindex,
 			isX,
 			isY,
 			isClothes,
@@ -372,19 +421,47 @@ class List extends Component {
 				<HeaderBar
 					title={'选择模特'}
 					onClickLeft
-					onClickRight={this.onClickRight}
+					onClickRight={this.onToggleMenu}
 					rightIcon="icon_grid"
 					leftIcon="icon_check"
 					leftIconClass={s.checked}
 				/>
 				<div className={classNames({
 					hide: !this.state.showMenu
-				}, s.menu, 'shadow-bottom')}>
+				}, s.menu, 'shadow-bottom')}
+					>
 					<ul className="nls">
 						<li className="pdl1" onClick={this.Filter}><i className="icon_filter pdl1"/>&nbsp;&nbsp;筛选</li>
-						<li className="pdl1" onClick={this.reSelect}><i className="icon_check_circle pdl1"/>&nbsp;&nbsp;重新选择</li>
+						<li className="pdl1" onClick={this.selectAll}><i className="icon_check_circle pdl1"/>&nbsp;&nbsp;选择全部</li>
+						<li className="pdl1" onClick={this.reSelect}><i className="icon_rotate_cw pdl1"/>&nbsp;&nbsp;重新选择</li>
 					</ul>
+					<div className={s.over} onClick={this.onToggleMenu}>
+						&nbsp;
+					</div>
 				</div>
+				{
+					(<div className={s.findbymodelidbox}>
+						<div className={s.findbymodelid}>
+							<div className={s.fbmbox}>
+								<ul className="nls">
+									{
+										sourcedataindex.map((item, index) =>(<li onClick={this.toggleSelectModels(item, index)}>
+											<img src={`./assets/${item.imgUrl}`} alt=""/>
+											<div className={classNames(s.checkbox,  'icon_check_circle', item.selected?s.select:null)}></div>
+										</li>))
+									}
+								</ul>
+							</div>
+						</div>
+						<div className={s.dock}>
+							<div className="w8 center">
+								<button className="btn font" onClick={this.filterModel}>
+									确&nbsp;&nbsp;认
+								</button>
+							</div>
+						</div>
+					</div>)
+				}
 				<div className={s.list}>
 					<ScrollLoading
 						handlePage={this.onPage}

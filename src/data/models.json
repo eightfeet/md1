@@ -245,8 +245,8 @@
 		"isY": true,
 		"isClothes": true,
 		"isBody": false,
-		"isMale": true,
-		"isFemale": false,
+		"isMale": false,
+		"isFemale": true,
 		"isHeader": false,
 		"isHandsFeet": false,
 		"selected": false
