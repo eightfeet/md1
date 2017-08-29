@@ -86,7 +86,6 @@ class List extends Component {
 
 		// 按模特ID过滤
 		getdata = this.filterSourceById(operationData);
-		console.log('getdata', getdata);
 		if (!isX &&
 			!isY &&
 			!isClothes &&
@@ -97,7 +96,6 @@ class List extends Component {
 			!isHandsFeet) {
 			console.log('无数据');
 		} else {
-			// 按条件过滤
 			getdata = this.filterSource(getdata);
 		}
 
@@ -105,6 +103,7 @@ class List extends Component {
 			name: 'sourceList',
 			value: getdata
 		});
+
 		setTimeout(() => {
 			resolve();
 		}, 500);
@@ -119,23 +118,19 @@ class List extends Component {
 			isFemale,
 			isHeader,
 			isHandsFeet} = this.state;
+
 		const getdata = [];
 		for (let i = 0; i < sourcedata.length; i += 1) {
 			if (
-				(sourcedata[i].isX === isX ||
-				sourcedata[i].isY === isY) &&
-				(sourcedata[i].isClothes === isClothes ||
-				sourcedata[i].isBody === isBody) &&
-				(sourcedata[i].isMale === isMale ||
-				sourcedata[i].isFemale === isFemale) &&
+				(sourcedata[i].isX === isX || sourcedata[i].isY === isY) &&
+				(sourcedata[i].isClothes === isClothes || sourcedata[i].isBody === isBody) &&
+				(sourcedata[i].isMale === isMale || sourcedata[i].isFemale === isFemale) &&
 				sourcedata[i].isHeader === isHeader &&
 				sourcedata[i].isHandsFeet === isHandsFeet
 			) {
 				getdata.push(sourcedata[i]);
 			}
-			console.log(sourcedata[i]);
 		}
-
 		return getdata;
 	}
 
@@ -430,7 +425,8 @@ class List extends Component {
 		} = this.props;
 		e.preventDefault();
 		this.setState({
-			showFilterByMd: false
+			showFilterByMd: false,
+			currentpage: 0 // 切记初始化翻页！！！！！
 		});
 
 		setStore({
@@ -593,7 +589,7 @@ class List extends Component {
 							(<div className={s.loading} style={{top:listHeight}}>
 							<img src={require('./loading.svg')} />
 						</div>) : (<div className={s.loading} style={{top:listHeight}}>
-							别扯了！这是底线
+							{currentdata.length === 0 ? '找不到数据': '没有了！'}
 						</div>)}
 					</ScrollLoading>
 				</div>
