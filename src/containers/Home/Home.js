@@ -82,14 +82,19 @@ class Home extends Component {
 		});
 	}
 
+	palyVideo = () => {
+		this.video.play();
+	}
+
 	render() {
 		const { item } = this.state;
 		const {selected, time} = this.props;
 		return (
 			<div className={s.root}>
-				<div className={s.view}>
+				<div className={s.view} onClick={this.palyVideo}>
 					<img src="./assets/show.jpg" alt="" />
 				</div>
+				<video src="./assets/move.mp4" ref={(ref) => { this.video = ref; }} width="0" height="0" />
 				<div className={classNames(s.iconlayout, 'clearfix')}>
 					<div className="fl w4 al-r">
 						<a href="" onClick={this.showTimeModal}>
