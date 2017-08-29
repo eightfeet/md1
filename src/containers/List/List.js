@@ -8,6 +8,7 @@ import history from '~/core/history';
 import Modal from '~/components/Modal';
 import HeaderBar from '~/components/HeaderBar';
 import Loading from '~/components/Loading';
+import Toggle from '~/components/Toggle';
 // models
 import sourcedata from '~/assets/models.json';
 import Spin from '~/components/Loading/Spin';
@@ -29,12 +30,15 @@ class List extends Component {
 			error: null,
 			errorTitle: '对不起',
 			showFilterModel: false,
-			isX: true,
-			isY: true,
-			isBody: true,
+			loading: false,
+			isX: false,
+			isY: false,
 			isClothes: true,
-			isFemale: true,
-			loading: false
+			isBody: false,
+			isMale: false,
+			isFemale: false,
+			isHeader: false,
+			isHandsFeet: false
 		};
 		this.selected = [];
 		this.historySelected = [];
@@ -60,21 +64,35 @@ class List extends Component {
 
 	// 按筛选条件重制数据源 (初始化sourceList) data 筛选条件 sourcedata 数据源
 	sourceDataOperation = (data, sourcedata) => new Promise((resolve, reject) => {
+		const {isX,
+			isY,
+			isClothes,
+			isBody,
+			isMale,
+			isFemale,
+			isHeader,
+			isHandsFeet} = this.state;
+		let getdata = [];
+
 		if (!sourcedata) {
 			reject();
 		}
-		const {isX, isY} = data;
-		const getdata = [];
-		for (let i = 0; i < sourcedata.length; i += 1) {
-			if ( isX && sourcedata[i].xy === 'x' ) {
-				getdata.push(sourcedata[i]);
-				continue;
-			}
-			if ( isY && sourcedata[i].xy === 'y' ) {
-				getdata.push(sourcedata[i]);
-				continue;
-			}
+
+		if (!isX &&
+			!isY &&
+			!isClothes &&
+			!isBody &&
+			!isMale &&
+			!isFemale &&
+			!isHeader &&
+			!isHandsFeet) {
+			getdata = sourcedata;
+			console.log('无选择', getdata);
+		} else {
+			getdata = this.filterSource(sourcedata);
+			console.log('有选择', getdata);
 		}
+
 		this.props.setStore({
 			name: 'sourceList',
 			value: getdata
@@ -83,6 +101,34 @@ class List extends Component {
 			resolve();
 		}, 500);
 	});
+
+	filterSource = (sourcedata) => {
+		const {isX,
+			isY,
+			isClothes,
+			isBody,
+			isMale,
+			isFemale,
+			isHeader,
+			isHandsFeet} = this.state;
+		const getdata = [];
+		for (let i = 0; i < sourcedata.length; i += 1) {
+			if (
+				(sourcedata[i].isX === isX ||
+				sourcedata[i].isY === isY) &&
+				(sourcedata[i].isClothes === isClothes ||
+				sourcedata[i].isBody === isBody) &&
+				(sourcedata[i].isMale === isMale ||
+				sourcedata[i].isFemale === isFemale) &&
+				sourcedata[i].isHeader === isHeader &&
+				sourcedata[i].isHandsFeet === isHandsFeet
+			) {
+				getdata.push(sourcedata[i]);
+			}
+		}
+
+		return getdata;
+	}
 
 	// 创建更新页面数据
 	newPage = () => new Promise((resolve, reject) => {
@@ -126,6 +172,7 @@ class List extends Component {
 	// 更新页面
 	onPage = () => {
 		this.setState({loading: true});
+		listHeight = 0;
 		return Promise.resolve()
 		.then(() =>
 			this.sourceDataOperation({
@@ -211,22 +258,6 @@ class List extends Component {
 				value: operationHistory
 			});
 		}
-	}
-
-	selectedHistory2New = (current) => {
-		const operationList = JSON.parse(JSON.stringify(current));
-		operationList.forEach((item, index) => { // 遍历当前选择列表
-			// 修改新值
-			this.historySelected.forEach((el, i) => { // 同时遍历旧数据
-				if (el.index === index) { // 如果新老值是同一个项
-					item.selected = el.selected; // 以旧值选择结果为标准
-				}
-			});
-		});
-
-		this.setState({
-			list: operationList
-		});
 	}
 
 	// 展示右菜单
@@ -324,11 +355,15 @@ class List extends Component {
 		} = this.props;
 		const {
 			item,
+			loading,
 			isX,
 			isY,
-			isBody,
 			isClothes,
-			loading
+			isBody,
+			isMale,
+			isFemale,
+			isHeader,
+			isHandsFeet
 		} = this.state;
 
 		let p1 = 0, p2 = 0, p3 = 0;
@@ -465,6 +500,20 @@ class List extends Component {
 							<li className="fl w1"/>
 							<li className="fl w4-5" onClick={this.toggle('isBody')}>
 								<i className={this.filterToggle(isBody)} />人体
+							</li>
+							<li className="fl w4-5" onClick={this.toggle('isMale')}>
+								<i className={this.filterToggle(isMale)} />男性
+							</li>
+							<li className="fl w1"/>
+							<li className="fl w4-5" onClick={this.toggle('isFemale')}>
+								<i className={this.filterToggle(isFemale)} />女性
+							</li>
+							<li className="fl w4-5" onClick={this.toggle('isHeader')}>
+								<i className={this.filterToggle(isHeader)} />头像
+							</li>
+							<li className="fl w1"/>
+							<li className="fl w4-5" onClick={this.toggle('isHandsFeet')}>
+								<i className={this.filterToggle(isHandsFeet)} />手足
 							</li>
 						</ul>
 						&nbsp;

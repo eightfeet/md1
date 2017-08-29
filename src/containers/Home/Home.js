@@ -6,6 +6,7 @@ import history from '~/core/history';
 import { setRuntimeVariable } from '~/actions/user';
 import Modal from '~/components/Modal';
 import Loading from '~/components/Loading';
+import Toggle from '~/components/Toggle';
 import Spin from '~/components/Loading/Spin';
 import MotionPage from '~/components/MotionPage';
 import ScrollLoading from '~/components/ScrollLoading';
@@ -91,13 +92,13 @@ class Home extends Component {
 				</div>
 				<div className={classNames(s.iconlayout, 'clearfix')}>
 					<div className="fl w4 al-r">
-						<a href="" onClick={this.handleList}>
-							<i className={`icon_layers ${s.icon}`} />
+						<a href="" onClick={this.showTimeModal}>
+							<i className={`icon_clock ${s.icon}`} />
 						</a>
 					</div>
 					<div className="fr w4 al-l">
-						<a href="" onClick={this.showTimeModal}>
-							<i className={`icon_clock ${s.icon}`} />
+						<a href="" onClick={this.handleList}>
+							<i className={`icon_layers ${s.icon}`} />
 						</a>
 					</div>
 				</div>
