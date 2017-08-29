@@ -32,6 +32,7 @@ class List extends Component {
 			error: null,
 			errorTitle: '对不起',
 			showFilterModel: false,
+			showFilterByMd: false,
 			loading: false,
 			isX: false,
 			isY: false,
@@ -74,12 +75,18 @@ class List extends Component {
 			isFemale,
 			isHeader,
 			isHandsFeet} = this.state;
+
 		let getdata = [];
 
 		if (!sourcedata) {
 			reject();
 		}
 
+		const operationData = JSON.parse(JSON.stringify(sourcedata));
+
+		// 按模特ID过滤
+		getdata = this.filterSourceById(operationData);
+		console.log('getdata', getdata);
 		if (!isX &&
 			!isY &&
 			!isClothes &&
@@ -88,9 +95,10 @@ class List extends Component {
 			!isFemale &&
 			!isHeader &&
 			!isHandsFeet) {
-			getdata = sourcedata;
+			console.log('无数据');
 		} else {
-			getdata = this.filterSource(sourcedata);
+			// 按条件过滤
+			getdata = this.filterSource(getdata);
 		}
 
 		this.props.setStore({
@@ -125,13 +133,33 @@ class List extends Component {
 			) {
 				getdata.push(sourcedata[i]);
 			}
+			console.log(sourcedata[i]);
 		}
 
 		return getdata;
 	}
 
-	filterSourceByid = (sourcedata) => {
+	filterSourceById = (sourcedata) => {
+		const {sourcedataindex} = this.state;
+		let getdata = [];
 
+		for (let i = 0; i < sourcedataindex.length; i += 1) {
+			if (sourcedataindex[i].selected === true) {
+				for (let n = 0; n < sourcedata.length; n += 1) {
+					if (
+						sourcedata[n].mdId === sourcedataindex[i].mdId
+					) {
+						getdata.push(sourcedata[n]);
+					}
+				}
+			}
+		}
+
+		if (getdata.length === 0) {
+			getdata = sourcedata;
+		}
+
+		return getdata;
 	}
 
 	// 创建更新页面数据
@@ -389,8 +417,31 @@ class List extends Component {
 		});
 	}
 
-	filterModel = () => {
+	selectModels = () => {
+		this.setState({
+			showFilterByMd: true,
+			showMenu: !this.state.showMenu
+		});
+	}
 
+	filterModel = (e) => {
+		const {
+			setStore
+		} = this.props;
+		e.preventDefault();
+		this.setState({
+			showFilterByMd: false
+		});
+
+		setStore({
+			name: 'currentdata',
+			value: []
+		});
+
+		// 处理页面
+		setTimeout(() => {
+			this.onPage();
+		});
 	}
 
 	render() {
@@ -405,6 +456,7 @@ class List extends Component {
 			item,
 			loading,
 			sourcedataindex,
+			showFilterByMd,
 			isX,
 			isY,
 			isClothes,
@@ -432,6 +484,7 @@ class List extends Component {
 					>
 					<ul className="nls">
 						<li className="pdl1" onClick={this.Filter}><i className="icon_filter pdl1"/>&nbsp;&nbsp;筛选</li>
+						<li className="pdl1" onClick={this.selectModels}><i className="icon_check_circle pdl1"/>&nbsp;&nbsp;按模特选择</li>
 						<li className="pdl1" onClick={this.selectAll}><i className="icon_check_circle pdl1"/>&nbsp;&nbsp;选择全部</li>
 						<li className="pdl1" onClick={this.reSelect}><i className="icon_rotate_cw pdl1"/>&nbsp;&nbsp;重新选择</li>
 					</ul>
@@ -440,27 +493,27 @@ class List extends Component {
 					</div>
 				</div>
 				{
-					(<div className={s.findbymodelidbox}>
+					showFilterByMd ? (<div className={s.findbymodelidbox}>
 						<div className={s.findbymodelid}>
 							<div className={s.fbmbox}>
 								<ul className="nls">
 									{
 										sourcedataindex.map((item, index) =>(<li onClick={this.toggleSelectModels(item, index)}>
-											<img src={`./assets/${item.imgUrl}`} alt=""/>
+											<img src={`./assets/models/small/${item.imgUrl}`} alt=""/>
 											<div className={classNames(s.checkbox,  'icon_check_circle', item.selected?s.select:null)}></div>
 										</li>))
 									}
 								</ul>
 							</div>
 						</div>
-						<div className={s.dock}>
+						<div className={classNames(s.dock, 'shadow-top')}>
 							<div className="w8 center">
 								<button className="btn font" onClick={this.filterModel}>
 									确&nbsp;&nbsp;认
 								</button>
 							</div>
 						</div>
-					</div>)
+					</div>) : null
 				}
 				<div className={s.list}>
 					<ScrollLoading
