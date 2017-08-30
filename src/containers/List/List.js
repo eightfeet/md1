@@ -10,7 +10,7 @@ import HeaderBar from '~/components/HeaderBar';
 import Loading from '~/components/Loading';
 import Toggle from '~/components/Toggle';
 // models
-import sourcedata from '~/data/models.json';
+import sourcedata from '~/data';
 import sourcedataindex from '~/data/modelsIndex.json';
 import Spin from '~/components/Loading/Spin';
 import MotionPage from '~/components/MotionPage';
@@ -19,6 +19,8 @@ import s from './style';
 
 let listHeight = 0;
 let modelslist = [];
+
+console.log(sourcedata);
 
 class List extends Component {
 	constructor() {

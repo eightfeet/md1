@@ -182,19 +182,6 @@
 		"selected": false
 	},
 	{
-		"imgUrl": "015-x&839&709.jpg",
-		"isX": true,
-		"isY": false,
-		"isClothes": true,
-		"isBody": false,
-		"isMale": false,
-		"isFemale": true,
-		"isHeader": false,
-		"isHandsFeet": false,
-		"mdId": "md02",
-		"selected": false
-	},
-	{
 		"imgUrl": "016-y&614&708.jpg",
 		"isX": false,
 		"isY": true,
