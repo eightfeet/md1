@@ -357,7 +357,7 @@ class List extends Component {
 
 	}
 
-	// 重新选择
+	// 选择全部
 	selectAll = () => {
 		const {
 			setStore,
@@ -507,7 +507,8 @@ class List extends Component {
 								<ul className="nls">
 									{
 										sourcedataindex.map((item, index) =>(<li onClick={this.toggleSelectModels(item, index)}>
-											<img src={`./assets/models/small/${item.imgUrl}`} alt=""/>
+											<img
+											src={`./assets/models/small/${item.imgUrl}`} alt=""/>
 											<div className={classNames(s.checkbox,  'icon_check_circle', item.selected?s.select:null)}></div>
 										</li>))
 									}
@@ -575,19 +576,27 @@ class List extends Component {
 												}}
 												className={s.imgbox}
 											>
-												<img src={img.src} alt="" />
+												<img
+													src={img.src} alt=""
+													style={{
+														background: 'url("./assets/loading.svg") center',
+														backgroundSize: '1rem 1rem',
+														backgroundRepeat: 'no-repeat'
+													}}
+												/>
 												{
 													<div
 														onClick={this.handleSelect(i)}
 														style={{
 															border: !item.selected? '0.3rem solid #ccc':'0.3rem solid #00b67b',
-															borderRadius: '3rem',
+															borderRadius: '5rem',
 															position: 'absolute',
 															right: '0.5rem',
 															top: '0.5rem',
-															width: '1rem',
-															height: '1rem',
-															zIndex: '1'
+															width: '1.2rem',
+															height: '1.2rem',
+															zIndex: '1',
+															boxSizing: 'border-box'
 														}}
 														/>
 												}

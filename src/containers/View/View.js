@@ -207,18 +207,47 @@ class View extends Component {
 					animateTransitions
 				>
 					{
-						selected.map(item =>
-							(<div>
+						selected.map(item => {
+							const {isX, isY, imgUrl} = item;
+							const W = parseInt(imgUrl.split('&')[1], 0);
+							const H = parseInt(imgUrl.split('&')[2], 0);
+							const rate = W/H;
+							const WW = window.innerWidth;
+							const WH = window.innerHeight;
+							const ScaleW = W/H*WH;
+							const ScaleH = H/W*WW;
+
+							const viewportH = WH < WW;
+							const conditionA = viewportH && isY; // 横屏且竖图
+							const conditionB = !viewportH && H < WH; // 竖屏且图片高度大于屏幕高度
+
+							let Width;
+							let Height;
+							if (ScaleW > WW) {
+								Width = 'auto';
+								Height = ScaleH;
+							}
+
+							if (ScaleH > WH) {
+								Width = ScaleW;
+								Height = 'auto';
+							}
+
+
+							console.log(conditionA || conditionB);
+							return (<div>
 								<img
 									className="shadow-bottom"
 									style={{
-										maxWidth: '800px',
-										width: item.isY ? 'auto' : '100%',
-										height: item.isY ? window.innerHeight : 'auto'
+										width: Width,
+										height: Height,
+										background: 'url("./assets/loading.svg") center',
+										backgroundSize: '2rem 2rem',
+										backgroundRepeat: 'no-repeat'
 									}}
 									src={`./assets/models/${item.imgUrl}`} />
-							</div>)
-						)
+							</div>);
+						})
 					}
 				</AutoPlaySwipeableViews>
 				<Modal
