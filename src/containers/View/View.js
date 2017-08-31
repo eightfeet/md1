@@ -207,7 +207,9 @@ class View extends Component {
 				</div>
 				<span
 					className={s.index}
-				>{`${this.state.current}/${selected.length}`}</span>
+				>
+					{`${this.state.current}/${selected.length}`}
+				</span>
 				<AutoPlaySwipeableViews
 					interval={ time * 60000 }
 					onChangeIndex={this.handleChangeIndex}

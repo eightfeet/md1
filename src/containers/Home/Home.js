@@ -89,6 +89,7 @@ class Home extends Component {
 	render() {
 		const { item } = this.state;
 		const {selected, time} = this.props;
+		const totaltime = selected.length * time;
 		return (
 			<div className={s.root}>
 				<div className={s.view} onClick={this.palyVideo}>
@@ -106,6 +107,17 @@ class Home extends Component {
 							<i className={`icon_layers ${s.icon}`} />
 						</a>
 					</div>
+				</div>
+				<div className="font-small gray-lighter pdt1 al-c">
+					{
+						selected.length > 0 ?
+						`共选择 ${selected.length} 张图片 - ` :
+						null
+					}
+					{totaltime && totaltime !== 0 ? totaltime > 60 ?
+					` 预计速写时间 ${totaltime/60} 小时` :
+					` 预计速写时间 ${totaltime} 分钟` :
+					null}
 				</div>
 				<div className={classNames(s.bottombtn, 'mgt4')}>
 					<div className="w8 center">
