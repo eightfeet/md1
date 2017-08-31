@@ -112,7 +112,7 @@
 	left: 0;
 	right: 0;
 	top: 3.5rem;
-	bottom: 4.5rem;
+	bottom: 0rem;
 	position: absolute;
 	overflow: auto;
 	-webkit-overflow-scrolling : touch;
@@ -160,9 +160,11 @@
 .dock {
 	position: absolute;
 	background-color: #fff;
-	padding-top: 1rem;
-	bottom: 0;
-	height: 4rem;
+	top: 0;
+	height: 3.5rem;
+	line-height: 3.5rem;
+	font-size: 1rem;
+	text-align: center;
 	left: 0;
 	right: 0;
 }

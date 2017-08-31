@@ -43,7 +43,8 @@ class List extends Component {
 			isMale: false,
 			isFemale: false,
 			isHeader: false,
-			isHandsFeet: false
+			isHandsFeet: false,
+			isRandom: false
 		};
 		this.selected = [];
 		this.historySelected = [];
@@ -67,6 +68,22 @@ class List extends Component {
 		window.localStorage.setItem('selected', JSON.stringify(this.props.selected));
 	}
 
+	// 随机洗牌数组
+	shuffleArray = (array) => {
+		let currentIndex = array.length;
+		let temporary;
+		let toIndex;
+
+		while (currentIndex) {
+			toIndex = Math.floor(Math.random() * currentIndex--);
+			temporary = array[currentIndex];
+			array[currentIndex] = array[toIndex];
+			array[toIndex] = temporary;
+		}
+
+		return array;
+	}
+
 	// 按筛选条件重制数据源 (初始化sourceList) data 筛选条件 sourcedata 数据源
 	sourceDataOperation = (data, sourcedata) => new Promise((resolve, reject) => {
 		const {isX,
@@ -76,6 +93,7 @@ class List extends Component {
 			isMale,
 			isFemale,
 			isHeader,
+			isRandom,
 			isHandsFeet} = this.state;
 
 		let getdata = [];
@@ -85,6 +103,11 @@ class List extends Component {
 		}
 
 		const operationData = JSON.parse(JSON.stringify(sourcedata));
+
+		// 随机数组
+		if (isRandom) {
+			getdata = this.shuffleArray(operationData);
+		}
 
 		// 按模特ID过滤
 		getdata = this.filterSourceById(operationData);
@@ -213,6 +236,42 @@ class List extends Component {
 		).then(() =>
 			this.compareHistory()
 		);
+	}
+
+	randomData = () => {
+		const {
+			setStore
+		} = this.props;
+
+		this.setState({
+			showFilterByMd: false,
+			isX: false,
+			isY: false,
+			showMenu: false,
+			isClothes: false,
+			isRandom: !this.state.isRandom,
+			isBody: false,
+			isMale: false,
+			isFemale: false,
+			isHeader: false,
+			isHandsFeet: false,
+			currentpage: 0 // 切记初始化翻页！！！！！
+		});
+
+		setStore({
+			name: 'currentdata',
+			value: []
+		});
+
+		setStore({
+			name: 'selected',
+			value: []
+		});
+
+		// 处理页面
+		setTimeout(() => {
+			this.onPage();
+		});
 	}
 
 	// 筛选开关设置
@@ -470,7 +529,8 @@ class List extends Component {
 			isMale,
 			isFemale,
 			isHeader,
-			isHandsFeet
+			isHandsFeet,
+			isRandom
 		} = this.state;
 
 		let p1 = 0, p2 = 0, p3 = 0;
@@ -478,6 +538,7 @@ class List extends Component {
 			<div className={s.root}>
 				<HeaderBar
 					title={'选择模特'}
+					selectimg={selected.length !== 0 ? selected.length : null}
 					onClickLeft
 					onClickRight={this.onToggleMenu}
 					rightIcon="icon_grid"
@@ -487,7 +548,7 @@ class List extends Component {
 				<div className={classNames(s.menu, 'shadow-bottom')}
 					style={{
 						display: this.state.showMenu ? 'block' : 'none',
-						padding: '0 0.5rem 0.5rem',
+						padding: '0rem 0.5rem 0.5rem 0.5rem',
 						top: '3.5rem',
 						zIndex: '100'
 					}}
@@ -495,6 +556,7 @@ class List extends Component {
 					<ul className="nls">
 						<li className="pdl1" onClick={this.Filter}><i className="icon_filter pdl1"/>&nbsp;&nbsp;筛选</li>
 						<li className="pdl1" onClick={this.selectModels}><i className="icon_user pdl1"/>&nbsp;&nbsp;按模特选择</li>
+						<li className="pdl1" onClick={this.randomData}><i className="icon_rotate_cw pdl1"/>&nbsp;&nbsp;{isRandom ? '排序' : '随机显示'}</li>
 						<li className="pdl1" onClick={this.selectAll}><i className="icon_check_circle pdl1"/>&nbsp;&nbsp;选择全部</li>
 						<li className="pdl1" onClick={this.reSelect}><i className="icon_rotate_cw pdl1"/>&nbsp;&nbsp;重新选择</li>
 					</ul>
@@ -518,11 +580,24 @@ class List extends Component {
 							</div>
 						</div>
 						<div className={classNames(s.dock, 'shadow-top')}>
-							<div className="w8 center">
-								<button className="btn font" onClick={this.filterModel}>
-									确&nbsp;&nbsp;认
-								</button>
+							<div className="w8 fw-b center">
+									按模特选择
 							</div>
+							<a
+								onClick={this.filterModel}
+								className="icon_check"
+								style={{
+									position: 'absolute',
+									left: '0',
+									top: '0',
+									display: 'inline-block',
+									width: '3.5rem',
+									height: '3.5rem',
+									lineHeight: '3.5rem',
+									fontSize: '2rem',
+									color: '#00b67b'
+								}}
+							></a>
 						</div>
 					</div>) : null
 				}
