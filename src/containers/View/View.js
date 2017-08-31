@@ -43,7 +43,8 @@ class View extends Component {
 			num: null,
 			timeModal: false,
 			times: 0,
-			error: null
+			error: null,
+			current: 1
 		};
 		this.timer = null;
 	}
@@ -125,8 +126,12 @@ class View extends Component {
 		} else {
 			this.nextImg(0);
 		}
-		// 重置时间数据
-		this.reSet(time);
+		this.setState({
+			current: e + 1
+		}, () => {
+			// 重置时间数据
+			this.reSet(time);
+		});
 	}
 
 	// 去列表页选择图片
@@ -200,6 +205,9 @@ class View extends Component {
 				<div onClick={() => {history.push('/');}} className={s.backhome}>
 					<i className="icon_home" />
 				</div>
+				<span
+					className={s.index}
+				>{`${this.state.current}/${selected.length}`}</span>
 				<AutoPlaySwipeableViews
 					interval={ time * 60000 }
 					onChangeIndex={this.handleChangeIndex}
@@ -207,7 +215,7 @@ class View extends Component {
 					animateTransitions
 				>
 					{
-						selected.map(item => {
+						selected.map((item, index) => {
 							const {isX, isY, imgUrl} = item;
 							const W = parseInt(imgUrl.split('&')[1], 0);
 							const H = parseInt(imgUrl.split('&')[2], 0);
