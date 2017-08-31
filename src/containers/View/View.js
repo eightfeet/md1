@@ -241,8 +241,6 @@ class View extends Component {
 								Height = 'auto';
 							}
 
-
-							console.log(conditionA || conditionB);
 							return (<div>
 								<img
 									className="shadow-bottom"

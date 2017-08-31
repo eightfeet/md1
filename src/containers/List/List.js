@@ -20,7 +20,6 @@ import s from './style';
 let listHeight = 0;
 let modelslist = [];
 
-console.log(sourcedata);
 
 class List extends Component {
 	constructor() {
@@ -48,6 +47,13 @@ class List extends Component {
 		};
 		this.selected = [];
 		this.historySelected = [];
+		this.timer1 = null;
+		this.timer2 = null;
+		this.timer3 = null;
+		this.timer4 = null;
+		this.timer5 = null;
+		this.timer6 = null;
+		this.timer7 = null;
 	}
 
 
@@ -58,7 +64,7 @@ class List extends Component {
 			value: []
 		});
 		// 重制第一页
-		setTimeout(() => {
+		this.timer1 = setTimeout(() => {
 			this.onPage();
 		});
 	}
@@ -66,6 +72,13 @@ class List extends Component {
 	componentWillUnmount() {
 		// 缓存已选择数据到浏览器
 		window.localStorage.setItem('selected', JSON.stringify(this.props.selected));
+		window.clearTimeout(this.timer1);
+		window.clearTimeout(this.timer2);
+		window.clearTimeout(this.timer3);
+		window.clearTimeout(this.timer4);
+		window.clearTimeout(this.timer5);
+		window.clearTimeout(this.timer6);
+		window.clearTimeout(this.timer7);
 	}
 
 	// 随机洗牌数组
@@ -129,7 +142,7 @@ class List extends Component {
 			value: getdata
 		});
 
-		setTimeout(() => {
+		this.timer2 = setTimeout(() => {
 			resolve();
 		}, 500);
 	});
@@ -192,7 +205,7 @@ class List extends Component {
 			name: 'currentdata',
 			value: currentdata
 		});
-		setTimeout(() => {
+		this.timer3 = setTimeout(() => {
 			resolve();
 		});
 	})
@@ -215,7 +228,7 @@ class List extends Component {
 			name: 'currentdata',
 			value: operationList
 		});
-		setTimeout(() => {
+		this.timer4 = setTimeout(() => {
 			resove();
 			this.setState({loading: false});
 		});
@@ -269,7 +282,7 @@ class List extends Component {
 		});
 
 		// 处理页面
-		setTimeout(() => {
+		this.timer5 = setTimeout(() => {
 			this.onPage();
 		});
 	}
@@ -383,7 +396,7 @@ class List extends Component {
 			value: []
 		});
 		// 处理页面
-		setTimeout(() => {
+		this.timer6 = setTimeout(() => {
 			this.onPage();
 		});
 	}
@@ -504,7 +517,7 @@ class List extends Component {
 		});
 
 		// 处理页面
-		setTimeout(() => {
+		this.timer7 = setTimeout(() => {
 			this.onPage();
 		});
 	}
