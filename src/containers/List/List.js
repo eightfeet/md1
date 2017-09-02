@@ -158,13 +158,13 @@ class List extends Component {
 			isHandsFeet} = this.state;
 
 		const getdata = [];
+
 		for (let i = 0; i < sourcedata.length; i += 1) {
 			if (
 				(sourcedata[i].isX === isX || sourcedata[i].isY === isY) &&
 				(sourcedata[i].isClothes === isClothes || sourcedata[i].isBody === isBody) &&
 				(sourcedata[i].isMale === isMale || sourcedata[i].isFemale === isFemale) &&
-				sourcedata[i].isHeader === isHeader &&
-				sourcedata[i].isHandsFeet === isHandsFeet
+				(sourcedata[i].isHeader === isHeader && sourcedata[i].isHandsFeet === isHandsFeet)
 			) {
 				getdata.push(sourcedata[i]);
 			}

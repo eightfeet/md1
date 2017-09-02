@@ -267,19 +267,18 @@ class View extends Component {
 							const WH = window.innerHeight;
 							const ScaleW = W/H*WH;
 							const ScaleH = H/W*WW;
-
 							const viewportH = WH < WW;
 							const conditionA = viewportH && isY; // 横屏且竖图
 							const conditionB = !viewportH && H < WH; // 竖屏且图片高度大于屏幕高度
 
 							let Width;
 							let Height;
-							if (ScaleW > WW) {
+							if (ScaleW >= WW) {
 								Width = 'auto';
 								Height = ScaleH;
 							}
 
-							if (ScaleH > WH) {
+							if (ScaleH >= WH) {
 								Width = ScaleW;
 								Height = 'auto';
 							}
