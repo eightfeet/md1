@@ -149,6 +149,9 @@ module.exports = {
 		}),
 		new CopyWebpackPlugin([
 			{ from: './assets', to: './assets' }
+		]),
+		new CopyWebpackPlugin([
+			{ from: './public/browser-update', to: './browser-update' }
 		])
 	]).concat(ENV==='production' ? [
 		// new V8LazyParseWebpackPlugin(),
