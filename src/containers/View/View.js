@@ -69,8 +69,7 @@ class View extends Component {
 				error: '您还没请选择图片'
 			});
 		}
-
-		if (this.isBrowser) {
+		if (this.isBrowser()) {
 			this.setState({
 				showGuide: true
 			}, () => {
@@ -89,7 +88,7 @@ class View extends Component {
 		window.clearInterval(this.timer);
 	}
 
-	// isB
+	// isBrowser
 
 	isBrowser = () => {
 		if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
