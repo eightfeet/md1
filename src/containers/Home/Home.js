@@ -108,14 +108,14 @@ class Home extends Component {
 						</a>
 					</div>
 				</div>
-				<div className="font-small gray-lighter pdt1 al-c">
+				<div className="font-small gray-light pdt1 al-c">
 					{
 						selected.length > 0 ?
 						`共选择 ${selected.length} 张图片 - ` :
 						null
 					}
 					{totaltime && totaltime !== 0 ? totaltime > 60 ?
-					` 预计速写时间 ${totaltime/60} 小时` :
+					` 预计速写时间 ${(totaltime/60).toFixed(1)} 小时` :
 					` 预计速写时间 ${totaltime} 分钟` :
 					null}
 				</div>

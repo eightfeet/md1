@@ -3,14 +3,14 @@ import { connect } from 'preact-redux';
 import { bindActionCreators } from 'redux';
 import SwipeableViews from 'react-swipeable-views';
 import classNames from 'classnames';
-import { autoPlay } from 'react-swipeable-views-utils';
+import { autoPlay, bindKeyboard } from 'react-swipeable-views-utils';
 import { setRuntimeVariable } from '~/actions/user';
 import Modal from '~/components/Modal';
 import MotionPage from '~/components/MotionPage';
 import history from '~/core/history';
 import s from './style';
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+const AutoPlaySwipeableViews = bindKeyboard(autoPlay(SwipeableViews));
 
 let interval = 1000;
 
@@ -44,9 +44,11 @@ class View extends Component {
 			timeModal: false,
 			times: 0,
 			error: null,
+			showGuide: false,
 			current: 1
 		};
 		this.timer = null;
+		this.timerout = null;
 	}
 
 	componentWillMount() {
@@ -68,10 +70,32 @@ class View extends Component {
 			});
 		}
 
+		if (this.isBrowser) {
+			this.setState({
+				showGuide: true
+			}, () => {
+				this.timerout = setTimeout(() => {
+					this.setState({showGuide: false});
+				}, 2000);
+			});
+
+		}
+
+
+
 	}
 
 	componentWillUnmount() {
 		window.clearInterval(this.timer);
+	}
+
+	// isB
+
+	isBrowser = () => {
+		if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
+			return false;
+		}
+		return true;
 	}
 
 	// 显示时间设置
@@ -187,7 +211,7 @@ class View extends Component {
 			sourceList,
 			currentdata
 		} = this.props;
-		const { times, list, infomation, num } = this.state;
+		const { times, list, infomation, num, showGuide } = this.state;
 		if (num === 0) {
 			window.clearInterval(this.timer);
 		}
@@ -210,6 +234,23 @@ class View extends Component {
 				>
 					{`${this.state.current}/${selected.length}`}
 				</span>
+				{showGuide ? <div
+					style={{
+						border: '1px solid #fff',
+						width: '160px',
+						position: 'absolute',
+						left: '50%',
+						zIndex: '1000',
+						marginLeft: '-80px',
+						color: '#fff',
+						backgroundColor: 'rgba(0, 1, 0, 0.5)',
+						padding: '20px',
+						borderRadius: '10px',
+						top: '10px'
+					}}
+					className={s.keyboard}>
+					键盘&nbsp;&nbsp;<span className="icon_arrow_left" />左&nbsp;&nbsp;<span className="icon_arrow_right" />右&nbsp;&nbsp;键<br/>切换图片
+				</div> : null}
 				<AutoPlaySwipeableViews
 					interval={ time * 60000 }
 					onChangeIndex={this.handleChangeIndex}
