@@ -234,9 +234,9 @@
 		"selected": false
 	},
 	{
-		"imgUrl": "221-x&640&872.jpg",
-		"isX": true,
-		"isY": false,
+		"imgUrl": "221-y&640&872.jpg",
+		"isX": false,
+		"isY": true,
 		"isClothes": false,
 		"isBody": false,
 		"isMale": false,
