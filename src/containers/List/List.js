@@ -497,19 +497,38 @@ class List extends Component {
 		const {
 			setStore
 		} = this.props;
+
+		const {
+			sourcedataindex
+		} = this.state;
+
 		e.preventDefault();
-		this.setState({
-			showFilterByMd: false,
-			isX: false,
-			isY: false,
-			isClothes: false,
-			isBody: false,
-			isMale: false,
-			isFemale: false,
-			isHeader: false,
-			isHandsFeet: false,
-			currentpage: 0 // 切记初始化翻页！！！！！
-		});
+
+		let hasSelected = false;
+		for (let i = 0; i < sourcedataindex.length; i += 1) {
+			if (sourcedataindex[i].selected === true) {
+				hasSelected = true;
+			}
+		}
+
+		if (hasSelected === false) {
+			this.setState({
+				showFilterByMd: false
+			});
+		} else {
+			this.setState({
+				showFilterByMd: false,
+				isX: false,
+				isY: false,
+				isClothes: false,
+				isBody: false,
+				isMale: false,
+				isFemale: false,
+				isHeader: false,
+				isHandsFeet: false,
+				currentpage: 0 // 切记初始化翻页！！！！！
+			});
+		}
 
 		setStore({
 			name: 'currentdata',
