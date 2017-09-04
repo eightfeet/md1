@@ -206,7 +206,7 @@ module.exports = {
 
 	devServer: {
 		port: process.env.PORT || 4000,
-		host: '192.168.88.101',
+		host: '192.168.88.103',
 		// colors: true, // no longer used
 		publicPath: '',
 		contentBase: './src',
