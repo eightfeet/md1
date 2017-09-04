@@ -261,7 +261,7 @@ class List extends Component {
 			isX: false,
 			isY: false,
 			showMenu: false,
-			isClothes: false,
+			isClothes: true,
 			isRandom: !this.state.isRandom,
 			isBody: false,
 			isMale: false,
@@ -290,6 +290,25 @@ class List extends Component {
 	// 筛选开关设置
 	toggle = (element) => () => {
 		const data = {};
+		if (element === 'isClothes' ||
+			element === 'isMale' ||
+			element === 'isBody' ||
+			element === 'isFemale' ||
+			element === 'isHeader'
+		) {
+			data.isHandsFeet = false;
+		}
+
+		if (
+			element === 'isHandsFeet'
+		) {
+			data.isMale = false;
+			data.isFemale = false;
+			data.isBody = false;
+			data.isClothes = false;
+			data.isHeader = false;
+		}
+
 		data[element] = !this.state[element];
 		this.setState(data);
 	}
@@ -513,7 +532,8 @@ class List extends Component {
 
 		if (hasSelected === false) {
 			this.setState({
-				showFilterByMd: false
+				showFilterByMd: false,
+				currentpage: 0 // 切记初始化翻页！！！！！
 			});
 		} else {
 			this.setState({
