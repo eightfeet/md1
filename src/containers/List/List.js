@@ -11,7 +11,7 @@ import Loading from '~/components/Loading';
 import Toggle from '~/components/Toggle';
 // models
 import sourcedata from '~/data';
-import sourcedataindex from '~/data/modelsIndex.json';
+import sourcedataindex from '~/data/modelsIndex';
 import Spin from '~/components/Loading/Spin';
 import MotionPage from '~/components/MotionPage';
 import ScrollLoading from '~/components/ScrollLoading';

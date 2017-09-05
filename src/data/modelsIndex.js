@@ -1,4 +1,4 @@
-[
+const data = [
   { "imgUrl": "003-y&640&766.jpg", "mdId": "md01", "selected": false },
   { "imgUrl": "013-y&443&706.jpg", "mdId": "md02", "selected": false },
   { "imgUrl": "027-y&639&697.jpg", "mdId": "md03", "selected": false },
@@ -20,5 +20,33 @@
 	{ "imgUrl": "241-x&663&531.jpg", "mdId": "md19", "selected": false },
 	{ "imgUrl": "300-y&564&775.jpg", "mdId": "md20", "selected": false },
 	{ "imgUrl": "384-x&3000&2400.jpg", "mdId": "md21", "selected": false },
-	{ "imgUrl": "402-x&1859&1236.jpg", "mdId": "md22", "selected": false }
-]
+	{ "imgUrl": "402-x&1859&1236.jpg", "mdId": "md22", "selected": false },
+	{ "imgUrl": "426-x&1845&1031.jpg", "mdId": "md23", "selected": false },
+	{ "imgUrl": "440-y&1062&1422.jpg", "mdId": "md25", "selected": false },
+	{ "imgUrl": "453-x&1803&1026.jpg", "mdId": "md26", "selected": false },
+	{ "imgUrl": "457-x&1865&1029.jpg", "mdId": "md27", "selected": false },
+	{ "imgUrl": "475-x&1799&1021.jpg", "mdId": "md28", "selected": false },
+	{ "imgUrl": "488-y&989&1423.jpg", "mdId": "md29", "selected": false },
+	{ "imgUrl": "512-x&1859&1159.jpg", "mdId": "md30", "selected": false },
+	{ "imgUrl": "518-y&1034&1421.jpg", "mdId": "md31", "selected": false },
+	{ "imgUrl": "540-y&1081&1436.jpg", "mdId": "md33", "selected": false }
+];
+
+const shuffleArray = (array) => {
+	let currentIndex = array.length;
+	let temporary;
+	let toIndex;
+
+	while (currentIndex) {
+		toIndex = Math.floor(Math.random() * currentIndex--);
+		temporary = array[currentIndex];
+		array[currentIndex] = array[toIndex];
+		array[toIndex] = temporary;
+	}
+
+	return array;
+};
+
+const sourcedataindex = shuffleArray(data);
+
+export default sourcedataindex;
